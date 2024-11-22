@@ -17,6 +17,8 @@ import java.util.UUID;
 public class LoanOfferService {
     private final LoanProperties loanProperties;
 
+    private final CalculateCreditService calculateCreditService;
+
     public List<LoanOfferDto> getOffers(LoanStatementRequestDto requestDto){
         return List.of(
                 calculateOffer(false, false, requestDto),
@@ -57,7 +59,7 @@ public class LoanOfferService {
         }
 
         offer.setRate(currentRate);
-        offer.setMonthlyPayment(calculateMonthlyPayment(requestDto.getAmount(),
+        offer.setMonthlyPayment(calculateCreditService.calculateMonthlyPayment(requestDto.getAmount(),
                                                         requestDto.getTerm(),
                                                         currentRate));
         offer.setTotalAmount(insurance.add(offer.getMonthlyPayment()
@@ -68,33 +70,5 @@ public class LoanOfferService {
         return offer;
     }
 
-    private BigDecimal calculateMonthlyPayment(BigDecimal amount, Integer term, BigDecimal rate) {
-        int scale = 10;
-        /*
-       Формула: amount * ( (monthlyRate * (1 + monthlyRate)^term )) / (1 + monthlyRate)^term - 1 )
-        */
 
-        //рассчет месячной процентной ставки: годовая ставка / 12
-        BigDecimal monthlyRate = rate.divide(BigDecimal.valueOf(12), scale, RoundingMode.HALF_UP);
-
-        //преобразую процентную ставку в десятичный формат
-        monthlyRate = monthlyRate.divide(BigDecimal.valueOf(100), scale, RoundingMode.HALF_UP);
-
-        //(1 + monthlyRate) ^ term
-        BigDecimal onePlusRatePowTerm = BigDecimal.ONE.add(monthlyRate).pow(term, new MathContext(scale, RoundingMode.HALF_UP));
-
-        //monthlyRate * (1 + monthlyRate) ^ term
-        BigDecimal numerator = monthlyRate.multiply(onePlusRatePowTerm);
-
-        //(1 + monthlyRate) ^ term - 1
-        BigDecimal denominator = onePlusRatePowTerm.subtract(BigDecimal.ONE);
-
-        //numerator / denominator
-        BigDecimal annuityCoefficient = numerator.divide(denominator, scale, RoundingMode.HALF_UP);
-
-        //Округляем результат до 6 знаков после запятой
-        annuityCoefficient = annuityCoefficient.setScale(6, RoundingMode.HALF_UP);
-
-        return amount.multiply(annuityCoefficient);
-    }
 }
