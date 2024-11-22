@@ -38,19 +38,30 @@ public class LoanOfferService {
         offer.setRequestedAmount(requestDto.getAmount());
         offer.setTerm(requestDto.getTerm());
 
+        BigDecimal insurance = new BigDecimal("0.00");
+
         if (isSalaryClient){
             currentRate = currentRate.subtract(new BigDecimal("1.00"));
         }
         if (isInsuranceEnabled){
             currentRate = currentRate.subtract(new BigDecimal("3.00"));
+
+            /*
+            Формула расчета страховки: baseCost + ((amount / 1000) * term)
+            */
+
+            insurance = insurance.add(loanProperties.getBaseCostOfInsurance()
+                                                 .add((requestDto.getAmount().divide(new BigDecimal("1000"), RoundingMode.HALF_UP))
+                                                 .multiply(BigDecimal.valueOf(requestDto.getTerm()))));
+
         }
 
         offer.setRate(currentRate);
         offer.setMonthlyPayment(calculateMonthlyPayment(requestDto.getAmount(),
                                                         requestDto.getTerm(),
                                                         currentRate));
-        offer.setTotalAmount(offer.getMonthlyPayment()
-                                  .multiply(BigDecimal.valueOf(requestDto.getTerm())));
+        offer.setTotalAmount(insurance.add(offer.getMonthlyPayment()
+                                  .multiply(BigDecimal.valueOf(requestDto.getTerm()))));
         offer.setIsSalaryClient(isSalaryClient);
         offer.setIsInsuranceEnabled(isInsuranceEnabled);
 

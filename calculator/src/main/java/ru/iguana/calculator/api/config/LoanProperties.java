@@ -15,4 +15,7 @@ import java.math.BigDecimal;
 public class LoanProperties {
     @Value("${loan.baseRate}")
     BigDecimal baseRate;
+
+    @Value("${loan.baseCostOfInsurance}")
+    BigDecimal baseCostOfInsurance;
 }
