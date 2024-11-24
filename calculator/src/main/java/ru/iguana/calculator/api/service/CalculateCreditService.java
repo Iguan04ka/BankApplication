@@ -10,6 +10,8 @@ import ru.iguana.calculator.api.dto.ScoringDataDto;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -24,8 +26,65 @@ public class CalculateCreditService {
     }
 
     private BigDecimal calculateFinalRate(ScoringDataDto scoringDataDto){
-        //TODO implementation
-        return null;
+        BigDecimal finalRate = loanProperties.getBaseRate();
+
+        // Проверка: Сумма займа больше 24 зарплат
+        if (scoringDataDto.getAmount().compareTo(scoringDataDto.getEmployment().getSalary()) > 0) {
+            throw new IllegalArgumentException("the loan amount is too large");
+        }
+
+        // Проверка: Возраст
+        if (getAge(scoringDataDto.getBirthdate()) < 20 || getAge(scoringDataDto.getBirthdate()) > 65){
+            throw new IllegalArgumentException("incorrect age");
+        }
+
+        // Проверка: Стаж работы
+        if (scoringDataDto.getEmployment().getWorkExperienceTotal() < 18 ||
+            scoringDataDto.getEmployment().getWorkExperienceCurrent() < 3){
+
+            throw new IllegalArgumentException("insufficient work experience");
+        }
+
+        // Проверка: Рабочий статус
+        switch (scoringDataDto.getEmployment().getEmploymentStatus()){
+            case SELFEMPLOYED -> finalRate = finalRate.add(new BigDecimal("2"));
+            case HIREDEMPLOYED -> finalRate = finalRate.add(new BigDecimal("1"));
+            case UNEMPLOYED -> throw new IllegalArgumentException("We do not provide loans to the unemployed");
+            default -> throw new IllegalArgumentException("Invalid operating status specified");
+        }
+
+        // Проверка: Позиция на работе
+        switch (scoringDataDto.getEmployment().getPosition()){
+            case JUNIOR -> finalRate = finalRate.add(new BigDecimal("3"));
+            case MIDDLE -> finalRate = finalRate.add(new BigDecimal("2"));
+            case SENIOR -> finalRate = finalRate.add(new BigDecimal("1"));
+            case BOSS -> finalRate = finalRate.add(new BigDecimal("1"));
+            default -> throw new IllegalArgumentException("Incorrect job position indicated");
+        }
+
+        // Проверка: Семейное положение
+        switch (scoringDataDto.getMaritalStatus()){
+            case MARRIED -> finalRate = finalRate.subtract(new BigDecimal("3"));
+            case DIVORCED -> finalRate = finalRate.add(new BigDecimal("1"));
+            default -> throw new IllegalArgumentException("marital status is indicated incorrectly");
+        }
+
+        // Проверка: Пол и возраст
+        switch (scoringDataDto.getGender()){
+            case FEMALE -> {
+                if (getAge(scoringDataDto.getBirthdate()) >= 32 && getAge(scoringDataDto.getBirthdate()) <= 60){
+                    finalRate = finalRate.subtract(new BigDecimal("3"));
+                }
+            }
+            case MALE -> {
+                if (getAge(scoringDataDto.getBirthdate()) >= 30 && getAge(scoringDataDto.getBirthdate()) <= 55){
+                    finalRate = finalRate.subtract(new BigDecimal("3"));
+                }
+            }
+            case NONBINARY -> finalRate = finalRate.add(new BigDecimal("7"));
+        }
+
+        return finalRate;
     }
 
     private BigDecimal calculatePSK(ScoringDataDto scoringDataDto){
@@ -36,6 +95,10 @@ public class CalculateCreditService {
     private List<PaymentScheduleElementDto> calculatePaymentSchedule(ScoringDataDto scoringDataDto){
         //TODO implementation
         return null;
+    }
+
+    private Long getAge(LocalDate birthdate){
+        return Math.abs(ChronoUnit.YEARS.between(birthdate, LocalDate.now()));
     }
     public BigDecimal calculateMonthlyPayment(BigDecimal amount, Integer term, BigDecimal rate) {
         int scale = 10;
@@ -66,4 +129,14 @@ public class CalculateCreditService {
 
         return amount.multiply(annuityCoefficient);
     }
+
+    public BigDecimal calculateInsurance(BigDecimal amount, Integer term){
+        /*
+        Формула расчета страховки: baseCost + ((amount / 1000) * term)
+        */
+        return loanProperties.getBaseCostOfInsurance()
+                             .add((amount.divide(new BigDecimal("1000"), RoundingMode.HALF_UP))
+                             .multiply(BigDecimal.valueOf(term)));
+    }
+
 }

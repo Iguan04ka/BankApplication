@@ -48,14 +48,8 @@ public class LoanOfferService {
         if (isInsuranceEnabled){
             currentRate = currentRate.subtract(new BigDecimal("3.00"));
 
-            /*
-            Формула расчета страховки: baseCost + ((amount / 1000) * term)
-            */
-
-            insurance = insurance.add(loanProperties.getBaseCostOfInsurance()
-                                                 .add((requestDto.getAmount().divide(new BigDecimal("1000"), RoundingMode.HALF_UP))
-                                                 .multiply(BigDecimal.valueOf(requestDto.getTerm()))));
-
+            insurance = insurance.add(calculateCreditService.calculateInsurance(requestDto.getAmount(),
+                                                                    requestDto.getTerm()));
         }
 
         offer.setRate(currentRate);
