@@ -88,8 +88,23 @@ public class CalculateCreditService {
     }
 
     private BigDecimal calculatePSK(ScoringDataDto scoringDataDto){
-        //TODO implementation
-        return null;
+        /*
+        Формула ПСК: ПСК = (СП/СЗ – 1)/С * 100,
+
+        где СП – сумма всех платежей клиента;
+        СЗ – сумма выданного потребительского кредита;
+        С – срок кредитования в годах. */
+
+        BigDecimal amountOfPayments = calculateMonthlyPayment(scoringDataDto.getAmount(),
+                                                              scoringDataDto.getTerm(),
+                                                              calculateFinalRate(scoringDataDto))
+                   .multiply(BigDecimal.valueOf(scoringDataDto.getTerm()));
+
+        BigDecimal loanTermInYears = BigDecimal.valueOf(scoringDataDto.getTerm()).divide(new BigDecimal("12"), RoundingMode.HALF_UP);
+
+        return ((amountOfPayments.divide(scoringDataDto.getAmount(), RoundingMode.HALF_UP))
+                        .divide(loanTermInYears, RoundingMode.HALF_UP)).multiply(new BigDecimal("100"));
+
     }
 
     private List<PaymentScheduleElementDto> calculatePaymentSchedule(ScoringDataDto scoringDataDto){
@@ -100,6 +115,7 @@ public class CalculateCreditService {
     private Long getAge(LocalDate birthdate){
         return Math.abs(ChronoUnit.YEARS.between(birthdate, LocalDate.now()));
     }
+
     public BigDecimal calculateMonthlyPayment(BigDecimal amount, Integer term, BigDecimal rate) {
         int scale = 10;
         /*
