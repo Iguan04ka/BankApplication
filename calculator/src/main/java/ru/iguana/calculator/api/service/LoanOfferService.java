@@ -53,7 +53,7 @@ public class LoanOfferService {
         }
 
         offer.setRate(currentRate);
-        offer.setMonthlyPayment(calculateCreditService.calculateMonthlyPayment(requestDto.getAmount(),
+        offer.setMonthlyPayment(calculateCreditService.calculateMonthlyPaymentAnnuity(requestDto.getAmount(),
                                                         requestDto.getTerm(),
                                                         currentRate));
         offer.setTotalAmount(insurance.add(offer.getMonthlyPayment()

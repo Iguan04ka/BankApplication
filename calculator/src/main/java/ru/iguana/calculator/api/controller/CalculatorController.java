@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.iguana.calculator.api.dto.*;
+import ru.iguana.calculator.api.service.CalculateCreditService;
 import ru.iguana.calculator.api.service.LoanOfferService;
 
 import java.util.List;
@@ -13,6 +14,9 @@ import java.util.List;
 public class CalculatorController {
     @Autowired
     private LoanOfferService loanOfferService;
+
+    @Autowired
+    private CalculateCreditService calculateCreditService;
 
     public static final String OFFERS = "/calculator/offers";
 
@@ -25,8 +29,7 @@ public class CalculatorController {
 
     @PostMapping(CALCULATION)
     public CreditDto calculateCredit(@RequestBody ScoringDataDto scoringDataDto){
-        //TODO implementation
-        return null;
+        return calculateCreditService.calculateCredit(scoringDataDto);
     }
 
 
