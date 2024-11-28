@@ -125,6 +125,20 @@ public class CalculateCreditService {
         return finalRate;
     }
 
+    public BigDecimal calculateFinalRate (Boolean isSalaryClient, Boolean isInsuranceEnabled){
+        BigDecimal currentRate = loanProperties.getBaseRate();
+
+        if (isSalaryClient){
+            currentRate = currentRate.subtract(new BigDecimal("1"));
+        }
+
+        if (isInsuranceEnabled){
+            currentRate = currentRate.subtract(new BigDecimal("3"));
+        }
+
+        return currentRate;
+    }
+
     private BigDecimal calculatePSK(ScoringDataDto scoringDataDto){
         /*
         Формула ПСК: ПСК = (СП/СЗ – 1) / C * 100,
@@ -159,7 +173,7 @@ public class CalculateCreditService {
             LocalDate paymentDate = startDate.plusMonths(i - 1);
 
             // Используем метод для расчета одного платежа
-            BigDecimal[] paymentDetails = calculateMonthlyPaymentDifferentiate(
+            BigDecimal[] paymentDetails = calculateMonthlyPaymentAnnuity(
                     remainingDebt, principal, calculateFinalRate(scoringDataDto), scoringDataDto.getTerm(), paymentDate);
 
             BigDecimal totalPayment = paymentDetails[0];
@@ -217,36 +231,36 @@ public class CalculateCreditService {
         //numerator / denominator
         BigDecimal annuityCoefficient = numerator.divide(denominator, scale, RoundingMode.HALF_UP);
 
-        //Округляем результат до 6 знаков после запятой
-        annuityCoefficient = annuityCoefficient.setScale(6, RoundingMode.HALF_UP);
+        annuityCoefficient = annuityCoefficient.setScale(10, RoundingMode.HALF_UP);
 
-        return amount.multiply(annuityCoefficient);
+        return amount.multiply(annuityCoefficient).setScale(2, RoundingMode.HALF_UP);
     }
 
-    private BigDecimal[] calculateMonthlyPaymentDifferentiate(BigDecimal remainingDebt, BigDecimal principal,
-                                                              BigDecimal annualRate, int months, LocalDate currentDate) {
+    private BigDecimal[] calculateMonthlyPaymentAnnuity(BigDecimal remainingDebt, BigDecimal principal,
+                                                        BigDecimal annualRate, int months, LocalDate currentDate) {
 
-        int daysInMonth = currentDate.lengthOfMonth();
-        int daysInYear = currentDate.isLeapYear() ? 366 : 365;
+        // Ежемесячная процентная ставка
+        BigDecimal monthlyRate = annualRate.divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_UP)
+                .divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
 
-        // считаем платёж по основному долгу
-        BigDecimal debtPayment = principal.divide(BigDecimal.valueOf(months), 10, RoundingMode.HALF_UP);
+        // Аннуитетный коэффициент
+        BigDecimal annuityCoefficient = monthlyRate.multiply((BigDecimal.ONE.add(monthlyRate)).pow(months))
+                .divide((BigDecimal.ONE.add(monthlyRate)).pow(months).subtract(BigDecimal.ONE), 10, RoundingMode.HALF_UP);
 
-        annualRate = annualRate.divide(new BigDecimal("100"), RoundingMode.HALF_UP);
+        // Ежемесячный аннуитетный платеж
+        BigDecimal totalPayment = principal.multiply(annuityCoefficient).setScale(2, RoundingMode.HALF_UP);
 
-        // считаем платёж по процентам
-        BigDecimal interestPayment = remainingDebt.multiply(annualRate)
-                .multiply(BigDecimal.valueOf(daysInMonth))
-                .divide(BigDecimal.valueOf(daysInYear), 10, RoundingMode.HALF_UP);
+        // Процентная часть платежа
+        BigDecimal interestPayment = remainingDebt.multiply(monthlyRate).setScale(2, RoundingMode.HALF_UP);
 
-        // общий платёж
-        BigDecimal totalPayment = debtPayment.add(interestPayment).setScale(2, RoundingMode.HALF_UP);
+        // Основной долг
+        BigDecimal debtPayment = totalPayment.subtract(interestPayment).setScale(2, RoundingMode.HALF_UP);
 
-        //[0] — общая сумма платежа, [1] — платеж по процентам, [2] — платеж по основному долгу
+        // [0] — общая сумма платежа, [1] — платеж по процентам, [2] — платеж по основному долгу
         return new BigDecimal[]{
                 totalPayment,
-                interestPayment.setScale(2, RoundingMode.HALF_UP),
-                debtPayment.setScale(2, RoundingMode.HALF_UP)
+                interestPayment,
+                debtPayment
         };
     }
 
@@ -258,6 +272,5 @@ public class CalculateCreditService {
                              .add((amount.divide(new BigDecimal("1000"), RoundingMode.HALF_UP))
                              .multiply(BigDecimal.valueOf(term)));
     }
-
 
 }
