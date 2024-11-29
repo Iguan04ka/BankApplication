@@ -1,6 +1,7 @@
 package ru.iguana.calculator.api.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.iguana.calculator.api.dto.LoanOfferDto;
 import ru.iguana.calculator.api.dto.LoanStatementRequestDto;
@@ -9,53 +10,75 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class LoanOfferService {
+
     private final CalculateCreditService calculateCreditService;
 
-    public List<LoanOfferDto> getOffers(LoanStatementRequestDto requestDto){
-        return List.of(
-                calculateOffer(false, false, requestDto),
-                calculateOffer(false, true, requestDto),
-                calculateOffer(true, false, requestDto),
-                calculateOffer(true, true, requestDto)
-        );
+    public List<LoanOfferDto> getOffers(LoanStatementRequestDto requestDto) {
+        log.info("Received request for loan offers: {}", requestDto);
+        try {
+            List<LoanOfferDto> offers = List.of(
+                    calculateOffer(false, false, requestDto),
+                    calculateOffer(false, true, requestDto),
+                    calculateOffer(true, false, requestDto),
+                    calculateOffer(true, true, requestDto)
+            );
+            log.info("Generated loan offers: {}", offers);
+            return offers;
+        } catch (Exception e) {
+            log.error("Error occurred while generating loan offers for request: {}", requestDto, e);
+            throw e;
+        }
     }
 
     private LoanOfferDto calculateOffer(Boolean isInsuranceEnabled,
-                           Boolean isSalaryClient,
-                           LoanStatementRequestDto requestDto){
+                                        Boolean isSalaryClient,
+                                        LoanStatementRequestDto requestDto) {
+
+        log.debug("Calculating loan offer with isInsuranceEnabled={}, isSalaryClient={}, requestDto={}",
+                isInsuranceEnabled, isSalaryClient, requestDto);
 
         LoanOfferDto offer = new LoanOfferDto();
 
-        offer.setStatementId(UUID.randomUUID());
-        offer.setTerm(requestDto.getTerm());
+        try {
+            offer.setStatementId(UUID.randomUUID());
+            offer.setTerm(requestDto.getTerm());
 
-        BigDecimal finalRate = calculateCreditService.calculateFinalRate(isSalaryClient, isInsuranceEnabled);
-        offer.setRate(finalRate);
+            BigDecimal finalRate = calculateCreditService.calculateFinalRate(isSalaryClient, isInsuranceEnabled);
+            offer.setRate(finalRate);
 
-        BigDecimal insurance = new BigDecimal("0");
+            log.debug("Calculated final rate: {}", finalRate);
 
-        if(isInsuranceEnabled){
-            insurance = insurance.add(calculateCreditService.calculateInsurance(
-                    requestDto.getAmount(), requestDto.getTerm()));
+            BigDecimal insurance = new BigDecimal("0");
+
+            if (isInsuranceEnabled) {
+                insurance = insurance.add(calculateCreditService.calculateInsurance(
+                        requestDto.getAmount(), requestDto.getTerm()));
+                log.debug("Calculated insurance: {}", insurance);
+            }
+
+            BigDecimal requestedAmountWithInsurance = requestDto.getAmount().add(insurance);
+            offer.setRequestedAmount(requestedAmountWithInsurance);
+
+            offer.setMonthlyPayment(calculateCreditService.calculateMonthlyPaymentAnnuity(
+                    requestedAmountWithInsurance,
+                    requestDto.getTerm(),
+                    finalRate));
+            offer.setTotalAmount(offer.getMonthlyPayment().multiply(BigDecimal.valueOf(requestDto.getTerm())));
+
+            offer.setIsSalaryClient(isSalaryClient);
+            offer.setIsInsuranceEnabled(isInsuranceEnabled);
+
+            log.info("Generated loan offer: {}", offer);
+            return offer;
+
+        } catch (Exception e) {
+            log.error("Error occurred while calculating loan offer with isInsuranceEnabled={}, isSalaryClient={}, requestDto={}",
+                    isInsuranceEnabled, isSalaryClient, requestDto, e);
+            throw e;
         }
-
-        BigDecimal requestedAmountWithInsurance = requestDto.getAmount().add(insurance);
-        offer.setRequestedAmount(requestedAmountWithInsurance);
-
-        offer.setMonthlyPayment(calculateCreditService.calculateMonthlyPaymentAnnuity(
-                                                        requestedAmountWithInsurance,
-                                                        requestDto.getTerm(),
-                                                        finalRate));
-        offer.setTotalAmount(offer.getMonthlyPayment().multiply(BigDecimal.valueOf(requestDto.getTerm())));
-
-        offer.setIsSalaryClient(isSalaryClient);
-        offer.setIsInsuranceEnabled(isInsuranceEnabled);
-
-        return offer;
     }
-
-
 }
