@@ -25,17 +25,14 @@ public class CalculatorController {
     @Autowired
     private CalculateCreditService calculateCreditService;
 
-    public static final String OFFERS = "/calculator/offers";
-
-    public static final String CALCULATION  = "/calculator/calc";
-
     @Operation(
             summary = "Generates a list of 4 loan offers",
             description = "Receives LoanStatementRequestDto as input and returns a list of 4 loan offers"
     )
-    @PostMapping(OFFERS)
+    @PostMapping("/calculator/offers")
     public List<LoanOfferDto> calculateLoanOffers(@Validated @RequestBody LoanStatementRequestDto requestDto){
-        log.info("Received request to calculate loan offers: {}", requestDto);
+        log.info("Received request to calculate loan offers");
+        log.debug("Received request to calculate loan offers: {}", requestDto);
 
         try {
             List<LoanOfferDto> offers = loanOfferService.getOffers(requestDto);
@@ -52,9 +49,10 @@ public class CalculatorController {
             summary = "Calculates loan parameters",
             description = "Receives ScoringDataDto as input and, based on this data, calculates the loan parameters"
     )
-    @PostMapping(CALCULATION)
+    @PostMapping("/calculator/calc")
     public CreditDto calculateCredit(@Validated @RequestBody ScoringDataDto scoringDataDto){
-        log.info("Received request to calculate credit: {}", scoringDataDto);
+        log.info("Received request to calculate credit");
+        log.debug("Received request to calculate credit: {}", scoringDataDto);
 
         try {
             CreditDto credit = calculateCreditService.calculateCredit(scoringDataDto);

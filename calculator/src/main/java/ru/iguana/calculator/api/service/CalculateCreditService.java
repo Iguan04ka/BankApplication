@@ -225,15 +225,15 @@ public class CalculateCreditService {
         log.info("Calculating PSK for scoring data: {}", scoringDataDto);
 
         try {
-            BigDecimal amountOfPayments = calculateMonthlyPaymentAnnuity(
+            var amountOfPayments = calculateMonthlyPaymentAnnuity(
                     scoringDataDto.getAmount(),
                     scoringDataDto.getTerm(),
                     calculateFinalRate(scoringDataDto)
             ).multiply(BigDecimal.valueOf(scoringDataDto.getTerm()));
 
-            BigDecimal loanTermInYears = BigDecimal.valueOf(scoringDataDto.getTerm()).divide(new BigDecimal("12"), RoundingMode.HALF_UP);
+            var loanTermInYears = BigDecimal.valueOf(scoringDataDto.getTerm()).divide(new BigDecimal("12"), RoundingMode.HALF_UP);
 
-            BigDecimal psk = (((amountOfPayments.divide(scoringDataDto.getAmount(), RoundingMode.HALF_UP)).subtract(new BigDecimal("1")))
+            var psk = (((amountOfPayments.divide(scoringDataDto.getAmount(), RoundingMode.HALF_UP)).subtract(new BigDecimal("1")))
                     .divide(loanTermInYears, RoundingMode.HALF_UP)).multiply(new BigDecimal("100"));
 
             log.info("PSK calculated: {}", psk);
@@ -314,12 +314,12 @@ public class CalculateCreditService {
             BigDecimal monthlyRate = rate.divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_UP)
                     .divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
 
-            BigDecimal onePlusRatePowTerm = BigDecimal.ONE.add(monthlyRate).pow(term, new MathContext(10, RoundingMode.HALF_UP));
-            BigDecimal numerator = monthlyRate.multiply(onePlusRatePowTerm);
-            BigDecimal denominator = onePlusRatePowTerm.subtract(BigDecimal.ONE);
-            BigDecimal annuityCoefficient = numerator.divide(denominator, 10, RoundingMode.HALF_UP);
+            var onePlusRatePowTerm = BigDecimal.ONE.add(monthlyRate).pow(term, new MathContext(10, RoundingMode.HALF_UP));
+            var numerator = monthlyRate.multiply(onePlusRatePowTerm);
+            var denominator = onePlusRatePowTerm.subtract(BigDecimal.ONE);
+            var annuityCoefficient = numerator.divide(denominator, 10, RoundingMode.HALF_UP);
 
-            BigDecimal monthlyPayment = amount.multiply(annuityCoefficient).setScale(2, RoundingMode.HALF_UP);
+            var monthlyPayment = amount.multiply(annuityCoefficient).setScale(2, RoundingMode.HALF_UP);
 
             log.info("Monthly payment calculated: {}", monthlyPayment);
             return monthlyPayment;
@@ -368,7 +368,6 @@ public class CalculateCreditService {
 
         return result;
     }
-
 
     public BigDecimal calculateInsurance(BigDecimal amount, Integer term){
         /*
