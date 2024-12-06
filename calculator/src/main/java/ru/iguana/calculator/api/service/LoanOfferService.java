@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.iguana.calculator.api.dto.LoanOfferDto;
 import ru.iguana.calculator.api.dto.LoanStatementRequestDto;
+import ru.iguana.calculator.api.dto.OfferParameters;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,14 +21,23 @@ public class LoanOfferService {
     public List<LoanOfferDto> getOffers(LoanStatementRequestDto requestDto) {
         log.info("Received request for loan offers: {}", requestDto);
         try {
-            List<LoanOfferDto> offers = List.of(
-                    calculateOffer(false, false, requestDto),
-                    calculateOffer(false, true, requestDto),
-                    calculateOffer(true, false, requestDto),
-                    calculateOffer(true, true, requestDto)
+            List<OfferParameters> parameters = List.of(
+                    new OfferParameters(false, false),
+                    new OfferParameters(false, true),
+                    new OfferParameters(true, false),
+                    new OfferParameters(true, true)
             );
+
+            List<LoanOfferDto> offers = parameters
+                                .stream()
+                                .map(params -> calculateOffer(params.getIsInsuranceEnabled(),
+                                                              params.getIsSalaryClient(),
+                                                              requestDto))
+                                .toList();
             log.info("Generated loan offers: {}", offers);
+
             return offers;
+
         } catch (Exception e) {
             log.error("Error occurred while generating loan offers for request: {}", requestDto, e);
             throw e;
