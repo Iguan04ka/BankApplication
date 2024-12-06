@@ -73,29 +73,27 @@ public class CalculateCreditService {
     }
 
     private BigDecimal calculateFinalRate(ScoringDataDto scoringDataDto) {
-        log.info("Calculating final rate. Scoring data: {}", scoringDataDto);
+        log.info("Calculating final rate");
+        log.debug("Calculating final rate. Scoring data: {}", scoringDataDto);
 
         BigDecimal finalRate = loanProperties.getBaseRate();
+
         log.debug("Base rate: {}", finalRate);
 
         // Проверка: Сумма займа больше 24 зарплат
-        if (scoringDataDto.getAmount()
-                .compareTo(scoringDataDto.getEmployment().getSalary().multiply(new BigDecimal("24"))) > 0) {
+        if (isAmountToLarge(scoringDataDto)) {
             log.error("Loan amount is too large: {} > 24 * Salary {}", scoringDataDto.getAmount(), scoringDataDto.getEmployment().getSalary());
             throw new IllegalArgumentException("the loan amount is too large");
         }
 
         // Проверка: Возраст
-        long age = getAge(scoringDataDto.getBirthdate());
-        if (age < 20 || age > 65) {
-            log.error("Incorrect age: {}. Allowed range: 20-65.", age);
+        if (!isAgeCorrect(scoringDataDto)) {
+            log.error("Incorrect age: Allowed range: 20-65.");
             throw new IllegalArgumentException("incorrect age");
         }
-        log.debug("Age: {}", age);
 
         // Проверка: Стаж работы
-        if (scoringDataDto.getEmployment().getWorkExperienceTotal() < 18 ||
-                scoringDataDto.getEmployment().getWorkExperienceCurrent() < 3) {
+        if (!isWorkExperienceCorrect(scoringDataDto)) {
             log.error("Insufficient work experience. Total: {}, Current: {}",
                     scoringDataDto.getEmployment().getWorkExperienceTotal(),
                     scoringDataDto.getEmployment().getWorkExperienceCurrent());
@@ -103,92 +101,22 @@ public class CalculateCreditService {
         }
 
         // Проверка: зарплатный клиент
-        if (scoringDataDto.getIsSalaryClient()) {
-            log.debug("Salary client detected. Subtracting 1 from rate.");
-            finalRate = finalRate.subtract(new BigDecimal("1"));
-        }
+        finalRate = finalRate.add(calculateRateBySalaryClient(scoringDataDto));
 
         // Проверка: на кредит оформлена страховка
-        if (scoringDataDto.getIsInsuranceEnabled()) {
-            log.debug("Insurance enabled. Subtracting 3 from rate.");
-            finalRate = finalRate.subtract(new BigDecimal("3"));
-        }
+        finalRate = finalRate.add(calculateRateByInsuranceEnabled(scoringDataDto));
 
         // Проверка: Рабочий статус
-        switch (scoringDataDto.getEmployment().getEmploymentStatus()) {
-            case SELFEMPLOYED -> {
-                log.debug("Employment status: SELFEMPLOYED. Adding 2 to rate.");
-                finalRate = finalRate.add(new BigDecimal("2"));
-            }
-            case HIREDEMPLOYED -> {
-                log.debug("Employment status: HIREDEMPLOYED. Adding 1 to rate.");
-                finalRate = finalRate.add(new BigDecimal("1"));
-            }
-            case UNEMPLOYED -> {
-                log.error("Employment status: UNEMPLOYED. Loan denied.");
-                throw new IllegalArgumentException("We do not provide loans to the unemployed");
-            }
-            default -> {
-                log.error("Invalid employment status: {}", scoringDataDto.getEmployment().getEmploymentStatus());
-                throw new IllegalArgumentException("Invalid operating status specified");
-            }
-        }
+        finalRate = finalRate.add(calculateRateByEmploymentStatus(scoringDataDto));
 
         // Проверка: Позиция на работе
-        switch (scoringDataDto.getEmployment().getPosition()) {
-            case JUNIOR -> {
-                log.debug("Position: JUNIOR. Adding 3 to rate.");
-                finalRate = finalRate.add(new BigDecimal("3"));
-            }
-            case MIDDLE -> {
-                log.debug("Position: MIDDLE. Adding 2 to rate.");
-                finalRate = finalRate.add(new BigDecimal("2"));
-            }
-            case SENIOR, BOSS -> {
-                log.debug("Position: {}. Adding 1 to rate.", scoringDataDto.getEmployment().getPosition());
-                finalRate = finalRate.add(new BigDecimal("1"));
-            }
-            default -> {
-                log.error("Invalid job position: {}", scoringDataDto.getEmployment().getPosition());
-                throw new IllegalArgumentException("Incorrect job position indicated");
-            }
-        }
+        finalRate = finalRate.add(calculateRateByPosition(scoringDataDto));
 
         // Проверка: Семейное положение
-        switch (scoringDataDto.getMaritalStatus()) {
-            case MARRIED -> {
-                log.debug("Marital status: MARRIED. Subtracting 3 from rate.");
-                finalRate = finalRate.subtract(new BigDecimal("3"));
-            }
-            case DIVORCED -> {
-                log.debug("Marital status: DIVORCED. Adding 1 to rate.");
-                finalRate = finalRate.add(new BigDecimal("1"));
-            }
-            default -> {
-                log.error("Invalid marital status: {}", scoringDataDto.getMaritalStatus());
-                throw new IllegalArgumentException("marital status is indicated incorrectly");
-            }
-        }
+        finalRate = finalRate.add(calculateRateByMaritalStatus(scoringDataDto));
 
         // Проверка: Пол и возраст
-        switch (scoringDataDto.getGender()) {
-            case FEMALE -> {
-                if (age >= 32 && age <= 60) {
-                    log.debug("Gender: FEMALE, age in range 32-60. Subtracting 3 from rate.");
-                    finalRate = finalRate.subtract(new BigDecimal("3"));
-                }
-            }
-            case MALE -> {
-                if (age >= 30 && age <= 55) {
-                    log.debug("Gender: MALE, age in range 30-55. Subtracting 3 from rate.");
-                    finalRate = finalRate.subtract(new BigDecimal("3"));
-                }
-            }
-            case NONBINARY -> {
-                log.debug("Gender: NONBINARY. Adding 7 to rate.");
-                finalRate = finalRate.add(new BigDecimal("7"));
-            }
-        }
+        finalRate = finalRate.add(calculateRateByAgeAndGender(scoringDataDto));
 
         log.info("Final rate calculation completed. Final rate: {}", finalRate);
         return finalRate;
@@ -387,5 +315,135 @@ public class CalculateCreditService {
             log.error("Error calculating insurance. Amount: {}, Term: {}", amount, term, e);
             throw e;
         }
+    }
+
+    private BigDecimal calculateRateBySalaryClient(ScoringDataDto scoringDataDto){
+        BigDecimal rateDifference = new BigDecimal("0");
+
+        if (scoringDataDto.getIsSalaryClient()) {
+            log.debug("Salary client detected. Subtracting 1 from rate.");
+            rateDifference = rateDifference.subtract(new BigDecimal("1"));
+        }
+        return rateDifference;
+    }
+
+    private BigDecimal calculateRateByInsuranceEnabled(ScoringDataDto scoringDataDto){
+        BigDecimal rateDifference = new BigDecimal("0");
+
+        if (scoringDataDto.getIsInsuranceEnabled()) {
+            log.debug("Insurance enabled. Subtracting 3 from rate.");
+            rateDifference = rateDifference.subtract(new BigDecimal("3"));
+        }
+
+        return rateDifference;
+    }
+
+    private BigDecimal calculateRateByEmploymentStatus(ScoringDataDto scoringDataDto){
+        BigDecimal rateDifference = new BigDecimal("0");
+
+        switch (scoringDataDto.getEmployment().getEmploymentStatus()) {
+            case SELFEMPLOYED -> {
+                log.debug("Employment status: SELFEMPLOYED. Adding 2 to rate.");
+                rateDifference = rateDifference.add(new BigDecimal("2"));
+            }
+            case HIREDEMPLOYED -> {
+                log.debug("Employment status: HIREDEMPLOYED. Adding 1 to rate.");
+                rateDifference = rateDifference.add(new BigDecimal("1"));
+            }
+            case UNEMPLOYED -> {
+                log.error("Employment status: UNEMPLOYED. Loan denied.");
+                throw new IllegalArgumentException("We do not provide loans to the unemployed");
+            }
+            default -> {
+                log.error("Invalid employment status: {}", scoringDataDto.getEmployment().getEmploymentStatus());
+                throw new IllegalArgumentException("Invalid operating status specified");
+            }
+        }
+        return rateDifference;
+    }
+
+    private BigDecimal calculateRateByPosition(ScoringDataDto scoringDataDto){
+        BigDecimal rateDifference = new BigDecimal("0");
+
+        switch (scoringDataDto.getEmployment().getPosition()) {
+            case JUNIOR -> {
+                log.debug("Position: JUNIOR. Adding 3 to rate.");
+                rateDifference = rateDifference.add(new BigDecimal("3"));
+            }
+            case MIDDLE -> {
+                log.debug("Position: MIDDLE. Adding 2 to rate.");
+                rateDifference = rateDifference.add(new BigDecimal("2"));
+            }
+            case SENIOR, BOSS -> {
+                log.debug("Position: {}. Adding 1 to rate.", scoringDataDto.getEmployment().getPosition());
+                rateDifference = rateDifference.add(new BigDecimal("1"));
+            }
+            default -> {
+                log.error("Invalid job position: {}", scoringDataDto.getEmployment().getPosition());
+                throw new IllegalArgumentException("Incorrect job position indicated");
+            }
+        }
+
+        return rateDifference;
+    }
+
+    private BigDecimal calculateRateByMaritalStatus(ScoringDataDto scoringDataDto){
+        BigDecimal rateDifference = new BigDecimal("0");
+
+        switch (scoringDataDto.getMaritalStatus()) {
+            case MARRIED -> {
+                log.debug("Marital status: MARRIED. Subtracting 3 from rate.");
+                rateDifference = rateDifference.subtract(new BigDecimal("3"));
+            }
+            case DIVORCED -> {
+                log.debug("Marital status: DIVORCED. Adding 1 to rate.");
+                rateDifference = rateDifference.add(new BigDecimal("1"));
+            }
+            default -> {
+                log.error("Invalid marital status: {}", scoringDataDto.getMaritalStatus());
+                throw new IllegalArgumentException("marital status is indicated incorrectly");
+            }
+        }
+        return rateDifference;
+    }
+
+    private BigDecimal calculateRateByAgeAndGender(ScoringDataDto scoringDataDto){
+        BigDecimal rateDifference = new BigDecimal("0");
+        long age = getAge(scoringDataDto.getBirthdate());
+
+        switch (scoringDataDto.getGender()) {
+            case FEMALE -> {
+                if (age >= 32 && age <= 60) {
+                    log.debug("Gender: FEMALE, age in range 32-60. Subtracting 3 from rate.");
+                    rateDifference = rateDifference.subtract(new BigDecimal("3"));
+                }
+            }
+            case MALE -> {
+                if (age >= 30 && age <= 55) {
+                    log.debug("Gender: MALE, age in range 30-55. Subtracting 3 from rate.");
+                    rateDifference = rateDifference.subtract(new BigDecimal("3"));
+                }
+            }
+            case NONBINARY -> {
+                log.debug("Gender: NONBINARY. Adding 7 to rate.");
+                rateDifference = rateDifference.add(new BigDecimal("7"));
+            }
+        }
+        return rateDifference;
+    }
+
+    private Boolean isAmountToLarge(ScoringDataDto scoringDataDto){
+        return scoringDataDto.getAmount()
+                .compareTo(scoringDataDto.getEmployment().getSalary().multiply(new BigDecimal("24"))) > 0;
+    }
+
+    private Boolean isAgeCorrect(ScoringDataDto scoringDataDto){
+        long age = getAge(scoringDataDto.getBirthdate());
+        return age >= 20 && age <= 65;
+    }
+
+    private Boolean isWorkExperienceCorrect(ScoringDataDto scoringDataDto){
+        return scoringDataDto.getEmployment().getWorkExperienceTotal() >= 18 &&
+                scoringDataDto.getEmployment().getWorkExperienceCurrent() >= 3;
     }
 }
