@@ -1,0 +1,967 @@
+2024-12-06 13:18:58 [main] INFO  r.i.calculator.CalculatorApplication - Application start
+2024-12-06 13:18:58 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-12-06 13:18:59 [main] INFO  r.i.calculator.CalculatorApplication - Starting CalculatorApplication using Java 22.0.2 with PID 10724 (D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator\target\classes started by Iguan04ka in D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator)
+2024-12-06 13:18:59 [main] INFO  r.i.calculator.CalculatorApplication - No active profile set, falling back to 1 default profile: "default"
+2024-12-06 13:19:00 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-12-06 13:19:00 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-12-06 13:19:00 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-12-06 13:19:00 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-12-06 13:19:00 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-12-06 13:19:00 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1602 ms
+2024-12-06 13:19:01 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-12-06 13:19:01 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2024-12-06 13:19:01 [main] INFO  r.i.calculator.CalculatorApplication - Started CalculatorApplication in 3.168 seconds (process running for 4.498)
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.c.CalculatorController - Received request to calculate loan offers
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.api.service.LoanOfferService - Received request for loan offers: LoanStatementRequestDto(amount=21000.0, term=18, firstName=Ivan, lastName=Petrov, middleName=Sergeevich, email=ivan.petrov@example.com, birthdate=1990-05-15, passportSeries=1234, passportNumber=123456)
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: false, isInsuranceEnabled: false
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 21000.0, Term: 18, Rate: 21.00
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 1370.14
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=e82c075b-f835-4b8a-bb51-4f797b9bdab0, requestedAmount=21000.0, totalAmount=24662.52, term=18, monthlyPayment=1370.14, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: true, isInsuranceEnabled: false
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 20.00
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 21000.0, Term: 18, Rate: 20.00
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 1360.03
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=8386951d-684b-4635-9af1-2c2ef29062c5, requestedAmount=21000.0, totalAmount=24480.54, term=18, monthlyPayment=1360.03, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true)
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: false, isInsuranceEnabled: true
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 18.00
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating insurance. Amount: 21000.0, Term: 18
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Insurance calculated: 30378.00
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 51378.00, Term: 18, Rate: 18.00
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 3278.21
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=bcb02fed-bd6c-4751-893a-9920980c3054, requestedAmount=51378.00, totalAmount=59007.78, term=18, monthlyPayment=3278.21, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false)
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: true, isInsuranceEnabled: true
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating insurance. Amount: 21000.0, Term: 18
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Insurance calculated: 30378.00
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 51378.00, Term: 18, Rate: 17.00
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 3253.77
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=b0fa1f87-6bde-41e5-9771-58952816fe65, requestedAmount=51378.00, totalAmount=58567.86, term=18, monthlyPayment=3253.77, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.api.service.LoanOfferService - Generated loan offers: [LoanOfferDto(statementId=e82c075b-f835-4b8a-bb51-4f797b9bdab0, requestedAmount=21000.0, totalAmount=24662.52, term=18, monthlyPayment=1370.14, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false), LoanOfferDto(statementId=8386951d-684b-4635-9af1-2c2ef29062c5, requestedAmount=21000.0, totalAmount=24480.54, term=18, monthlyPayment=1360.03, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true), LoanOfferDto(statementId=bcb02fed-bd6c-4751-893a-9920980c3054, requestedAmount=51378.00, totalAmount=59007.78, term=18, monthlyPayment=3278.21, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false), LoanOfferDto(statementId=b0fa1f87-6bde-41e5-9771-58952816fe65, requestedAmount=51378.00, totalAmount=58567.86, term=18, monthlyPayment=3253.77, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)]
+2024-12-06 13:19:18 [http-nio-8080-exec-1] INFO  r.i.c.a.c.CalculatorController - Successfully calculated loan offers: [LoanOfferDto(statementId=e82c075b-f835-4b8a-bb51-4f797b9bdab0, requestedAmount=21000.0, totalAmount=24662.52, term=18, monthlyPayment=1370.14, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false), LoanOfferDto(statementId=8386951d-684b-4635-9af1-2c2ef29062c5, requestedAmount=21000.0, totalAmount=24480.54, term=18, monthlyPayment=1360.03, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true), LoanOfferDto(statementId=bcb02fed-bd6c-4751-893a-9920980c3054, requestedAmount=51378.00, totalAmount=59007.78, term=18, monthlyPayment=3278.21, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false), LoanOfferDto(statementId=b0fa1f87-6bde-41e5-9771-58952816fe65, requestedAmount=51378.00, totalAmount=58567.86, term=18, monthlyPayment=3253.77, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)]
+2024-12-06 13:45:20 [main] INFO  r.i.calculator.CalculatorApplication - Application start
+2024-12-06 13:45:20 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-12-06 13:45:20 [main] INFO  r.i.calculator.CalculatorApplication - Starting CalculatorApplication using Java 22.0.2 with PID 13624 (D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator\target\classes started by Iguan04ka in D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator)
+2024-12-06 13:45:20 [main] INFO  r.i.calculator.CalculatorApplication - No active profile set, falling back to 1 default profile: "default"
+2024-12-06 13:45:22 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-12-06 13:45:22 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-12-06 13:45:22 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-12-06 13:45:22 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-12-06 13:45:22 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-12-06 13:45:22 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1239 ms
+2024-12-06 13:45:22 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-12-06 13:45:22 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2024-12-06 13:45:22 [main] INFO  r.i.calculator.CalculatorApplication - Started CalculatorApplication in 2.27 seconds (process running for 3.031)
+2024-12-06 13:45:42 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-12-06 13:45:42 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-12-06 13:45:42 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-12-06 13:45:42 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public java.util.List<ru.iguana.calculator.api.dto.LoanOfferDto> ru.iguana.calculator.api.controller.CalculatorController.calculateLoanOffers(ru.iguana.calculator.api.dto.LoanStatementRequestDto) with 2 errors: [Field error in object 'loanStatementRequestDto' on field 'email': rejected value [null]; codes [NotBlank.loanStatementRequestDto.email,NotBlank.email,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loanStatementRequestDto.email,email]; arguments []; default message [email]]; default message [Email cannot be empty]] [Field error in object 'loanStatementRequestDto' on field 'email': rejected value [null]; codes [NotNull.loanStatementRequestDto.email,NotNull.email,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loanStatementRequestDto.email,email]; arguments []; default message [email]]; default message [не должно равняться null]] ]
+2024-12-06 13:47:10 [http-nio-8080-exec-4] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public java.util.List<ru.iguana.calculator.api.dto.LoanOfferDto> ru.iguana.calculator.api.controller.CalculatorController.calculateLoanOffers(ru.iguana.calculator.api.dto.LoanStatementRequestDto) with 2 errors: [Field error in object 'loanStatementRequestDto' on field 'email': rejected value [null]; codes [NotNull.loanStatementRequestDto.email,NotNull.email,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loanStatementRequestDto.email,email]; arguments []; default message [email]]; default message [не должно равняться null]] [Field error in object 'loanStatementRequestDto' on field 'email': rejected value [null]; codes [NotBlank.loanStatementRequestDto.email,NotBlank.email,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loanStatementRequestDto.email,email]; arguments []; default message [email]]; default message [Email cannot be empty]] ]
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.c.CalculatorController - Received request to calculate credit
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Starting credit calculation for request: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 350000.00, Term: 12, Rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 32589.82
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating PSK for scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 350000.00, Term: 12, Rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 32589.82
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - PSK calculated: 12.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating payment schedule for loan amount: 350000.00, term: 12
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 350000.00, Principal: 350000.00, Annual rate: 21.00, Months: 12, Current date: 2024-12-06
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 32589.82, Interest Payment: 6125.00, Debt Payment: 26464.82
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 323535.18, Principal: 350000.00, Annual rate: 21.00, Months: 12, Current date: 2025-01-06
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 32589.82, Interest Payment: 5661.87, Debt Payment: 26927.95
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 296607.23, Principal: 350000.00, Annual rate: 21.00, Months: 12, Current date: 2025-02-06
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 32589.82, Interest Payment: 5190.63, Debt Payment: 27399.19
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 269208.04, Principal: 350000.00, Annual rate: 21.00, Months: 12, Current date: 2025-03-06
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 32589.82, Interest Payment: 4711.14, Debt Payment: 27878.68
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 241329.36, Principal: 350000.00, Annual rate: 21.00, Months: 12, Current date: 2025-04-06
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 32589.82, Interest Payment: 4223.26, Debt Payment: 28366.56
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 212962.80, Principal: 350000.00, Annual rate: 21.00, Months: 12, Current date: 2025-05-06
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 32589.82, Interest Payment: 3726.85, Debt Payment: 28862.97
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 184099.83, Principal: 350000.00, Annual rate: 21.00, Months: 12, Current date: 2025-06-06
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 32589.82, Interest Payment: 3221.75, Debt Payment: 29368.07
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 154731.76, Principal: 350000.00, Annual rate: 21.00, Months: 12, Current date: 2025-07-06
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 32589.82, Interest Payment: 2707.81, Debt Payment: 29882.01
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 124849.75, Principal: 350000.00, Annual rate: 21.00, Months: 12, Current date: 2025-08-06
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 32589.82, Interest Payment: 2184.87, Debt Payment: 30404.95
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 94444.80, Principal: 350000.00, Annual rate: 21.00, Months: 12, Current date: 2025-09-06
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 32589.82, Interest Payment: 1652.78, Debt Payment: 30937.04
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 63507.76, Principal: 350000.00, Annual rate: 21.00, Months: 12, Current date: 2025-10-06
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 32589.82, Interest Payment: 1111.39, Debt Payment: 31478.43
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 32029.33, Principal: 350000.00, Annual rate: 21.00, Months: 12, Current date: 2025-11-06
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 32589.82, Interest Payment: 560.51, Debt Payment: 32029.31
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Payment schedule calculation completed. Total payments count: 12
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Successfully calculated credit: CreditDto(amount=350000.00, term=12, monthlyPayment=32589.82, rate=21.00, psk=12.00, isInsuranceEnabled=false, isSalaryClient=false, paymentSchedule=[PaymentScheduleElementDto(number=1, date=2024-12-06, totalPayment=32589.82, interestPayment=6125.00, debtPayment=26464.82, remainingDebt=323535.18), PaymentScheduleElementDto(number=2, date=2025-01-06, totalPayment=32589.82, interestPayment=5661.87, debtPayment=26927.95, remainingDebt=296607.23), PaymentScheduleElementDto(number=3, date=2025-02-06, totalPayment=32589.82, interestPayment=5190.63, debtPayment=27399.19, remainingDebt=269208.04), PaymentScheduleElementDto(number=4, date=2025-03-06, totalPayment=32589.82, interestPayment=4711.14, debtPayment=27878.68, remainingDebt=241329.36), PaymentScheduleElementDto(number=5, date=2025-04-06, totalPayment=32589.82, interestPayment=4223.26, debtPayment=28366.56, remainingDebt=212962.80), PaymentScheduleElementDto(number=6, date=2025-05-06, totalPayment=32589.82, interestPayment=3726.85, debtPayment=28862.97, remainingDebt=184099.83), PaymentScheduleElementDto(number=7, date=2025-06-06, totalPayment=32589.82, interestPayment=3221.75, debtPayment=29368.07, remainingDebt=154731.76), PaymentScheduleElementDto(number=8, date=2025-07-06, totalPayment=32589.82, interestPayment=2707.81, debtPayment=29882.01, remainingDebt=124849.75), PaymentScheduleElementDto(number=9, date=2025-08-06, totalPayment=32589.82, interestPayment=2184.87, debtPayment=30404.95, remainingDebt=94444.80), PaymentScheduleElementDto(number=10, date=2025-09-06, totalPayment=32589.82, interestPayment=1652.78, debtPayment=30937.04, remainingDebt=63507.76), PaymentScheduleElementDto(number=11, date=2025-10-06, totalPayment=32589.82, interestPayment=1111.39, debtPayment=31478.43, remainingDebt=32029.33), PaymentScheduleElementDto(number=12, date=2025-11-06, totalPayment=32589.84, interestPayment=560.51, debtPayment=32029.33, remainingDebt=0)])
+2024-12-06 13:47:24 [http-nio-8080-exec-6] INFO  r.i.c.a.c.CalculatorController - Successfully calculated credit: CreditDto(amount=350000.00, term=12, monthlyPayment=32589.82, rate=21.00, psk=12.00, isInsuranceEnabled=false, isSalaryClient=false, paymentSchedule=[PaymentScheduleElementDto(number=1, date=2024-12-06, totalPayment=32589.82, interestPayment=6125.00, debtPayment=26464.82, remainingDebt=323535.18), PaymentScheduleElementDto(number=2, date=2025-01-06, totalPayment=32589.82, interestPayment=5661.87, debtPayment=26927.95, remainingDebt=296607.23), PaymentScheduleElementDto(number=3, date=2025-02-06, totalPayment=32589.82, interestPayment=5190.63, debtPayment=27399.19, remainingDebt=269208.04), PaymentScheduleElementDto(number=4, date=2025-03-06, totalPayment=32589.82, interestPayment=4711.14, debtPayment=27878.68, remainingDebt=241329.36), PaymentScheduleElementDto(number=5, date=2025-04-06, totalPayment=32589.82, interestPayment=4223.26, debtPayment=28366.56, remainingDebt=212962.80), PaymentScheduleElementDto(number=6, date=2025-05-06, totalPayment=32589.82, interestPayment=3726.85, debtPayment=28862.97, remainingDebt=184099.83), PaymentScheduleElementDto(number=7, date=2025-06-06, totalPayment=32589.82, interestPayment=3221.75, debtPayment=29368.07, remainingDebt=154731.76), PaymentScheduleElementDto(number=8, date=2025-07-06, totalPayment=32589.82, interestPayment=2707.81, debtPayment=29882.01, remainingDebt=124849.75), PaymentScheduleElementDto(number=9, date=2025-08-06, totalPayment=32589.82, interestPayment=2184.87, debtPayment=30404.95, remainingDebt=94444.80), PaymentScheduleElementDto(number=10, date=2025-09-06, totalPayment=32589.82, interestPayment=1652.78, debtPayment=30937.04, remainingDebt=63507.76), PaymentScheduleElementDto(number=11, date=2025-10-06, totalPayment=32589.82, interestPayment=1111.39, debtPayment=31478.43, remainingDebt=32029.33), PaymentScheduleElementDto(number=12, date=2025-11-06, totalPayment=32589.84, interestPayment=560.51, debtPayment=32029.33, remainingDebt=0)])
+2024-12-06 13:52:27 [main] INFO  r.i.calculator.CalculatorApplication - Application start
+2024-12-06 13:52:28 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-12-06 13:52:28 [main] INFO  r.i.calculator.CalculatorApplication - Starting CalculatorApplication using Java 22.0.2 with PID 11188 (D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator\target\classes started by Iguan04ka in D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator)
+2024-12-06 13:52:28 [main] INFO  r.i.calculator.CalculatorApplication - No active profile set, falling back to 1 default profile: "default"
+2024-12-06 13:52:29 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-12-06 13:52:29 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-12-06 13:52:29 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-12-06 13:52:29 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-12-06 13:52:29 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-12-06 13:52:29 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1149 ms
+2024-12-06 13:52:30 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-12-06 13:52:30 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2024-12-06 13:52:30 [main] INFO  r.i.calculator.CalculatorApplication - Started CalculatorApplication in 2.126 seconds (process running for 2.717)
+2024-12-06 13:52:31 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-12-06 13:52:31 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-12-06 13:52:31 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.c.CalculatorController - Received request to calculate credit
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Starting credit calculation for request: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 350000.00, Term: 12, Rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 31921.66
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating PSK for scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 350000.00, Term: 12, Rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 31921.66
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - PSK calculated: 9.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating payment schedule for loan amount: 350000.00, term: 12
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 350000.00, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2024-12-06
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 4958.33, Debt Payment: 26963.33
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 323036.67, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-01-06
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 4576.35, Debt Payment: 27345.31
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 295691.36, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-02-06
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 4188.96, Debt Payment: 27732.70
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 267958.66, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-03-06
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 3796.08, Debt Payment: 28125.58
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 239833.08, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-04-06
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 3397.64, Debt Payment: 28524.02
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 211309.06, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-05-06
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 2993.55, Debt Payment: 28928.11
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 182380.95, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-06-06
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 2583.73, Debt Payment: 29337.93
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 153043.02, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-07-06
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 2168.11, Debt Payment: 29753.55
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 123289.47, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-08-06
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 1746.60, Debt Payment: 30175.06
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 93114.41, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-09-06
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 1319.12, Debt Payment: 30602.54
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 62511.87, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-10-06
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 885.58, Debt Payment: 31036.08
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. Scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 31475.79, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-11-06
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 445.91, Debt Payment: 31475.75
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Payment schedule calculation completed. Total payments count: 12
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Successfully calculated credit: CreditDto(amount=350000.00, term=12, monthlyPayment=31921.66, rate=17.00, psk=9.00, isInsuranceEnabled=false, isSalaryClient=false, paymentSchedule=[PaymentScheduleElementDto(number=1, date=2024-12-06, totalPayment=31921.66, interestPayment=4958.33, debtPayment=26963.33, remainingDebt=323036.67), PaymentScheduleElementDto(number=2, date=2025-01-06, totalPayment=31921.66, interestPayment=4576.35, debtPayment=27345.31, remainingDebt=295691.36), PaymentScheduleElementDto(number=3, date=2025-02-06, totalPayment=31921.66, interestPayment=4188.96, debtPayment=27732.70, remainingDebt=267958.66), PaymentScheduleElementDto(number=4, date=2025-03-06, totalPayment=31921.66, interestPayment=3796.08, debtPayment=28125.58, remainingDebt=239833.08), PaymentScheduleElementDto(number=5, date=2025-04-06, totalPayment=31921.66, interestPayment=3397.64, debtPayment=28524.02, remainingDebt=211309.06), PaymentScheduleElementDto(number=6, date=2025-05-06, totalPayment=31921.66, interestPayment=2993.55, debtPayment=28928.11, remainingDebt=182380.95), PaymentScheduleElementDto(number=7, date=2025-06-06, totalPayment=31921.66, interestPayment=2583.73, debtPayment=29337.93, remainingDebt=153043.02), PaymentScheduleElementDto(number=8, date=2025-07-06, totalPayment=31921.66, interestPayment=2168.11, debtPayment=29753.55, remainingDebt=123289.47), PaymentScheduleElementDto(number=9, date=2025-08-06, totalPayment=31921.66, interestPayment=1746.60, debtPayment=30175.06, remainingDebt=93114.41), PaymentScheduleElementDto(number=10, date=2025-09-06, totalPayment=31921.66, interestPayment=1319.12, debtPayment=30602.54, remainingDebt=62511.87), PaymentScheduleElementDto(number=11, date=2025-10-06, totalPayment=31921.66, interestPayment=885.58, debtPayment=31036.08, remainingDebt=31475.79), PaymentScheduleElementDto(number=12, date=2025-11-06, totalPayment=31921.70, interestPayment=445.91, debtPayment=31475.79, remainingDebt=0)])
+2024-12-06 13:52:32 [http-nio-8080-exec-1] INFO  r.i.c.a.c.CalculatorController - Successfully calculated credit: CreditDto(amount=350000.00, term=12, monthlyPayment=31921.66, rate=17.00, psk=9.00, isInsuranceEnabled=false, isSalaryClient=false, paymentSchedule=[PaymentScheduleElementDto(number=1, date=2024-12-06, totalPayment=31921.66, interestPayment=4958.33, debtPayment=26963.33, remainingDebt=323036.67), PaymentScheduleElementDto(number=2, date=2025-01-06, totalPayment=31921.66, interestPayment=4576.35, debtPayment=27345.31, remainingDebt=295691.36), PaymentScheduleElementDto(number=3, date=2025-02-06, totalPayment=31921.66, interestPayment=4188.96, debtPayment=27732.70, remainingDebt=267958.66), PaymentScheduleElementDto(number=4, date=2025-03-06, totalPayment=31921.66, interestPayment=3796.08, debtPayment=28125.58, remainingDebt=239833.08), PaymentScheduleElementDto(number=5, date=2025-04-06, totalPayment=31921.66, interestPayment=3397.64, debtPayment=28524.02, remainingDebt=211309.06), PaymentScheduleElementDto(number=6, date=2025-05-06, totalPayment=31921.66, interestPayment=2993.55, debtPayment=28928.11, remainingDebt=182380.95), PaymentScheduleElementDto(number=7, date=2025-06-06, totalPayment=31921.66, interestPayment=2583.73, debtPayment=29337.93, remainingDebt=153043.02), PaymentScheduleElementDto(number=8, date=2025-07-06, totalPayment=31921.66, interestPayment=2168.11, debtPayment=29753.55, remainingDebt=123289.47), PaymentScheduleElementDto(number=9, date=2025-08-06, totalPayment=31921.66, interestPayment=1746.60, debtPayment=30175.06, remainingDebt=93114.41), PaymentScheduleElementDto(number=10, date=2025-09-06, totalPayment=31921.66, interestPayment=1319.12, debtPayment=30602.54, remainingDebt=62511.87), PaymentScheduleElementDto(number=11, date=2025-10-06, totalPayment=31921.66, interestPayment=885.58, debtPayment=31036.08, remainingDebt=31475.79), PaymentScheduleElementDto(number=12, date=2025-11-06, totalPayment=31921.70, interestPayment=445.91, debtPayment=31475.79, remainingDebt=0)])
+2024-12-06 14:09:59 [main] INFO  r.i.calculator.CalculatorApplication - Application start
+2024-12-06 14:10:00 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-12-06 14:10:00 [main] INFO  r.i.calculator.CalculatorApplication - Starting CalculatorApplication using Java 22.0.2 with PID 10084 (D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator\target\classes started by Iguan04ka in D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator)
+2024-12-06 14:10:00 [main] INFO  r.i.calculator.CalculatorApplication - No active profile set, falling back to 1 default profile: "default"
+2024-12-06 14:10:01 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-12-06 14:10:01 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-12-06 14:10:01 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-12-06 14:10:01 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-12-06 14:10:01 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-12-06 14:10:01 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1136 ms
+2024-12-06 14:10:01 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-12-06 14:10:02 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2024-12-06 14:10:02 [main] INFO  r.i.calculator.CalculatorApplication - Started CalculatorApplication in 2.168 seconds (process running for 2.756)
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.c.CalculatorController - Received request to calculate credit
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Starting credit calculation for request: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 350000.00, Term: 12, Rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 31921.66
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating PSK for scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 350000.00, Term: 12, Rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 31921.66
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - PSK calculated: 9.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating payment schedule for loan amount: 350000.00, term: 12
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 350000.00, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2024-12-06
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 4958.33, Debt Payment: 26963.33
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 323036.67, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-01-06
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 4576.35, Debt Payment: 27345.31
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 295691.36, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-02-06
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 4188.96, Debt Payment: 27732.70
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 267958.66, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-03-06
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 3796.08, Debt Payment: 28125.58
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 239833.08, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-04-06
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 3397.64, Debt Payment: 28524.02
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 211309.06, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-05-06
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 2993.55, Debt Payment: 28928.11
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 182380.95, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-06-06
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 2583.73, Debt Payment: 29337.93
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 153043.02, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-07-06
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 2168.11, Debt Payment: 29753.55
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 123289.47, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-08-06
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 1746.60, Debt Payment: 30175.06
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 93114.41, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-09-06
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 1319.12, Debt Payment: 30602.54
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 62511.87, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-10-06
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 885.58, Debt Payment: 31036.08
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 31475.79, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-11-06
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 445.91, Debt Payment: 31475.75
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Payment schedule calculation completed. Total payments count: 12
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.s.CalculateCreditService - Successfully calculated credit: CreditDto(amount=350000.00, term=12, monthlyPayment=31921.66, rate=17.00, psk=9.00, isInsuranceEnabled=false, isSalaryClient=false, paymentSchedule=[PaymentScheduleElementDto(number=1, date=2024-12-06, totalPayment=31921.66, interestPayment=4958.33, debtPayment=26963.33, remainingDebt=323036.67), PaymentScheduleElementDto(number=2, date=2025-01-06, totalPayment=31921.66, interestPayment=4576.35, debtPayment=27345.31, remainingDebt=295691.36), PaymentScheduleElementDto(number=3, date=2025-02-06, totalPayment=31921.66, interestPayment=4188.96, debtPayment=27732.70, remainingDebt=267958.66), PaymentScheduleElementDto(number=4, date=2025-03-06, totalPayment=31921.66, interestPayment=3796.08, debtPayment=28125.58, remainingDebt=239833.08), PaymentScheduleElementDto(number=5, date=2025-04-06, totalPayment=31921.66, interestPayment=3397.64, debtPayment=28524.02, remainingDebt=211309.06), PaymentScheduleElementDto(number=6, date=2025-05-06, totalPayment=31921.66, interestPayment=2993.55, debtPayment=28928.11, remainingDebt=182380.95), PaymentScheduleElementDto(number=7, date=2025-06-06, totalPayment=31921.66, interestPayment=2583.73, debtPayment=29337.93, remainingDebt=153043.02), PaymentScheduleElementDto(number=8, date=2025-07-06, totalPayment=31921.66, interestPayment=2168.11, debtPayment=29753.55, remainingDebt=123289.47), PaymentScheduleElementDto(number=9, date=2025-08-06, totalPayment=31921.66, interestPayment=1746.60, debtPayment=30175.06, remainingDebt=93114.41), PaymentScheduleElementDto(number=10, date=2025-09-06, totalPayment=31921.66, interestPayment=1319.12, debtPayment=30602.54, remainingDebt=62511.87), PaymentScheduleElementDto(number=11, date=2025-10-06, totalPayment=31921.66, interestPayment=885.58, debtPayment=31036.08, remainingDebt=31475.79), PaymentScheduleElementDto(number=12, date=2025-11-06, totalPayment=31921.70, interestPayment=445.91, debtPayment=31475.79, remainingDebt=0)])
+2024-12-06 14:10:05 [http-nio-8080-exec-3] INFO  r.i.c.a.c.CalculatorController - Successfully calculated credit: CreditDto(amount=350000.00, term=12, monthlyPayment=31921.66, rate=17.00, psk=9.00, isInsuranceEnabled=false, isSalaryClient=false, paymentSchedule=[PaymentScheduleElementDto(number=1, date=2024-12-06, totalPayment=31921.66, interestPayment=4958.33, debtPayment=26963.33, remainingDebt=323036.67), PaymentScheduleElementDto(number=2, date=2025-01-06, totalPayment=31921.66, interestPayment=4576.35, debtPayment=27345.31, remainingDebt=295691.36), PaymentScheduleElementDto(number=3, date=2025-02-06, totalPayment=31921.66, interestPayment=4188.96, debtPayment=27732.70, remainingDebt=267958.66), PaymentScheduleElementDto(number=4, date=2025-03-06, totalPayment=31921.66, interestPayment=3796.08, debtPayment=28125.58, remainingDebt=239833.08), PaymentScheduleElementDto(number=5, date=2025-04-06, totalPayment=31921.66, interestPayment=3397.64, debtPayment=28524.02, remainingDebt=211309.06), PaymentScheduleElementDto(number=6, date=2025-05-06, totalPayment=31921.66, interestPayment=2993.55, debtPayment=28928.11, remainingDebt=182380.95), PaymentScheduleElementDto(number=7, date=2025-06-06, totalPayment=31921.66, interestPayment=2583.73, debtPayment=29337.93, remainingDebt=153043.02), PaymentScheduleElementDto(number=8, date=2025-07-06, totalPayment=31921.66, interestPayment=2168.11, debtPayment=29753.55, remainingDebt=123289.47), PaymentScheduleElementDto(number=9, date=2025-08-06, totalPayment=31921.66, interestPayment=1746.60, debtPayment=30175.06, remainingDebt=93114.41), PaymentScheduleElementDto(number=10, date=2025-09-06, totalPayment=31921.66, interestPayment=1319.12, debtPayment=30602.54, remainingDebt=62511.87), PaymentScheduleElementDto(number=11, date=2025-10-06, totalPayment=31921.66, interestPayment=885.58, debtPayment=31036.08, remainingDebt=31475.79), PaymentScheduleElementDto(number=12, date=2025-11-06, totalPayment=31921.70, interestPayment=445.91, debtPayment=31475.79, remainingDebt=0)])
+2024-12-06 14:10:23 [http-nio-8080-exec-2] INFO  r.i.c.a.c.CalculatorController - Received request to calculate credit
+2024-12-06 14:10:23 [http-nio-8080-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Starting credit calculation for request: ScoringDataDto(amount=35000000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 14:10:23 [http-nio-8080-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:23 [http-nio-8080-exec-2] ERROR r.i.c.a.s.CalculateCreditService - Loan amount is too large: 35000000.00 > 24 * Salary 120000.00
+2024-12-06 14:10:23 [http-nio-8080-exec-2] ERROR r.i.c.a.s.CalculateCreditService - Error occurred during credit calculation for request: ScoringDataDto(amount=35000000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+java.lang.IllegalArgumentException: the loan amount is too large
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateFinalRate(CalculateCreditService.java:86)
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateCredit(CalculateCreditService.java:42)
+	at ru.iguana.calculator.api.controller.CalculatorController.calculateCredit(CalculatorController.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-12-06 14:10:23 [http-nio-8080-exec-2] ERROR r.i.c.a.c.CalculatorController - Error occurred while calculating credit for request: ScoringDataDto(amount=35000000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+java.lang.IllegalArgumentException: the loan amount is too large
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateFinalRate(CalculateCreditService.java:86)
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateCredit(CalculateCreditService.java:42)
+	at ru.iguana.calculator.api.controller.CalculatorController.calculateCredit(CalculatorController.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-12-06 14:10:24 [http-nio-8080-exec-2] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.IllegalArgumentException: the loan amount is too large] with root cause
+java.lang.IllegalArgumentException: the loan amount is too large
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateFinalRate(CalculateCreditService.java:86)
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateCredit(CalculateCreditService.java:42)
+	at ru.iguana.calculator.api.controller.CalculatorController.calculateCredit(CalculatorController.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.c.CalculatorController - Received request to calculate credit
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Starting credit calculation for request: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 350000.00, Term: 12, Rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 31921.66
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating PSK for scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 350000.00, Term: 12, Rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 31921.66
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - PSK calculated: 9.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating payment schedule for loan amount: 350000.00, term: 12
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 350000.00, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2024-12-06
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 4958.33, Debt Payment: 26963.33
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 323036.67, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-01-06
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 4576.35, Debt Payment: 27345.31
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 295691.36, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-02-06
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 4188.96, Debt Payment: 27732.70
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 267958.66, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-03-06
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 3796.08, Debt Payment: 28125.58
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 239833.08, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-04-06
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 3397.64, Debt Payment: 28524.02
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 211309.06, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-05-06
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 2993.55, Debt Payment: 28928.11
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 182380.95, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-06-06
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 2583.73, Debt Payment: 29337.93
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 153043.02, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-07-06
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 2168.11, Debt Payment: 29753.55
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 123289.47, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-08-06
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 1746.60, Debt Payment: 30175.06
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 93114.41, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-09-06
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 1319.12, Debt Payment: 30602.54
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 62511.87, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-10-06
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 885.58, Debt Payment: 31036.08
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 31475.79, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-11-06
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 445.91, Debt Payment: 31475.75
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Payment schedule calculation completed. Total payments count: 12
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.s.CalculateCreditService - Successfully calculated credit: CreditDto(amount=350000.00, term=12, monthlyPayment=31921.66, rate=17.00, psk=9.00, isInsuranceEnabled=false, isSalaryClient=false, paymentSchedule=[PaymentScheduleElementDto(number=1, date=2024-12-06, totalPayment=31921.66, interestPayment=4958.33, debtPayment=26963.33, remainingDebt=323036.67), PaymentScheduleElementDto(number=2, date=2025-01-06, totalPayment=31921.66, interestPayment=4576.35, debtPayment=27345.31, remainingDebt=295691.36), PaymentScheduleElementDto(number=3, date=2025-02-06, totalPayment=31921.66, interestPayment=4188.96, debtPayment=27732.70, remainingDebt=267958.66), PaymentScheduleElementDto(number=4, date=2025-03-06, totalPayment=31921.66, interestPayment=3796.08, debtPayment=28125.58, remainingDebt=239833.08), PaymentScheduleElementDto(number=5, date=2025-04-06, totalPayment=31921.66, interestPayment=3397.64, debtPayment=28524.02, remainingDebt=211309.06), PaymentScheduleElementDto(number=6, date=2025-05-06, totalPayment=31921.66, interestPayment=2993.55, debtPayment=28928.11, remainingDebt=182380.95), PaymentScheduleElementDto(number=7, date=2025-06-06, totalPayment=31921.66, interestPayment=2583.73, debtPayment=29337.93, remainingDebt=153043.02), PaymentScheduleElementDto(number=8, date=2025-07-06, totalPayment=31921.66, interestPayment=2168.11, debtPayment=29753.55, remainingDebt=123289.47), PaymentScheduleElementDto(number=9, date=2025-08-06, totalPayment=31921.66, interestPayment=1746.60, debtPayment=30175.06, remainingDebt=93114.41), PaymentScheduleElementDto(number=10, date=2025-09-06, totalPayment=31921.66, interestPayment=1319.12, debtPayment=30602.54, remainingDebt=62511.87), PaymentScheduleElementDto(number=11, date=2025-10-06, totalPayment=31921.66, interestPayment=885.58, debtPayment=31036.08, remainingDebt=31475.79), PaymentScheduleElementDto(number=12, date=2025-11-06, totalPayment=31921.70, interestPayment=445.91, debtPayment=31475.79, remainingDebt=0)])
+2024-12-06 14:10:51 [http-nio-8080-exec-5] INFO  r.i.c.a.c.CalculatorController - Successfully calculated credit: CreditDto(amount=350000.00, term=12, monthlyPayment=31921.66, rate=17.00, psk=9.00, isInsuranceEnabled=false, isSalaryClient=false, paymentSchedule=[PaymentScheduleElementDto(number=1, date=2024-12-06, totalPayment=31921.66, interestPayment=4958.33, debtPayment=26963.33, remainingDebt=323036.67), PaymentScheduleElementDto(number=2, date=2025-01-06, totalPayment=31921.66, interestPayment=4576.35, debtPayment=27345.31, remainingDebt=295691.36), PaymentScheduleElementDto(number=3, date=2025-02-06, totalPayment=31921.66, interestPayment=4188.96, debtPayment=27732.70, remainingDebt=267958.66), PaymentScheduleElementDto(number=4, date=2025-03-06, totalPayment=31921.66, interestPayment=3796.08, debtPayment=28125.58, remainingDebt=239833.08), PaymentScheduleElementDto(number=5, date=2025-04-06, totalPayment=31921.66, interestPayment=3397.64, debtPayment=28524.02, remainingDebt=211309.06), PaymentScheduleElementDto(number=6, date=2025-05-06, totalPayment=31921.66, interestPayment=2993.55, debtPayment=28928.11, remainingDebt=182380.95), PaymentScheduleElementDto(number=7, date=2025-06-06, totalPayment=31921.66, interestPayment=2583.73, debtPayment=29337.93, remainingDebt=153043.02), PaymentScheduleElementDto(number=8, date=2025-07-06, totalPayment=31921.66, interestPayment=2168.11, debtPayment=29753.55, remainingDebt=123289.47), PaymentScheduleElementDto(number=9, date=2025-08-06, totalPayment=31921.66, interestPayment=1746.60, debtPayment=30175.06, remainingDebt=93114.41), PaymentScheduleElementDto(number=10, date=2025-09-06, totalPayment=31921.66, interestPayment=1319.12, debtPayment=30602.54, remainingDebt=62511.87), PaymentScheduleElementDto(number=11, date=2025-10-06, totalPayment=31921.66, interestPayment=885.58, debtPayment=31036.08, remainingDebt=31475.79), PaymentScheduleElementDto(number=12, date=2025-11-06, totalPayment=31921.70, interestPayment=445.91, debtPayment=31475.79, remainingDebt=0)])
+2024-12-06 14:10:58 [http-nio-8080-exec-6] INFO  r.i.c.a.c.CalculatorController - Received request to calculate credit
+2024-12-06 14:10:58 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Starting credit calculation for request: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=2), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 14:10:58 [http-nio-8080-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:10:58 [http-nio-8080-exec-6] ERROR r.i.c.a.s.CalculateCreditService - Insufficient work experience. Total: 20, Current: 2
+2024-12-06 14:10:58 [http-nio-8080-exec-6] ERROR r.i.c.a.s.CalculateCreditService - Error occurred during credit calculation for request: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=2), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+java.lang.IllegalArgumentException: insufficient work experience
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateFinalRate(CalculateCreditService.java:100)
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateCredit(CalculateCreditService.java:42)
+	at ru.iguana.calculator.api.controller.CalculatorController.calculateCredit(CalculatorController.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-12-06 14:10:58 [http-nio-8080-exec-6] ERROR r.i.c.a.c.CalculatorController - Error occurred while calculating credit for request: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=2), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+java.lang.IllegalArgumentException: insufficient work experience
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateFinalRate(CalculateCreditService.java:100)
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateCredit(CalculateCreditService.java:42)
+	at ru.iguana.calculator.api.controller.CalculatorController.calculateCredit(CalculatorController.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-12-06 14:10:58 [http-nio-8080-exec-6] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.IllegalArgumentException: insufficient work experience] with root cause
+java.lang.IllegalArgumentException: insufficient work experience
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateFinalRate(CalculateCreditService.java:100)
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateCredit(CalculateCreditService.java:42)
+	at ru.iguana.calculator.api.controller.CalculatorController.calculateCredit(CalculatorController.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.c.CalculatorController - Received request to calculate credit
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Starting credit calculation for request: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 350000.00, Term: 12, Rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 31921.66
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating PSK for scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 350000.00, Term: 12, Rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 31921.66
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - PSK calculated: 9.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating payment schedule for loan amount: 350000.00, term: 12
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 350000.00, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2024-12-06
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 4958.33, Debt Payment: 26963.33
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 323036.67, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-01-06
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 4576.35, Debt Payment: 27345.31
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 295691.36, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-02-06
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 4188.96, Debt Payment: 27732.70
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 267958.66, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-03-06
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 3796.08, Debt Payment: 28125.58
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 239833.08, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-04-06
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 3397.64, Debt Payment: 28524.02
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 211309.06, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-05-06
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 2993.55, Debt Payment: 28928.11
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 182380.95, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-06-06
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 2583.73, Debt Payment: 29337.93
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 153043.02, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-07-06
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 2168.11, Debt Payment: 29753.55
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 123289.47, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-08-06
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 1746.60, Debt Payment: 30175.06
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 93114.41, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-09-06
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 1319.12, Debt Payment: 30602.54
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 62511.87, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-10-06
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 885.58, Debt Payment: 31036.08
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 31475.79, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-11-06
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 445.91, Debt Payment: 31475.75
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Payment schedule calculation completed. Total payments count: 12
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Successfully calculated credit: CreditDto(amount=350000.00, term=12, monthlyPayment=31921.66, rate=17.00, psk=9.00, isInsuranceEnabled=false, isSalaryClient=false, paymentSchedule=[PaymentScheduleElementDto(number=1, date=2024-12-06, totalPayment=31921.66, interestPayment=4958.33, debtPayment=26963.33, remainingDebt=323036.67), PaymentScheduleElementDto(number=2, date=2025-01-06, totalPayment=31921.66, interestPayment=4576.35, debtPayment=27345.31, remainingDebt=295691.36), PaymentScheduleElementDto(number=3, date=2025-02-06, totalPayment=31921.66, interestPayment=4188.96, debtPayment=27732.70, remainingDebt=267958.66), PaymentScheduleElementDto(number=4, date=2025-03-06, totalPayment=31921.66, interestPayment=3796.08, debtPayment=28125.58, remainingDebt=239833.08), PaymentScheduleElementDto(number=5, date=2025-04-06, totalPayment=31921.66, interestPayment=3397.64, debtPayment=28524.02, remainingDebt=211309.06), PaymentScheduleElementDto(number=6, date=2025-05-06, totalPayment=31921.66, interestPayment=2993.55, debtPayment=28928.11, remainingDebt=182380.95), PaymentScheduleElementDto(number=7, date=2025-06-06, totalPayment=31921.66, interestPayment=2583.73, debtPayment=29337.93, remainingDebt=153043.02), PaymentScheduleElementDto(number=8, date=2025-07-06, totalPayment=31921.66, interestPayment=2168.11, debtPayment=29753.55, remainingDebt=123289.47), PaymentScheduleElementDto(number=9, date=2025-08-06, totalPayment=31921.66, interestPayment=1746.60, debtPayment=30175.06, remainingDebt=93114.41), PaymentScheduleElementDto(number=10, date=2025-09-06, totalPayment=31921.66, interestPayment=1319.12, debtPayment=30602.54, remainingDebt=62511.87), PaymentScheduleElementDto(number=11, date=2025-10-06, totalPayment=31921.66, interestPayment=885.58, debtPayment=31036.08, remainingDebt=31475.79), PaymentScheduleElementDto(number=12, date=2025-11-06, totalPayment=31921.70, interestPayment=445.91, debtPayment=31475.79, remainingDebt=0)])
+2024-12-06 14:11:04 [http-nio-8080-exec-8] INFO  r.i.c.a.c.CalculatorController - Successfully calculated credit: CreditDto(amount=350000.00, term=12, monthlyPayment=31921.66, rate=17.00, psk=9.00, isInsuranceEnabled=false, isSalaryClient=false, paymentSchedule=[PaymentScheduleElementDto(number=1, date=2024-12-06, totalPayment=31921.66, interestPayment=4958.33, debtPayment=26963.33, remainingDebt=323036.67), PaymentScheduleElementDto(number=2, date=2025-01-06, totalPayment=31921.66, interestPayment=4576.35, debtPayment=27345.31, remainingDebt=295691.36), PaymentScheduleElementDto(number=3, date=2025-02-06, totalPayment=31921.66, interestPayment=4188.96, debtPayment=27732.70, remainingDebt=267958.66), PaymentScheduleElementDto(number=4, date=2025-03-06, totalPayment=31921.66, interestPayment=3796.08, debtPayment=28125.58, remainingDebt=239833.08), PaymentScheduleElementDto(number=5, date=2025-04-06, totalPayment=31921.66, interestPayment=3397.64, debtPayment=28524.02, remainingDebt=211309.06), PaymentScheduleElementDto(number=6, date=2025-05-06, totalPayment=31921.66, interestPayment=2993.55, debtPayment=28928.11, remainingDebt=182380.95), PaymentScheduleElementDto(number=7, date=2025-06-06, totalPayment=31921.66, interestPayment=2583.73, debtPayment=29337.93, remainingDebt=153043.02), PaymentScheduleElementDto(number=8, date=2025-07-06, totalPayment=31921.66, interestPayment=2168.11, debtPayment=29753.55, remainingDebt=123289.47), PaymentScheduleElementDto(number=9, date=2025-08-06, totalPayment=31921.66, interestPayment=1746.60, debtPayment=30175.06, remainingDebt=93114.41), PaymentScheduleElementDto(number=10, date=2025-09-06, totalPayment=31921.66, interestPayment=1319.12, debtPayment=30602.54, remainingDebt=62511.87), PaymentScheduleElementDto(number=11, date=2025-10-06, totalPayment=31921.66, interestPayment=885.58, debtPayment=31036.08, remainingDebt=31475.79), PaymentScheduleElementDto(number=12, date=2025-11-06, totalPayment=31921.70, interestPayment=445.91, debtPayment=31475.79, remainingDebt=0)])
+2024-12-06 14:11:31 [http-nio-8080-exec-9] INFO  r.i.c.a.c.CalculatorController - Received request to calculate credit
+2024-12-06 14:11:31 [http-nio-8080-exec-9] INFO  r.i.c.a.s.CalculateCreditService - Starting credit calculation for request: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=2008-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 14:11:31 [http-nio-8080-exec-9] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:31 [http-nio-8080-exec-9] ERROR r.i.c.a.s.CalculateCreditService - Incorrect age: Allowed range: 20-65.
+2024-12-06 14:11:31 [http-nio-8080-exec-9] ERROR r.i.c.a.s.CalculateCreditService - Error occurred during credit calculation for request: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=2008-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+java.lang.IllegalArgumentException: incorrect age
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateFinalRate(CalculateCreditService.java:92)
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateCredit(CalculateCreditService.java:42)
+	at ru.iguana.calculator.api.controller.CalculatorController.calculateCredit(CalculatorController.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-12-06 14:11:31 [http-nio-8080-exec-9] ERROR r.i.c.a.c.CalculatorController - Error occurred while calculating credit for request: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=2008-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+java.lang.IllegalArgumentException: incorrect age
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateFinalRate(CalculateCreditService.java:92)
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateCredit(CalculateCreditService.java:42)
+	at ru.iguana.calculator.api.controller.CalculatorController.calculateCredit(CalculatorController.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-12-06 14:11:31 [http-nio-8080-exec-9] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.IllegalArgumentException: incorrect age] with root cause
+java.lang.IllegalArgumentException: incorrect age
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateFinalRate(CalculateCreditService.java:92)
+	at ru.iguana.calculator.api.service.CalculateCreditService.calculateCredit(CalculateCreditService.java:42)
+	at ru.iguana.calculator.api.controller.CalculatorController.calculateCredit(CalculatorController.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.c.CalculatorController - Received request to calculate credit
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Starting credit calculation for request: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 350000.00, Term: 12, Rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 31921.66
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating PSK for scoring data: ScoringDataDto(amount=350000.00, term=12, firstName=Алексей, lastName=Смирнов, middleName=Сергеевич, gender=MALE, birthdate=1985-09-12, passportSeries=4517, passportNumber=654321, passportIssueDate=2005-11-25, passportIssueBranch=УМВД России по г. Санкт-Петербургу, maritalStatus=MARRIED, dependentAmount=1, employment=EmploymentDto(employmentStatus=HIREDEMPLOYED, employerINN=781234567891, salary=120000.00, position=SENIOR, workExperienceTotal=20, workExperienceCurrent=8), accountNumber=40817810055520098765, isInsuranceEnabled=false, isSalaryClient=false)
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 350000.00, Term: 12, Rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 31921.66
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - PSK calculated: 9.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating payment schedule for loan amount: 350000.00, term: 12
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 350000.00, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2024-12-06
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 4958.33, Debt Payment: 26963.33
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 323036.67, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-01-06
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 4576.35, Debt Payment: 27345.31
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 295691.36, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-02-06
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 4188.96, Debt Payment: 27732.70
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 267958.66, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-03-06
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 3796.08, Debt Payment: 28125.58
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 239833.08, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-04-06
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 3397.64, Debt Payment: 28524.02
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 211309.06, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-05-06
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 2993.55, Debt Payment: 28928.11
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 182380.95, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-06-06
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 2583.73, Debt Payment: 29337.93
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 153043.02, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-07-06
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 2168.11, Debt Payment: 29753.55
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 123289.47, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-08-06
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 1746.60, Debt Payment: 30175.06
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 93114.41, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-09-06
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 1319.12, Debt Payment: 30602.54
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 62511.87, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-10-06
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 885.58, Debt Payment: 31036.08
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment annuity. Remaining debt: 31475.79, Principal: 350000.00, Annual rate: 17.00, Months: 12, Current date: 2025-11-06
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment annuity calculation completed. Result: Total Payment: 31921.66, Interest Payment: 445.91, Debt Payment: 31475.75
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Payment schedule calculation completed. Total payments count: 12
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Successfully calculated credit: CreditDto(amount=350000.00, term=12, monthlyPayment=31921.66, rate=17.00, psk=9.00, isInsuranceEnabled=false, isSalaryClient=false, paymentSchedule=[PaymentScheduleElementDto(number=1, date=2024-12-06, totalPayment=31921.66, interestPayment=4958.33, debtPayment=26963.33, remainingDebt=323036.67), PaymentScheduleElementDto(number=2, date=2025-01-06, totalPayment=31921.66, interestPayment=4576.35, debtPayment=27345.31, remainingDebt=295691.36), PaymentScheduleElementDto(number=3, date=2025-02-06, totalPayment=31921.66, interestPayment=4188.96, debtPayment=27732.70, remainingDebt=267958.66), PaymentScheduleElementDto(number=4, date=2025-03-06, totalPayment=31921.66, interestPayment=3796.08, debtPayment=28125.58, remainingDebt=239833.08), PaymentScheduleElementDto(number=5, date=2025-04-06, totalPayment=31921.66, interestPayment=3397.64, debtPayment=28524.02, remainingDebt=211309.06), PaymentScheduleElementDto(number=6, date=2025-05-06, totalPayment=31921.66, interestPayment=2993.55, debtPayment=28928.11, remainingDebt=182380.95), PaymentScheduleElementDto(number=7, date=2025-06-06, totalPayment=31921.66, interestPayment=2583.73, debtPayment=29337.93, remainingDebt=153043.02), PaymentScheduleElementDto(number=8, date=2025-07-06, totalPayment=31921.66, interestPayment=2168.11, debtPayment=29753.55, remainingDebt=123289.47), PaymentScheduleElementDto(number=9, date=2025-08-06, totalPayment=31921.66, interestPayment=1746.60, debtPayment=30175.06, remainingDebt=93114.41), PaymentScheduleElementDto(number=10, date=2025-09-06, totalPayment=31921.66, interestPayment=1319.12, debtPayment=30602.54, remainingDebt=62511.87), PaymentScheduleElementDto(number=11, date=2025-10-06, totalPayment=31921.66, interestPayment=885.58, debtPayment=31036.08, remainingDebt=31475.79), PaymentScheduleElementDto(number=12, date=2025-11-06, totalPayment=31921.70, interestPayment=445.91, debtPayment=31475.79, remainingDebt=0)])
+2024-12-06 14:11:36 [http-nio-8080-exec-1] INFO  r.i.c.a.c.CalculatorController - Successfully calculated credit: CreditDto(amount=350000.00, term=12, monthlyPayment=31921.66, rate=17.00, psk=9.00, isInsuranceEnabled=false, isSalaryClient=false, paymentSchedule=[PaymentScheduleElementDto(number=1, date=2024-12-06, totalPayment=31921.66, interestPayment=4958.33, debtPayment=26963.33, remainingDebt=323036.67), PaymentScheduleElementDto(number=2, date=2025-01-06, totalPayment=31921.66, interestPayment=4576.35, debtPayment=27345.31, remainingDebt=295691.36), PaymentScheduleElementDto(number=3, date=2025-02-06, totalPayment=31921.66, interestPayment=4188.96, debtPayment=27732.70, remainingDebt=267958.66), PaymentScheduleElementDto(number=4, date=2025-03-06, totalPayment=31921.66, interestPayment=3796.08, debtPayment=28125.58, remainingDebt=239833.08), PaymentScheduleElementDto(number=5, date=2025-04-06, totalPayment=31921.66, interestPayment=3397.64, debtPayment=28524.02, remainingDebt=211309.06), PaymentScheduleElementDto(number=6, date=2025-05-06, totalPayment=31921.66, interestPayment=2993.55, debtPayment=28928.11, remainingDebt=182380.95), PaymentScheduleElementDto(number=7, date=2025-06-06, totalPayment=31921.66, interestPayment=2583.73, debtPayment=29337.93, remainingDebt=153043.02), PaymentScheduleElementDto(number=8, date=2025-07-06, totalPayment=31921.66, interestPayment=2168.11, debtPayment=29753.55, remainingDebt=123289.47), PaymentScheduleElementDto(number=9, date=2025-08-06, totalPayment=31921.66, interestPayment=1746.60, debtPayment=30175.06, remainingDebt=93114.41), PaymentScheduleElementDto(number=10, date=2025-09-06, totalPayment=31921.66, interestPayment=1319.12, debtPayment=30602.54, remainingDebt=62511.87), PaymentScheduleElementDto(number=11, date=2025-10-06, totalPayment=31921.66, interestPayment=885.58, debtPayment=31036.08, remainingDebt=31475.79), PaymentScheduleElementDto(number=12, date=2025-11-06, totalPayment=31921.70, interestPayment=445.91, debtPayment=31475.79, remainingDebt=0)])
