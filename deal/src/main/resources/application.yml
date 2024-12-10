@@ -1,5 +1,7 @@
 spring:
   jpa:
+    properties:
+      '[hypersistence.utils.enable_types_contributor]': false
     database: POSTGRESQL
     show-sql: true
     hibernate:
@@ -12,3 +14,5 @@ spring:
   sql:
     init:
       platform: postgres
+  application:
+    name: deal
