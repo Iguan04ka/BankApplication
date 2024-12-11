@@ -4,13 +4,15 @@ import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Type;
 import ru.iguana.deal.entity.Jsonb.Employment;
 import ru.iguana.deal.entity.Jsonb.Passport;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +20,8 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
+@Accessors(chain = true)
 public class Client {
 
     @Id
@@ -35,7 +39,7 @@ public class Client {
     String middleName;
 
     @Column(name = "birth_date")
-    Date birthDate;
+    LocalDate birthDate;
 
     @Column(name = "email")
     String email;

@@ -13,8 +13,6 @@ import java.util.UUID;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StatementDto {
-    UUID statementId;
-
     UUID clientId;
 
     UUID credit;

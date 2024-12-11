@@ -7,22 +7,20 @@ import lombok.experimental.FieldDefaults;
 import ru.iguana.deal.entity.Jsonb.Employment;
 import ru.iguana.deal.entity.Jsonb.Passport;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ClientDto {
-    UUID clientId;
-
     String lastName;
 
     String firstName;
 
     String middleName;
 
-    Date birthDate;
+    LocalDate birthDate;
 
     String email;
 
