@@ -36,7 +36,8 @@ public class Statement {
     @Column(name = "creation_date")
     Timestamp creationDate;
 
-    @Column(name = "applied_offer")
+    @Type(JsonType.class)
+    @Column(name = "applied_offer", columnDefinition = "jsonb")
     String appliedOffer;
 
     @Column(name = "sign_date")
