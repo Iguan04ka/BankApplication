@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.iguana.deal.api.service.SelectOfferService;
 import ru.iguana.deal.api.service.StatementService;
 
 
@@ -16,8 +17,15 @@ import java.util.List;
 public class DealController {
     private final StatementService statementService;
 
+    private final SelectOfferService selectOfferService;
+
     @PostMapping("/deal/statement")
-    public ResponseEntity<List<JsonNode>> mapClient(@RequestBody JsonNode json) {
+    public ResponseEntity<List<JsonNode>> getOffers(@RequestBody JsonNode json) {
         return statementService.getLoanOfferList(json);
+    }
+
+    @PostMapping("/deal/offer/select")
+    public void selectOffer(@RequestBody JsonNode json){
+        selectOfferService.selectLoanOffer(json);
     }
 }

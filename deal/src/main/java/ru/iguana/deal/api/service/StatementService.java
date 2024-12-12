@@ -11,10 +11,15 @@ import ru.iguana.deal.api.dto.StatementDto;
 import ru.iguana.deal.api.mapper.ClientMapper;
 import ru.iguana.deal.api.mapper.StatementMapper;
 import ru.iguana.deal.model.entity.Client;
+import ru.iguana.deal.model.entity.Jsonb.StatusHistory;
 import ru.iguana.deal.model.entity.Statement;
+import ru.iguana.deal.model.entity.enums.ApplicationStatus;
+import ru.iguana.deal.model.entity.enums.ChangeType;
 import ru.iguana.deal.model.repository.ClientRepository;
 import ru.iguana.deal.model.repository.StatementRepository;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -48,6 +53,20 @@ public class StatementService {
             // Создаем стейтмент, добавляем id клиента и сохраняем в БД
             StatementDto statementDto = new StatementDto();
             statementDto.setClientId(clientEntity.getClientId());
+            statementDto.getStatusHistory()
+                    .add(new StatusHistory(
+                            ApplicationStatus.PREAPPROVAL,
+                            Timestamp.from(Instant.now()),
+                            ChangeType.AUTOMATIC
+                            ));
+            //Устанавливаем статус заявки таким же, как последний статус в списке историй статуса
+            statementDto
+                    .setStatus
+                            (String.valueOf
+                                    (statementDto.getStatusHistory()
+                                            .get(statementDto.getStatusHistory().size() - 1)
+                                                    .getStatus()));
+            //Сохраняем стейтмент
             Statement statementEntity = statementMapper.statementDtoToStatementEntity(statementDto);
             statementRepository.save(statementEntity);
 

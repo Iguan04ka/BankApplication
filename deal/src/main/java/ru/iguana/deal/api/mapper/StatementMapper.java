@@ -12,6 +12,10 @@ public class StatementMapper {
         Statement entity = new Statement();
         entity.setClientId(statementDto.getClientId());
 
+        entity.getStatusHistory().addAll(statementDto.getStatusHistory()); //Todo заглушка
+
+        entity.setStatus(statementDto.getStatus());
+
         return entity;
 
     }

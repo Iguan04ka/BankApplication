@@ -7,6 +7,8 @@ import lombok.experimental.FieldDefaults;
 import ru.iguana.deal.model.entity.Jsonb.StatusHistory;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -27,6 +29,6 @@ public class StatementDto {
 
     String sesCode;
 
-    StatusHistory statusHistory;
+    List<StatusHistory> statusHistory = new ArrayList<>();
 }
 

@@ -1,5 +1,6 @@
 package ru.iguana.deal.model.entity;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -13,6 +14,8 @@ import ru.iguana.deal.model.entity.Jsonb.StatusHistory;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -43,7 +46,7 @@ public class Statement {
 
     @Type(JsonType.class)
     @Column(name = "applied_offer", columnDefinition = "jsonb")
-    String appliedOffer;
+    JsonNode appliedOffer;
 
     @Column(name = "sign_date")
     Timestamp signDate;
@@ -53,11 +56,12 @@ public class Statement {
 
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb", name = "status_history")
-    StatusHistory statusHistory;
+    List<StatusHistory> statusHistory = new ArrayList<>();
 
     @PrePersist
     private void onCreate(){
         this.creationDate = Timestamp.from(Instant.now());
         this.signDate = Timestamp.from(Instant.now()); //TODO заглушка
+        this.sesCode = "ses_code"; //TODO заглушка
     }
 }
