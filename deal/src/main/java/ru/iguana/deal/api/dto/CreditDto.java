@@ -1,5 +1,6 @@
 package ru.iguana.deal.api.dto;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -11,8 +12,6 @@ import java.util.UUID;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CreditDto {
-    UUID creditId;
-
     BigDecimal amount;
 
     Integer term;
@@ -23,7 +22,7 @@ public class CreditDto {
 
     BigDecimal psk;
 
-    String paymentSchedule;
+    JsonNode paymentSchedule;
 
     Boolean isInsuranceEnabled;
 

@@ -1,5 +1,7 @@
 package ru.iguana.deal.model.entity;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -7,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -40,8 +43,9 @@ public class Credit {
     @Column(name = "psk")
     BigDecimal psk;
 
-    @Column(name = "payment_schedule")
-    String paymentSchedule;
+    @Type(JsonType.class)
+    @Column(name = "payment_schedule", columnDefinition = "jsonb")
+    JsonNode paymentSchedule;
 
     @Column(name = "insurance_enabled")
     Boolean isInsuranceEnabled;

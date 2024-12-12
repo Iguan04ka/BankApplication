@@ -6,7 +6,6 @@ import ru.iguana.deal.api.dto.StatementDto;
 import ru.iguana.deal.model.entity.Statement;
 
 @Component
-@AllArgsConstructor
 public class StatementMapper {
     public Statement statementDtoToStatementEntity(StatementDto statementDto){
         Statement entity = new Statement();
