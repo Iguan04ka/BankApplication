@@ -1,4 +1,4 @@
-package ru.iguana.deal.entity;
+package ru.iguana.deal.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

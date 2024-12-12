@@ -1,4 +1,4 @@
-package ru.iguana.deal.entity.Jsonb;
+package ru.iguana.deal.model.entity.Jsonb;
 
 import lombok.*;
 import lombok.experimental.Accessors;

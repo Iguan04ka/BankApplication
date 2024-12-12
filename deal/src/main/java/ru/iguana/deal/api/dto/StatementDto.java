@@ -1,10 +1,10 @@
-package ru.iguana.deal.dto;
+package ru.iguana.deal.api.dto;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
-import ru.iguana.deal.entity.Jsonb.StatusHistory;
+import ru.iguana.deal.model.entity.Jsonb.StatusHistory;
 
 import java.sql.Timestamp;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package ru.iguana.deal.dto;
+package ru.iguana.deal.api.dto;
 
 import lombok.AccessLevel;
 import lombok.Data;

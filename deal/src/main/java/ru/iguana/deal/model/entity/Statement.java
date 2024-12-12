@@ -1,4 +1,4 @@
-package ru.iguana.deal.entity;
+package ru.iguana.deal.model.entity;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Type;
-import ru.iguana.deal.entity.Jsonb.StatusHistory;
+import ru.iguana.deal.model.entity.Jsonb.StatusHistory;
 
 import java.sql.Timestamp;
 import java.time.Instant;

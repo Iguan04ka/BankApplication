@@ -1,7 +1,7 @@
-package ru.iguana.deal.repository;
+package ru.iguana.deal.model.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import ru.iguana.deal.entity.Credit;
+import ru.iguana.deal.model.entity.Credit;
 
 import java.util.UUID;
 
