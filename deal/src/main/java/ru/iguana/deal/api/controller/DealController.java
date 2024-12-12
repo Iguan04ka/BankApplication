@@ -16,7 +16,7 @@ import java.util.List;
 public class DealController {
     private final StatementService statementService;
 
-    @PostMapping("/api/map-client")
+    @PostMapping("/deal/statement")
     public ResponseEntity<List<JsonNode>> mapClient(@RequestBody JsonNode json) {
         return statementService.getLoanOfferList(json);
     }
