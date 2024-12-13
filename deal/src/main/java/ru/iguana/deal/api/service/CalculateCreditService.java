@@ -3,6 +3,8 @@ package ru.iguana.deal.api.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.iguana.deal.api.dto.CreditDto;
@@ -25,19 +27,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class CalculateCreditService {
 
     private final StatementRepository statementRepository;
-
     private final ClientRepository clientRepository;
-
     private final CreditRepository creditRepository;
-
     private final ObjectMapper objectMapper;
-
     private final WebClient webClient;
     private final CreditMapper creditMapper;
-
 
     public CalculateCreditService(StatementRepository statementRepository,
                                   ClientRepository clientRepository,
@@ -54,49 +52,58 @@ public class CalculateCreditService {
     }
 
     public void calculate(FinishRegistrationRequestDto finishRegistrationRequestDto,
-                                              String statementId){
-        //Достаём заявку и клиента из БД по statementId
-        UUID statementUuid = UUID.fromString(statementId);
-        Optional<Statement> optionalStatement = statementRepository.findById(statementUuid);
-        Optional<Client> optionalClient = clientRepository.findById(
-                optionalStatement.get().getClientId()
-        );
+                          String statementId) {
+        log.info("Starting credit calculation for statementId: {}", statementId);
 
-        if (optionalStatement.isEmpty() || optionalClient.isEmpty()) {
+        UUID statementUuid = UUID.fromString(statementId);
+
+        Optional<Statement> optionalStatement = statementRepository.findById(statementUuid);
+        if (optionalStatement.isEmpty()) {
+            log.error("Statement not found for ID: {}", statementId);
             throw new IllegalArgumentException("No such id");
         }
 
         Statement statement = optionalStatement.get();
+        Optional<Client> optionalClient = clientRepository.findById(statement.getClientId());
+        if (optionalClient.isEmpty()) {
+            log.error("Client not found for statementId: {}", statementId);
+            throw new IllegalArgumentException("No such id");
+        }
+
         Client client = optionalClient.get();
+        log.info("Statement and Client successfully retrieved for statementId: {}", statementId);
 
-        JsonNode scoringDataDto = createScoringDataDto(finishRegistrationRequestDto,
-                client);
+        // Create ScoringDataDto
+        JsonNode scoringDataDto = createScoringDataDto(finishRegistrationRequestDto, client);
+        log.debug("ScoringDataDto created: {}", scoringDataDto);
 
+        // Send scoring data to calculator service
         JsonNode creditJson = webClient.post()
                 .uri("/calculator/calc")
                 .bodyValue(scoringDataDto)
                 .retrieve()
                 .bodyToMono(JsonNode.class)
                 .block();
+        log.info("Received response from calculator service: {}", creditJson);
 
         CreditDto creditDto = creditMapper.jsonToCreditDto(creditJson);
         creditDto.setCreditStatus(String.valueOf(CreditStatus.CALCULATED));
 
         Credit creditEntity = creditMapper.CreditDtoToCreditEntity(creditDto);
         creditRepository.save(creditEntity);
+        log.info("Credit entity saved: {}", creditEntity);
 
         statement.setStatus(String.valueOf(ApplicationStatus.CC_APPROVED));
-
         statement.getStatusHistory().add(new StatusHistory(ApplicationStatus.CC_APPROVED,
-                                            Timestamp.from(Instant.now()),
-                                            ChangeType.AUTOMATIC));
+                Timestamp.from(Instant.now()), ChangeType.AUTOMATIC));
 
         statementRepository.save(statement);
-
+        log.info("Statement updated with status: {}", ApplicationStatus.CC_APPROVED);
     }
 
     private JsonNode createScoringDataDto(FinishRegistrationRequestDto finishRegistrationRequestDto,
-                                          Client client){
+                                          Client client) {
+        log.info("Creating ScoringDataDto for clientId: {}", client.getClientId());
 
         ObjectNode scoringDataDto = objectMapper.createObjectNode();
 
@@ -134,6 +141,7 @@ public class CalculateCreditService {
 
         scoringDataDto.put("isSalaryClient", statementRepository.findIsSalaryClientByClientId(client.getClientId()));
 
+        log.debug("ScoringDataDto created: {}", scoringDataDto);
         return scoringDataDto;
     }
 }
