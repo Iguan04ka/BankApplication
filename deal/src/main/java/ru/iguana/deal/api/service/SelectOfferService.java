@@ -22,7 +22,7 @@ public class SelectOfferService {
     private final StatementRepository statementRepository;
 
     public void selectLoanOffer(JsonNode json) {
-        log.info("Received request to select loan offer: {}");
+        log.info("Received request to select loan offer");
         log.debug("Received request to select loan offer: {}", json);
         try {
             UUID statementUuid = getStatementIdFromJson(json);

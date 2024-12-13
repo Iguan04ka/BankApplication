@@ -31,7 +31,7 @@ public class StatementService {
     private final ClientMapper clientMapper;
     private final StatementMapper statementMapper;
     private final ClientRepository clientRepository;
-    private final WebClient webClient;
+    private final WebClient webClientBuilder;
     private final StatementRepository statementRepository;
 
     public StatementService(WebClient.Builder webClientBuilder,
@@ -40,12 +40,14 @@ public class StatementService {
                             ClientRepository clientRepository,
                             StatementRepository statementRepository) {
 
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8081").build();
+        this.webClientBuilder = webClientBuilder.baseUrl("http://localhost:8081").build();
         this.clientMapper = clientMapper;
         this.statementMapper = statementMapper;
         this.clientRepository = clientRepository;
         this.statementRepository = statementRepository;
     }
+
+
 
     public ResponseEntity<List<JsonNode>> getLoanOfferList(JsonNode json) {
         log.info("Received request to fetch loan offers with data");
@@ -99,7 +101,7 @@ public class StatementService {
     private List<JsonNode> fetchLoanOffers(JsonNode loanStatementRequest) {
         log.info("Fetching loan offers with request: {}");
         log.debug("Fetching loan offers with request: {}", loanStatementRequest);
-        JsonNode response = webClient.post()
+        JsonNode response = webClientBuilder.post()
                 .uri("/calculator/offers")
                 .bodyValue(loanStatementRequest)
                 .retrieve()

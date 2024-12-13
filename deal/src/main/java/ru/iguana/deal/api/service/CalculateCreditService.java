@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.iguana.deal.api.dto.CreditDto;
@@ -46,7 +45,7 @@ public class CalculateCreditService {
         this.statementRepository = statementRepository;
         this.clientRepository = clientRepository;
         this.objectMapper = objectMapper;
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8081").build();
+        this.webClient = webClientBuilder.baseUrl("http://localhost:8080").build();
         this.creditMapper = creditMapper;
         this.creditRepository = creditRepository;
     }
