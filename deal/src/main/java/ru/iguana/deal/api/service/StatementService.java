@@ -6,10 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import ru.iguana.deal.api.config.DealProperties;
 import ru.iguana.deal.api.convertor.ClientConvertor;
+import ru.iguana.deal.api.convertor.StatementConvertor;
 import ru.iguana.deal.api.dto.ClientDto;
 import ru.iguana.deal.api.dto.StatementDto;
-import ru.iguana.deal.api.convertor.StatementConvertor;
 import ru.iguana.deal.model.entity.Client;
 import ru.iguana.deal.model.entity.Jsonb.StatusHistory;
 import ru.iguana.deal.model.entity.Statement;
@@ -30,16 +31,19 @@ public class StatementService {
     private final ClientConvertor clientConvertor;
     private final StatementConvertor statementConvertor;
     private final ClientRepository clientRepository;
-    private final WebClient webClientBuilder;
+    private final WebClient webClient;
     private final StatementRepository statementRepository;
 
-    public StatementService(WebClient.Builder webClientBuilder,
+    private final DealProperties dealProperties;
+
+    public StatementService(WebClient webClient,
                             StatementConvertor statementConvertor,
                             ClientConvertor clientConvertor,
                             ClientRepository clientRepository,
-                            StatementRepository statementRepository) {
-
-        this.webClientBuilder = webClientBuilder.baseUrl("http://localhost:8081").build();
+                            StatementRepository statementRepository,
+                            DealProperties dealProperties) {
+        this.dealProperties = dealProperties;
+        this.webClient = webClient;
         this.clientConvertor = clientConvertor;
         this.statementConvertor = statementConvertor;
         this.clientRepository = clientRepository;
@@ -98,9 +102,9 @@ public class StatementService {
     }
 
     private List<JsonNode> fetchLoanOffers(JsonNode loanStatementRequest) {
-        log.info("Fetching loan offers with request: {}");
+        log.info("Fetching loan offers with request");
         log.debug("Fetching loan offers with request: {}", loanStatementRequest);
-        JsonNode response = webClientBuilder.post()
+        JsonNode response = webClient.post()
                 .uri("/calculator/offers")
                 .bodyValue(loanStatementRequest)
                 .retrieve()
