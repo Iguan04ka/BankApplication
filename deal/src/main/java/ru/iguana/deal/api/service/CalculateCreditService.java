@@ -45,7 +45,7 @@ public class CalculateCreditService {
         this.statementRepository = statementRepository;
         this.clientRepository = clientRepository;
         this.objectMapper = objectMapper;
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8080").build();
+        this.webClient = webClientBuilder.baseUrl("http://localhost:8081").build();
         this.creditMapper = creditMapper;
         this.creditRepository = creditRepository;
     }
