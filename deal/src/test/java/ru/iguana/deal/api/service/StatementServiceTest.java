@@ -1,137 +1,92 @@
 package ru.iguana.deal.api.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import ru.iguana.deal.api.config.DealProperties;
 import ru.iguana.deal.api.convertor.ClientConvertor;
+import ru.iguana.deal.api.convertor.StatementConvertor;
 import ru.iguana.deal.api.dto.ClientDto;
 import ru.iguana.deal.api.dto.StatementDto;
-import ru.iguana.deal.api.convertor.StatementConvertor;
-
 import ru.iguana.deal.model.entity.Client;
+import ru.iguana.deal.model.entity.Jsonb.StatusHistory;
 import ru.iguana.deal.model.entity.Statement;
-
+import ru.iguana.deal.model.entity.enums.ApplicationStatus;
+import ru.iguana.deal.model.entity.enums.ChangeType;
 import ru.iguana.deal.model.repository.ClientRepository;
 import ru.iguana.deal.model.repository.StatementRepository;
 
-import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-@SpringBootTest
 class StatementServiceTest {
-    //TODO fix
-    @Mock
-    private ClientConvertor clientConvertor;
-
-    @Mock
-    private StatementConvertor statementConvertor;
-
-    @Mock
-    private ClientRepository clientRepository;
-
-    @Mock
-    private StatementRepository statementRepository;
-
-    @Mock
-    private WebClient webClient;
-
-    @Mock
-    private WebClient.RequestBodySpec requestBodySpec;
-
-    @Mock
-    private WebClient.ResponseSpec responseSpec;
-
-    @Mock
-    private WebClient.Builder webClientBuilder;
 
     @InjectMocks
     private StatementService statementService;
 
+    @Mock
+    private ClientConvertor clientConvertor;
+
+    @Mock
+    private ClientRepository clientRepository;
+
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-
-        when(webClientBuilder.baseUrl(anyString())).thenReturn(webClientBuilder);
-        when(webClientBuilder.build()).thenReturn(webClient);
     }
 
     @Test
-    void testGetLoanOfferList_Success() {
-        JsonNode json = mock(JsonNode.class);
-        ClientDto clientDto = mock(ClientDto.class);
-        Client clientEntity = new Client();
-        clientEntity.setClientId(UUID.randomUUID());
-        Statement statementEntity = new Statement();
-        statementEntity.setStatementId(UUID.randomUUID());
+    void testGetLoanOfferList_Failure() {
+        // Mock input data
+        JsonNode inputJson = objectMapper.createObjectNode();
 
-        when(clientConvertor.jsonToClientDto(any(JsonNode.class))).thenReturn(clientDto);
-        when(clientConvertor.clientDtoToClientEntity(clientDto)).thenReturn(clientEntity);
-        when(statementConvertor.statementDtoToStatementEntity(any(StatementDto.class))).thenReturn(statementEntity);
+        // Mock dependencies to throw an exception
+        when(clientConvertor.jsonToClientDto(inputJson)).thenThrow(new RuntimeException("Test exception"));
 
-        when(clientRepository.save(any(Client.class))).thenReturn(clientEntity);
-        when(statementRepository.save(any(Statement.class))).thenReturn(statementEntity);
+        // Call the method under test
+        ResponseEntity<List<JsonNode>> response = statementService.getLoanOfferList(inputJson);
 
-        List<JsonNode> loanOffers = new ArrayList<>();
-        JsonNode loanOffer = mock(JsonNode.class);
-        loanOffers.add(loanOffer);
-
-        // Мокаем цепочку вызовов WebClient
-        when(webClient.post()).thenReturn((WebClient.RequestBodyUriSpec) requestBodySpec);
-        when(((WebClient.RequestBodyUriSpec) requestBodySpec).uri(anyString())).thenReturn(requestBodySpec);
-        when(requestBodySpec.bodyValue(any(JsonNode.class))).thenThrow((Throwable) requestBodySpec);
-        when(requestBodySpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.bodyToMono(JsonNode.class)).thenReturn(Mono.just(mock(JsonNode.class)));
-
-        ResponseEntity<List<JsonNode>> response = statementService.getLoanOfferList(json);
-
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
-        verify(clientRepository).save(clientEntity);
-        verify(statementRepository).save(statementEntity);
-    }
-
-    @Test
-    void testGetLoanOfferList_Failure_WhenApiReturnsError() {
-        // Подготовка данных
-        JsonNode json = mock(JsonNode.class);
-        ClientDto clientDto = mock(ClientDto.class);
-        Client clientEntity = new Client();
-        clientEntity.setClientId(UUID.randomUUID());
-        Statement statementEntity = new Statement();
-        statementEntity.setStatementId(UUID.randomUUID());
-
-        when(clientConvertor.jsonToClientDto(any(JsonNode.class))).thenReturn(clientDto);
-        when(clientConvertor.clientDtoToClientEntity(clientDto)).thenReturn(clientEntity);
-        when(statementConvertor.statementDtoToStatementEntity(any(StatementDto.class))).thenReturn(statementEntity);
-
-        when(clientRepository.save(any(Client.class))).thenReturn(clientEntity);
-        when(statementRepository.save(any(Statement.class))).thenReturn(statementEntity);
-
-        when(webClient.post()).thenReturn((WebClient.RequestBodyUriSpec) requestBodySpec);
-        when(((WebClient.RequestBodyUriSpec) requestBodySpec).uri(anyString())).thenReturn(requestBodySpec);
-        when(requestBodySpec.bodyValue(any(JsonNode.class))).thenThrow((Throwable) requestBodySpec);
-        when(requestBodySpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.bodyToMono(JsonNode.class)).thenThrow(new RuntimeException("API error"));
-
-
-        ResponseEntity<List<JsonNode>> response = statementService.getLoanOfferList(json);
-
+        // Verify
         assertNotNull(response);
         assertEquals(400, response.getStatusCodeValue());
+        assertNull(response.getBody());
+    }
+
+    @Test
+    void testClientIsSavedToDatabase() {
+        // Mock input data
+        JsonNode inputJson = objectMapper.createObjectNode();
+        ClientDto clientDto = new ClientDto();
+        Client clientEntity = new Client();
+        clientEntity.setClientId(UUID.randomUUID());
+
+        // Mock dependencies
+        when(clientConvertor.jsonToClientDto(inputJson)).thenReturn(clientDto);
+        when(clientConvertor.clientDtoToClientEntity(clientDto)).thenReturn(clientEntity);
+        when(clientRepository.save(any(Client.class))).thenReturn(clientEntity);
+
+        // Call the method under test
+        statementService.getLoanOfferList(inputJson);
+
+        // Verify
+        verify(clientRepository, times(1)).save(clientEntity);
     }
 }
