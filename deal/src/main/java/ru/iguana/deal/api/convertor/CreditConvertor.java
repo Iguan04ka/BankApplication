@@ -1,7 +1,6 @@
-package ru.iguana.deal.api.mapper;
+package ru.iguana.deal.api.convertor;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.iguana.deal.api.dto.CreditDto;
@@ -11,9 +10,7 @@ import java.math.BigDecimal;
 
 @Component
 @AllArgsConstructor
-public class CreditMapper {
-
-    private final ObjectMapper objectMapper;
+public class CreditConvertor {
 
     public CreditDto jsonToCreditDto(JsonNode jsonNode){
         CreditDto creditDto = new CreditDto()

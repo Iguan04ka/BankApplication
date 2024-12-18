@@ -3,14 +3,13 @@ package ru.iguana.deal.api.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import ru.iguana.deal.api.convertor.ClientConvertor;
 import ru.iguana.deal.api.dto.ClientDto;
 import ru.iguana.deal.api.dto.StatementDto;
-import ru.iguana.deal.api.mapper.ClientMapper;
-import ru.iguana.deal.api.mapper.StatementMapper;
+import ru.iguana.deal.api.convertor.StatementConvertor;
 import ru.iguana.deal.model.entity.Client;
 import ru.iguana.deal.model.entity.Jsonb.StatusHistory;
 import ru.iguana.deal.model.entity.Statement;
@@ -28,21 +27,21 @@ import java.util.stream.StreamSupport;
 @Service
 @Slf4j
 public class StatementService {
-    private final ClientMapper clientMapper;
-    private final StatementMapper statementMapper;
+    private final ClientConvertor clientConvertor;
+    private final StatementConvertor statementConvertor;
     private final ClientRepository clientRepository;
     private final WebClient webClientBuilder;
     private final StatementRepository statementRepository;
 
     public StatementService(WebClient.Builder webClientBuilder,
-                            StatementMapper statementMapper,
-                            ClientMapper clientMapper,
+                            StatementConvertor statementConvertor,
+                            ClientConvertor clientConvertor,
                             ClientRepository clientRepository,
                             StatementRepository statementRepository) {
 
         this.webClientBuilder = webClientBuilder.baseUrl("http://localhost:8081").build();
-        this.clientMapper = clientMapper;
-        this.statementMapper = statementMapper;
+        this.clientConvertor = clientConvertor;
+        this.statementConvertor = statementConvertor;
         this.clientRepository = clientRepository;
         this.statementRepository = statementRepository;
     }
@@ -54,8 +53,8 @@ public class StatementService {
         log.debug("Received request to fetch loan offers with data: {}", json);
         try {
             // Создаем клиента и сохраняем в БД
-            ClientDto clientDto = clientMapper.jsonToClientDto(json);
-            Client clientEntity = clientMapper.clientDtoToClientEntity(clientDto);
+            ClientDto clientDto = clientConvertor.jsonToClientDto(json);
+            Client clientEntity = clientConvertor.clientDtoToClientEntity(clientDto);
             clientRepository.save(clientEntity);
             log.info("Client successfully created and saved with ID: {}", clientEntity.getClientId());
 
@@ -76,7 +75,7 @@ public class StatementService {
             log.info("Statement status set to: {}", status);
 
             // Сохраняем стейтмент
-            Statement statementEntity = statementMapper.statementDtoToStatementEntity(statementDto);
+            Statement statementEntity = statementConvertor.statementDtoToStatementEntity(statementDto);
             statementRepository.save(statementEntity);
             log.info("Statement successfully created and saved with ID: {}", statementEntity.getStatementId());
 

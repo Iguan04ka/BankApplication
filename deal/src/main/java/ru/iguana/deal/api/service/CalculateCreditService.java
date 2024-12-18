@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.iguana.deal.api.dto.CreditDto;
 import ru.iguana.deal.api.dto.FinishRegistrationRequestDto;
-import ru.iguana.deal.api.mapper.CreditMapper;
+import ru.iguana.deal.api.convertor.CreditConvertor;
 import ru.iguana.deal.model.entity.Client;
 import ru.iguana.deal.model.entity.Credit;
 import ru.iguana.deal.model.entity.Jsonb.StatusHistory;
@@ -34,19 +34,19 @@ public class CalculateCreditService {
     private final CreditRepository creditRepository;
     private final ObjectMapper objectMapper;
     private final WebClient webClient;
-    private final CreditMapper creditMapper;
+    private final CreditConvertor creditConvertor;
 
     public CalculateCreditService(StatementRepository statementRepository,
                                   ClientRepository clientRepository,
                                   ObjectMapper objectMapper,
                                   WebClient.Builder webClientBuilder,
-                                  CreditMapper creditMapper,
+                                  CreditConvertor creditConvertor,
                                   CreditRepository creditRepository) {
         this.statementRepository = statementRepository;
         this.clientRepository = clientRepository;
         this.objectMapper = objectMapper;
         this.webClient = webClientBuilder.baseUrl("http://localhost:8081").build();
-        this.creditMapper = creditMapper;
+        this.creditConvertor = creditConvertor;
         this.creditRepository = creditRepository;
     }
 
@@ -85,10 +85,10 @@ public class CalculateCreditService {
                 .block();
         log.info("Received response from calculator service: {}", creditJson);
 
-        CreditDto creditDto = creditMapper.jsonToCreditDto(creditJson);
+        CreditDto creditDto = creditConvertor.jsonToCreditDto(creditJson);
         creditDto.setCreditStatus(String.valueOf(CreditStatus.CALCULATED));
 
-        Credit creditEntity = creditMapper.CreditDtoToCreditEntity(creditDto);
+        Credit creditEntity = creditConvertor.CreditDtoToCreditEntity(creditDto);
         creditRepository.save(creditEntity);
         log.info("Credit entity saved: {}", creditEntity);
 

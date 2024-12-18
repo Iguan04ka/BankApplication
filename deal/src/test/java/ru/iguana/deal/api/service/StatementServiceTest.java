@@ -11,10 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import ru.iguana.deal.api.convertor.ClientConvertor;
 import ru.iguana.deal.api.dto.ClientDto;
 import ru.iguana.deal.api.dto.StatementDto;
-import ru.iguana.deal.api.mapper.ClientMapper;
-import ru.iguana.deal.api.mapper.StatementMapper;
+import ru.iguana.deal.api.convertor.StatementConvertor;
 
 import ru.iguana.deal.model.entity.Client;
 import ru.iguana.deal.model.entity.Statement;
@@ -36,10 +36,10 @@ import static org.mockito.Mockito.*;
 class StatementServiceTest {
     //TODO fix
     @Mock
-    private ClientMapper clientMapper;
+    private ClientConvertor clientConvertor;
 
     @Mock
-    private StatementMapper statementMapper;
+    private StatementConvertor statementConvertor;
 
     @Mock
     private ClientRepository clientRepository;
@@ -79,9 +79,9 @@ class StatementServiceTest {
         Statement statementEntity = new Statement();
         statementEntity.setStatementId(UUID.randomUUID());
 
-        when(clientMapper.jsonToClientDto(any(JsonNode.class))).thenReturn(clientDto);
-        when(clientMapper.clientDtoToClientEntity(clientDto)).thenReturn(clientEntity);
-        when(statementMapper.statementDtoToStatementEntity(any(StatementDto.class))).thenReturn(statementEntity);
+        when(clientConvertor.jsonToClientDto(any(JsonNode.class))).thenReturn(clientDto);
+        when(clientConvertor.clientDtoToClientEntity(clientDto)).thenReturn(clientEntity);
+        when(statementConvertor.statementDtoToStatementEntity(any(StatementDto.class))).thenReturn(statementEntity);
 
         when(clientRepository.save(any(Client.class))).thenReturn(clientEntity);
         when(statementRepository.save(any(Statement.class))).thenReturn(statementEntity);
@@ -115,9 +115,9 @@ class StatementServiceTest {
         Statement statementEntity = new Statement();
         statementEntity.setStatementId(UUID.randomUUID());
 
-        when(clientMapper.jsonToClientDto(any(JsonNode.class))).thenReturn(clientDto);
-        when(clientMapper.clientDtoToClientEntity(clientDto)).thenReturn(clientEntity);
-        when(statementMapper.statementDtoToStatementEntity(any(StatementDto.class))).thenReturn(statementEntity);
+        when(clientConvertor.jsonToClientDto(any(JsonNode.class))).thenReturn(clientDto);
+        when(clientConvertor.clientDtoToClientEntity(clientDto)).thenReturn(clientEntity);
+        when(statementConvertor.statementDtoToStatementEntity(any(StatementDto.class))).thenReturn(statementEntity);
 
         when(clientRepository.save(any(Client.class))).thenReturn(clientEntity);
         when(statementRepository.save(any(Statement.class))).thenReturn(statementEntity);

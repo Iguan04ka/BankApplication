@@ -1,8 +1,6 @@
-package ru.iguana.deal.api.mapper;
+package ru.iguana.deal.api.convertor;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.iguana.deal.api.dto.ClientDto;
 import ru.iguana.deal.model.entity.Client;
@@ -10,7 +8,7 @@ import ru.iguana.deal.model.entity.Jsonb.Passport;
 
 import java.time.LocalDate;
 @Component
-public class ClientMapper {
+public class ClientConvertor {
 
     public ClientDto jsonToClientDto(JsonNode jsonRequest){
 

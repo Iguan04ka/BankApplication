@@ -1,12 +1,11 @@
-package ru.iguana.deal.api.mapper;
+package ru.iguana.deal.api.convertor;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.iguana.deal.api.dto.StatementDto;
 import ru.iguana.deal.model.entity.Statement;
 
 @Component
-public class StatementMapper {
+public class StatementConvertor {
     public Statement statementDtoToStatementEntity(StatementDto statementDto){
         Statement entity = new Statement();
         entity.setClientId(statementDto.getClientId());
