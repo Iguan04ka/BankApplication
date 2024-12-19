@@ -59,44 +59,29 @@ public class CalculateCreditService {
                           String statementId) {
         log.info("Starting credit calculation for statementId: {}", statementId);
 
-        UUID statementUuid = UUID.fromString(statementId);
-
-        Optional<Statement> optionalStatement = statementRepository.findById(statementUuid);
-        if (optionalStatement.isEmpty()) {
-            log.error("Statement not found for ID: {}", statementId);
-            throw new IllegalArgumentException("No such id");
-        }
-
-        Statement statement = optionalStatement.get();
-        Optional<Client> optionalClient = clientRepository.findById(statement.getClientId());
-        if (optionalClient.isEmpty()) {
-            log.error("Client not found for statementId: {}", statementId);
-            throw new IllegalArgumentException("No such id");
-        }
-
-        Client client = optionalClient.get();
+        //Получает стейтмент и соответствующего ему клиента
+        Statement statement = getStatementByStatementId(statementId);
+        Client client = getClientByClientIdInStatement(statement);
         log.info("Statement and Client successfully retrieved for statementId: {}", statementId);
 
-        // Create ScoringDataDto
+        // Насыщаем scoringDataDto
         JsonNode scoringDataDto = scoringDataDtoConvertor.createScoringDataDto(finishRegistrationRequestDto, client);
         log.debug("ScoringDataDto created: {}", scoringDataDto);
 
-        // Send scoring data to calculator service
-        JsonNode creditJson = webClient.post()
-                .uri("/calculator/calc")
-                .bodyValue(scoringDataDto)
-                .retrieve()
-                .bodyToMono(JsonNode.class)
-                .block();
+        // Отправляем scoringDataDto в калькулятор и получаем creditDto
+        JsonNode creditJson = getCreditDtoFromCalculator(scoringDataDto);
         log.info("Received response from calculator service: {}", creditJson);
 
+        // Создаем creditDto на основе ответа калькулятора
         CreditDto creditDto = creditConvertor.jsonToCreditDto(creditJson);
         creditDto.setCreditStatus(String.valueOf(CreditStatus.CALCULATED));
 
+        // Создаем и сохраняем creditEntity на основе creditDto
         Credit creditEntity = creditConvertor.CreditDtoToCreditEntity(creditDto);
         creditRepository.save(creditEntity);
         log.info("Credit entity saved: {}", creditEntity);
 
+        // Сетаем статусы стейтменту
         statement.setStatus(String.valueOf(ApplicationStatus.CC_APPROVED));
         statement.getStatusHistory().add(new StatusHistory(ApplicationStatus.CC_APPROVED,
                 Timestamp.from(Instant.now()), ChangeType.AUTOMATIC));
@@ -105,4 +90,34 @@ public class CalculateCreditService {
         log.info("Statement updated with status: {}", ApplicationStatus.CC_APPROVED);
     }
 
+    private Statement getStatementByStatementId(String statementId){
+        UUID statementUuid = UUID.fromString(statementId);
+
+        Optional<Statement> optionalStatement = statementRepository.findById(statementUuid);
+        if (optionalStatement.isEmpty()) {
+            log.error("Statement not found for ID: {}", statementId);
+            throw new IllegalArgumentException("No such id");
+        }
+        return optionalStatement.get();
+    }
+
+    private Client getClientByClientIdInStatement(Statement statement){
+        Optional<Client> optionalClient = clientRepository.findById(statement.getClientId());
+        if (optionalClient.isEmpty()) {
+            log.error("Client not found for statementId: {}", statement.getStatementId());
+            throw new IllegalArgumentException("No such id");
+        }
+
+        return  optionalClient.get();
+    }
+
+    private JsonNode getCreditDtoFromCalculator(JsonNode scoringDataDto){
+        JsonNode creditJson;
+        return creditJson = webClient.post()
+                .uri("/calculator/calc")
+                .bodyValue(scoringDataDto)
+                .retrieve()
+                .bodyToMono(JsonNode.class)
+                .block();
+    }
 }

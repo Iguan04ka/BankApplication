@@ -62,21 +62,8 @@ public class StatementService {
             clientRepository.save(clientEntity);
             log.info("Client successfully created and saved with ID: {}", clientEntity.getClientId());
 
-            // Создаем стейтмент, добавляем id клиента и сохраняем в БД
-            StatementDto statementDto = new StatementDto();
-            statementDto.setClientId(clientEntity.getClientId());
-            statementDto.getStatusHistory()
-                    .add(new StatusHistory(
-                            ApplicationStatus.PREAPPROVAL,
-                            Timestamp.from(Instant.now()),
-                            ChangeType.AUTOMATIC
-                    ));
-            // Устанавливаем статус заявки таким же, как последний статус в списке историй статуса
-            String status = String.valueOf(statementDto.getStatusHistory()
-                    .get(statementDto.getStatusHistory().size() - 1)
-                    .getStatus());
-            statementDto.setStatus(status);
-            log.info("Statement status set to: {}", status);
+            // Создаем statementDto, добавляем id клиента и статус
+            StatementDto statementDto = createStatementDto(clientEntity);
 
             // Сохраняем стейтмент
             Statement statementEntity = statementConvertor.statementDtoToStatementEntity(statementDto);
@@ -87,10 +74,7 @@ public class StatementService {
             List<JsonNode> loanOffers = fetchLoanOffers(json);
 
             // Меняем statementId на id statement'а
-            loanOffers.forEach(offer -> {
-                ObjectNode mutableOffer = (ObjectNode) offer;
-                mutableOffer.put("statementId", statementEntity.getStatementId().toString());
-            });
+            changeStatementId(loanOffers, statementEntity);
             log.info("Successfully fetched and updated loan offers for statement ID: {}", statementEntity.getStatementId());
 
             return ResponseEntity.ok(loanOffers);
@@ -119,5 +103,31 @@ public class StatementService {
             log.error("Invalid response structure: expected JSON array");
             throw new IllegalStateException("Invalid response structure: expected JSON array");
         }
+    }
+
+    private StatementDto createStatementDto(Client clientEntity){
+        StatementDto statementDto = new StatementDto();
+        statementDto.setClientId(clientEntity.getClientId());
+        statementDto.getStatusHistory()
+                .add(new StatusHistory(
+                        ApplicationStatus.PREAPPROVAL,
+                        Timestamp.from(Instant.now()),
+                        ChangeType.AUTOMATIC
+                ));
+        // Устанавливаем статус заявки таким же, как последний статус в списке историй статуса
+        String status = String.valueOf(statementDto.getStatusHistory()
+                .get(statementDto.getStatusHistory().size() - 1)
+                .getStatus());
+        statementDto.setStatus(status);
+        log.info("Statement status set to: {}", status);
+
+        return statementDto;
+    }
+
+    private void changeStatementId(List<JsonNode> loanOffers, Statement statementEntity){
+        loanOffers.forEach(offer -> {
+            ObjectNode mutableOffer = (ObjectNode) offer;
+            mutableOffer.put("statementId", statementEntity.getStatementId().toString());
+        });
     }
 }
