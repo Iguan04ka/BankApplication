@@ -1,4 +1,7 @@
 spring:
+  liquibase:
+    enabled: true
+    change-log: db/changelog/main-changelog.xml
   jpa:
     properties:
       '[hypersistence.utils.enable_types_contributor]': false
