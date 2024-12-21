@@ -1,5 +1,6 @@
 package ru.iguana.statement.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
@@ -49,6 +50,7 @@ public class LoanStatementRequestDto {
     @NotNull()
     @Past(message = "Birthdate must be in the past")
     @Schema(description = "Borrower's date of birth")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     LocalDate birthdate;
 
     @NotNull()
