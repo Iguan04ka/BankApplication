@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class LoanStatementRequestDto {
     @NotNull()
     @DecimalMin(value = "20000.0", message = "Amount must be greater than 20000")
-    @Schema(description = "Requested loan amount")
+   @Schema(description = "Requested loan amount")
     BigDecimal amount;
 
     @NotNull()

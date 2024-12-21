@@ -1,174 +1,47 @@
-2024-12-21 21:11:14 [main] INFO  r.i.calculator.CalculatorApplication - Application start
-2024-12-21 21:11:14 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
-2024-12-21 21:11:14 [main] INFO  r.i.calculator.CalculatorApplication - Starting CalculatorApplication using Java 17.0.12 with PID 15756 (D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator\target\classes started by Iguan04ka in D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator)
-2024-12-21 21:11:14 [main] INFO  r.i.calculator.CalculatorApplication - No active profile set, falling back to 1 default profile: "default"
-2024-12-21 21:11:15 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
-2024-12-21 21:11:15 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
-2024-12-21 21:11:15 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2024-12-21 21:11:15 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.31]
-2024-12-21 21:11:15 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2024-12-21 21:11:15 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1203 ms
-2024-12-21 21:11:16 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
-2024-12-21 21:11:16 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
-2024-12-21 21:11:16 [main] INFO  r.i.calculator.CalculatorApplication - Started CalculatorApplication in 2.038 seconds (process running for 3.849)
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.c.CalculatorController - Received request to calculate loan offers
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.api.service.LoanOfferService - Received request for loan offers: LoanStatementRequestDto(amount=300000.0, term=18, firstName=Ivan, lastName=Petrov, middleName=Sergeevich, email=ivan.petrov@example.com, birthdate=1990-05-15, passportSeries=1234, passportNumber=123456)
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: false, isInsuranceEnabled: false
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 300000.0, Term: 18, Rate: 21.00
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 19573.48
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=0f7da837-e543-4b39-b390-712205128a01, requestedAmount=300000.0, totalAmount=352322.64, term=18, monthlyPayment=19573.48, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false)
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: true, isInsuranceEnabled: false
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 20.00
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 300000.0, Term: 18, Rate: 20.00
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 19428.96
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=5c59741c-cb63-4d23-8083-82b095eb561e, requestedAmount=300000.0, totalAmount=349721.28, term=18, monthlyPayment=19428.96, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true)
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: false, isInsuranceEnabled: true
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 18.00
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating insurance. Amount: 300000.0, Term: 18
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Insurance calculated: 35400.00
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 335400.00, Term: 18, Rate: 18.00
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 21400.46
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=e4b01778-f463-4dec-9a10-eabd39e543d6, requestedAmount=335400.00, totalAmount=385208.28, term=18, monthlyPayment=21400.46, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false)
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: true, isInsuranceEnabled: true
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating insurance. Amount: 300000.0, Term: 18
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Insurance calculated: 35400.00
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 335400.00, Term: 18, Rate: 17.00
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 21240.91
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=50a22a60-5c35-4004-aa95-4e900689d0c9, requestedAmount=335400.00, totalAmount=382336.38, term=18, monthlyPayment=21240.91, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.api.service.LoanOfferService - Generated loan offers: [LoanOfferDto(statementId=0f7da837-e543-4b39-b390-712205128a01, requestedAmount=300000.0, totalAmount=352322.64, term=18, monthlyPayment=19573.48, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false), LoanOfferDto(statementId=5c59741c-cb63-4d23-8083-82b095eb561e, requestedAmount=300000.0, totalAmount=349721.28, term=18, monthlyPayment=19428.96, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true), LoanOfferDto(statementId=e4b01778-f463-4dec-9a10-eabd39e543d6, requestedAmount=335400.00, totalAmount=385208.28, term=18, monthlyPayment=21400.46, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false), LoanOfferDto(statementId=50a22a60-5c35-4004-aa95-4e900689d0c9, requestedAmount=335400.00, totalAmount=382336.38, term=18, monthlyPayment=21240.91, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)]
-2024-12-21 21:39:15 [http-nio-8081-exec-1] INFO  r.i.c.a.c.CalculatorController - Successfully calculated loan offers: [LoanOfferDto(statementId=0f7da837-e543-4b39-b390-712205128a01, requestedAmount=300000.0, totalAmount=352322.64, term=18, monthlyPayment=19573.48, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false), LoanOfferDto(statementId=5c59741c-cb63-4d23-8083-82b095eb561e, requestedAmount=300000.0, totalAmount=349721.28, term=18, monthlyPayment=19428.96, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true), LoanOfferDto(statementId=e4b01778-f463-4dec-9a10-eabd39e543d6, requestedAmount=335400.00, totalAmount=385208.28, term=18, monthlyPayment=21400.46, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false), LoanOfferDto(statementId=50a22a60-5c35-4004-aa95-4e900689d0c9, requestedAmount=335400.00, totalAmount=382336.38, term=18, monthlyPayment=21240.91, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)]
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.c.CalculatorController - Received request to calculate loan offers
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.api.service.LoanOfferService - Received request for loan offers: LoanStatementRequestDto(amount=300000.0, term=18, firstName=Ivan, lastName=Petrov, middleName=Sergeevich, email=ivan.petrov@example.com, birthdate=1990-05-15, passportSeries=1234, passportNumber=123456)
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: false, isInsuranceEnabled: false
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 300000.0, Term: 18, Rate: 21.00
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 19573.48
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=84fcb295-d971-4f88-8d50-890ce7444ae6, requestedAmount=300000.0, totalAmount=352322.64, term=18, monthlyPayment=19573.48, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false)
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: true, isInsuranceEnabled: false
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 20.00
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 300000.0, Term: 18, Rate: 20.00
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 19428.96
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=527a43b7-8607-4127-936b-4ffe1285a44a, requestedAmount=300000.0, totalAmount=349721.28, term=18, monthlyPayment=19428.96, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true)
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: false, isInsuranceEnabled: true
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 18.00
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Calculating insurance. Amount: 300000.0, Term: 18
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Insurance calculated: 35400.00
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 335400.00, Term: 18, Rate: 18.00
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 21400.46
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=1100fae0-82d9-4df2-8f91-609045ef57bc, requestedAmount=335400.00, totalAmount=385208.28, term=18, monthlyPayment=21400.46, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false)
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: true, isInsuranceEnabled: true
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Calculating insurance. Amount: 300000.0, Term: 18
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Insurance calculated: 35400.00
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 335400.00, Term: 18, Rate: 17.00
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 21240.91
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=6e84f1c4-3b08-4cf8-b8b8-604eccc7aed1, requestedAmount=335400.00, totalAmount=382336.38, term=18, monthlyPayment=21240.91, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.api.service.LoanOfferService - Generated loan offers: [LoanOfferDto(statementId=84fcb295-d971-4f88-8d50-890ce7444ae6, requestedAmount=300000.0, totalAmount=352322.64, term=18, monthlyPayment=19573.48, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false), LoanOfferDto(statementId=527a43b7-8607-4127-936b-4ffe1285a44a, requestedAmount=300000.0, totalAmount=349721.28, term=18, monthlyPayment=19428.96, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true), LoanOfferDto(statementId=1100fae0-82d9-4df2-8f91-609045ef57bc, requestedAmount=335400.00, totalAmount=385208.28, term=18, monthlyPayment=21400.46, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false), LoanOfferDto(statementId=6e84f1c4-3b08-4cf8-b8b8-604eccc7aed1, requestedAmount=335400.00, totalAmount=382336.38, term=18, monthlyPayment=21240.91, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)]
-2024-12-21 21:43:54 [http-nio-8081-exec-4] INFO  r.i.c.a.c.CalculatorController - Successfully calculated loan offers: [LoanOfferDto(statementId=84fcb295-d971-4f88-8d50-890ce7444ae6, requestedAmount=300000.0, totalAmount=352322.64, term=18, monthlyPayment=19573.48, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false), LoanOfferDto(statementId=527a43b7-8607-4127-936b-4ffe1285a44a, requestedAmount=300000.0, totalAmount=349721.28, term=18, monthlyPayment=19428.96, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true), LoanOfferDto(statementId=1100fae0-82d9-4df2-8f91-609045ef57bc, requestedAmount=335400.00, totalAmount=385208.28, term=18, monthlyPayment=21400.46, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false), LoanOfferDto(statementId=6e84f1c4-3b08-4cf8-b8b8-604eccc7aed1, requestedAmount=335400.00, totalAmount=382336.38, term=18, monthlyPayment=21240.91, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)]
-2024-12-21 21:45:55 [http-nio-8081-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public java.util.List<ru.iguana.calculator.api.dto.LoanOfferDto> ru.iguana.calculator.api.controller.CalculatorController.calculateLoanOffers(ru.iguana.calculator.api.dto.LoanStatementRequestDto): [Field error in object 'loanStatementRequestDto' on field 'amount': rejected value [1000.0]; codes [DecimalMin.loanStatementRequestDto.amount,DecimalMin.amount,DecimalMin.java.math.BigDecimal,DecimalMin]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loanStatementRequestDto.amount,amount]; arguments []; default message [amount],true,20000.0]; default message [Amount must be greater than 20000]] ]
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.c.CalculatorController - Received request to calculate loan offers
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.api.service.LoanOfferService - Received request for loan offers: LoanStatementRequestDto(amount=20000.0, term=18, firstName=Ivan, lastName=Petrov, middleName=Sergeevich, email=ivan.petrov@example.com, birthdate=1990-05-15, passportSeries=1234, passportNumber=123456)
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: false, isInsuranceEnabled: false
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 20000.0, Term: 18, Rate: 21.00
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 1304.90
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=89081f1b-c9a6-4701-8941-038411e29431, requestedAmount=20000.0, totalAmount=23488.20, term=18, monthlyPayment=1304.90, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false)
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: true, isInsuranceEnabled: false
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 20.00
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 20000.0, Term: 18, Rate: 20.00
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 1295.26
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=7e7a6911-d09d-4145-acbe-9b09b5834436, requestedAmount=20000.0, totalAmount=23314.68, term=18, monthlyPayment=1295.26, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true)
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: false, isInsuranceEnabled: true
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 18.00
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating insurance. Amount: 20000.0, Term: 18
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Insurance calculated: 30360.00
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 50360.00, Term: 18, Rate: 18.00
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 3213.26
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=68ff8406-6e25-4491-8c0c-f60906d6f71d, requestedAmount=50360.00, totalAmount=57838.68, term=18, monthlyPayment=3213.26, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false)
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: true, isInsuranceEnabled: true
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating insurance. Amount: 20000.0, Term: 18
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Insurance calculated: 30360.00
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 50360.00, Term: 18, Rate: 17.00
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 3189.30
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=1191e825-2a4e-4443-954f-19b34da50248, requestedAmount=50360.00, totalAmount=57407.40, term=18, monthlyPayment=3189.30, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.api.service.LoanOfferService - Generated loan offers: [LoanOfferDto(statementId=89081f1b-c9a6-4701-8941-038411e29431, requestedAmount=20000.0, totalAmount=23488.20, term=18, monthlyPayment=1304.90, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false), LoanOfferDto(statementId=7e7a6911-d09d-4145-acbe-9b09b5834436, requestedAmount=20000.0, totalAmount=23314.68, term=18, monthlyPayment=1295.26, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true), LoanOfferDto(statementId=68ff8406-6e25-4491-8c0c-f60906d6f71d, requestedAmount=50360.00, totalAmount=57838.68, term=18, monthlyPayment=3213.26, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false), LoanOfferDto(statementId=1191e825-2a4e-4443-954f-19b34da50248, requestedAmount=50360.00, totalAmount=57407.40, term=18, monthlyPayment=3189.30, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)]
-2024-12-21 21:47:55 [http-nio-8081-exec-6] INFO  r.i.c.a.c.CalculatorController - Successfully calculated loan offers: [LoanOfferDto(statementId=89081f1b-c9a6-4701-8941-038411e29431, requestedAmount=20000.0, totalAmount=23488.20, term=18, monthlyPayment=1304.90, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false), LoanOfferDto(statementId=7e7a6911-d09d-4145-acbe-9b09b5834436, requestedAmount=20000.0, totalAmount=23314.68, term=18, monthlyPayment=1295.26, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true), LoanOfferDto(statementId=68ff8406-6e25-4491-8c0c-f60906d6f71d, requestedAmount=50360.00, totalAmount=57838.68, term=18, monthlyPayment=3213.26, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false), LoanOfferDto(statementId=1191e825-2a4e-4443-954f-19b34da50248, requestedAmount=50360.00, totalAmount=57407.40, term=18, monthlyPayment=3189.30, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)]
-2024-12-21 22:03:41 [main] INFO  r.i.calculator.CalculatorApplication - Application start
-2024-12-21 22:03:42 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
-2024-12-21 22:03:42 [main] INFO  r.i.calculator.CalculatorApplication - Starting CalculatorApplication using Java 17.0.12 with PID 17540 (D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator\target\classes started by Iguan04ka in D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator)
-2024-12-21 22:03:42 [main] INFO  r.i.calculator.CalculatorApplication - No active profile set, falling back to 1 default profile: "default"
-2024-12-21 22:03:47 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
-2024-12-21 22:03:47 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
-2024-12-21 22:03:48 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2024-12-21 22:03:48 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.31]
-2024-12-21 22:03:48 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2024-12-21 22:03:48 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 5139 ms
-2024-12-21 22:03:50 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
-2024-12-21 22:03:50 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
-2024-12-21 22:03:50 [main] INFO  r.i.calculator.CalculatorApplication - Started CalculatorApplication in 8.783 seconds (process running for 10.819)
-2024-12-21 22:04:21 [http-nio-8081-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-12-21 22:04:21 [http-nio-8081-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2024-12-21 22:04:21 [http-nio-8081-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.c.CalculatorController - Received request to calculate loan offers
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.api.service.LoanOfferService - Received request for loan offers: LoanStatementRequestDto(amount=200000.0, term=18, firstName=Ivan, lastName=Petrov, middleName=Sergeevich, email=ivan.petrov@example.com, birthdate=1990-05-15, passportSeries=1234, passportNumber=123456)
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: false, isInsuranceEnabled: false
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 200000.0, Term: 18, Rate: 21.00
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 13048.98
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=1c40216e-9b19-4383-b994-13aeef8c8939, requestedAmount=200000.0, totalAmount=234881.64, term=18, monthlyPayment=13048.98, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false)
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: true, isInsuranceEnabled: false
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 20.00
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 200000.0, Term: 18, Rate: 20.00
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 12952.64
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=6073679c-b9d4-4e94-8390-1e2e277eca21, requestedAmount=200000.0, totalAmount=233147.52, term=18, monthlyPayment=12952.64, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true)
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: false, isInsuranceEnabled: true
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 18.00
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Calculating insurance. Amount: 200000.0, Term: 18
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Insurance calculated: 33600.00
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 233600.00, Term: 18, Rate: 18.00
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 14905.03
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=220e6ec1-c739-4745-b63a-6febe2713981, requestedAmount=233600.00, totalAmount=268290.54, term=18, monthlyPayment=14905.03, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false)
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: true, isInsuranceEnabled: true
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Calculating insurance. Amount: 200000.0, Term: 18
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Insurance calculated: 33600.00
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 233600.00, Term: 18, Rate: 17.00
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 14793.91
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=84e3adda-b149-4af2-b457-52f3787a04d8, requestedAmount=233600.00, totalAmount=266290.38, term=18, monthlyPayment=14793.91, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.api.service.LoanOfferService - Generated loan offers: [LoanOfferDto(statementId=1c40216e-9b19-4383-b994-13aeef8c8939, requestedAmount=200000.0, totalAmount=234881.64, term=18, monthlyPayment=13048.98, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false), LoanOfferDto(statementId=6073679c-b9d4-4e94-8390-1e2e277eca21, requestedAmount=200000.0, totalAmount=233147.52, term=18, monthlyPayment=12952.64, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true), LoanOfferDto(statementId=220e6ec1-c739-4745-b63a-6febe2713981, requestedAmount=233600.00, totalAmount=268290.54, term=18, monthlyPayment=14905.03, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false), LoanOfferDto(statementId=84e3adda-b149-4af2-b457-52f3787a04d8, requestedAmount=233600.00, totalAmount=266290.38, term=18, monthlyPayment=14793.91, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)]
-2024-12-21 22:04:22 [http-nio-8081-exec-2] INFO  r.i.c.a.c.CalculatorController - Successfully calculated loan offers: [LoanOfferDto(statementId=1c40216e-9b19-4383-b994-13aeef8c8939, requestedAmount=200000.0, totalAmount=234881.64, term=18, monthlyPayment=13048.98, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false), LoanOfferDto(statementId=6073679c-b9d4-4e94-8390-1e2e277eca21, requestedAmount=200000.0, totalAmount=233147.52, term=18, monthlyPayment=12952.64, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true), LoanOfferDto(statementId=220e6ec1-c739-4745-b63a-6febe2713981, requestedAmount=233600.00, totalAmount=268290.54, term=18, monthlyPayment=14905.03, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false), LoanOfferDto(statementId=84e3adda-b149-4af2-b457-52f3787a04d8, requestedAmount=233600.00, totalAmount=266290.38, term=18, monthlyPayment=14793.91, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)]
-2024-12-21 22:26:47 [http-nio-8081-exec-2] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 485 ms
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.c.CalculatorController - Received request to calculate loan offers
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.api.service.LoanOfferService - Received request for loan offers: LoanStatementRequestDto(amount=123000.0, term=18, firstName=Ivan, lastName=Petrov, middleName=Sergeevich, email=ivan.petrov@example.com, birthdate=1990-05-15, passportSeries=1234, passportNumber=123456)
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: false, isInsuranceEnabled: false
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 21.00
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 123000.0, Term: 18, Rate: 21.00
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 8025.13
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=47a307df-16d3-4269-91d5-b7f1ac654f60, requestedAmount=123000.0, totalAmount=144452.34, term=18, monthlyPayment=8025.13, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false)
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: true, isInsuranceEnabled: false
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 20.00
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 123000.0, Term: 18, Rate: 20.00
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 7965.87
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=c3895f4c-dafb-43c8-9e05-2f4c3860c5b8, requestedAmount=123000.0, totalAmount=143385.66, term=18, monthlyPayment=7965.87, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true)
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: false, isInsuranceEnabled: true
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 18.00
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating insurance. Amount: 123000.0, Term: 18
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Insurance calculated: 32214.00
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 155214.00, Term: 18, Rate: 18.00
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 9903.55
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=c55ef6bd-156a-4943-aa0a-c83160fe6d3f, requestedAmount=155214.00, totalAmount=178263.90, term=18, monthlyPayment=9903.55, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false)
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating final rate. isSalaryClient: true, isInsuranceEnabled: true
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Final rate calculation completed. Final rate: 17.00
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating insurance. Amount: 123000.0, Term: 18
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Insurance calculated: 32214.00
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Calculating monthly payment. Amount: 155214.00, Term: 18, Rate: 17.00
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.s.CalculateCreditService - Monthly payment calculated: 9829.72
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.api.service.LoanOfferService - Generated loan offer: LoanOfferDto(statementId=969de919-409f-4002-88c4-4f163f139080, requestedAmount=155214.00, totalAmount=176934.96, term=18, monthlyPayment=9829.72, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.api.service.LoanOfferService - Generated loan offers: [LoanOfferDto(statementId=47a307df-16d3-4269-91d5-b7f1ac654f60, requestedAmount=123000.0, totalAmount=144452.34, term=18, monthlyPayment=8025.13, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false), LoanOfferDto(statementId=c3895f4c-dafb-43c8-9e05-2f4c3860c5b8, requestedAmount=123000.0, totalAmount=143385.66, term=18, monthlyPayment=7965.87, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true), LoanOfferDto(statementId=c55ef6bd-156a-4943-aa0a-c83160fe6d3f, requestedAmount=155214.00, totalAmount=178263.90, term=18, monthlyPayment=9903.55, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false), LoanOfferDto(statementId=969de919-409f-4002-88c4-4f163f139080, requestedAmount=155214.00, totalAmount=176934.96, term=18, monthlyPayment=9829.72, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)]
-2024-12-21 22:48:14 [http-nio-8081-exec-8] INFO  r.i.c.a.c.CalculatorController - Successfully calculated loan offers: [LoanOfferDto(statementId=47a307df-16d3-4269-91d5-b7f1ac654f60, requestedAmount=123000.0, totalAmount=144452.34, term=18, monthlyPayment=8025.13, rate=21.00, isInsuranceEnabled=false, isSalaryClient=false), LoanOfferDto(statementId=c3895f4c-dafb-43c8-9e05-2f4c3860c5b8, requestedAmount=123000.0, totalAmount=143385.66, term=18, monthlyPayment=7965.87, rate=20.00, isInsuranceEnabled=false, isSalaryClient=true), LoanOfferDto(statementId=c55ef6bd-156a-4943-aa0a-c83160fe6d3f, requestedAmount=155214.00, totalAmount=178263.90, term=18, monthlyPayment=9903.55, rate=18.00, isInsuranceEnabled=true, isSalaryClient=false), LoanOfferDto(statementId=969de919-409f-4002-88c4-4f163f139080, requestedAmount=155214.00, totalAmount=176934.96, term=18, monthlyPayment=9829.72, rate=17.00, isInsuranceEnabled=true, isSalaryClient=true)]
+2024-12-22 00:02:18 [main] INFO  r.i.calculator.CalculatorApplication - Application start
+2024-12-22 00:02:19 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-12-22 00:02:19 [main] INFO  r.i.calculator.CalculatorApplication - Starting CalculatorApplication using Java 17.0.12 with PID 6676 (D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator\target\classes started by Iguan04ka in D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator)
+2024-12-22 00:02:19 [main] INFO  r.i.calculator.CalculatorApplication - No active profile set, falling back to 1 default profile: "default"
+2024-12-22 00:02:20 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2024-12-22 00:02:20 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2024-12-22 00:02:20 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-12-22 00:02:20 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-12-22 00:02:20 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-12-22 00:02:20 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1441 ms
+2024-12-22 00:02:21 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2024-12-22 00:02:21 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+2024-12-22 00:02:21 [main] INFO  r.i.calculator.CalculatorApplication - Started CalculatorApplication in 2.717 seconds (process running for 3.717)
+2024-12-22 00:02:26 [http-nio-8081-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-12-22 00:02:26 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-12-22 00:02:26 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-12-22 00:02:27 [http-nio-8081-exec-2] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 442 ms
+2024-12-22 00:04:25 [main] INFO  r.i.calculator.CalculatorApplication - Application start
+2024-12-22 00:04:26 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-12-22 00:04:26 [main] INFO  r.i.calculator.CalculatorApplication - Starting CalculatorApplication using Java 17.0.12 with PID 15532 (D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator\target\classes started by Iguan04ka in D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator)
+2024-12-22 00:04:26 [main] INFO  r.i.calculator.CalculatorApplication - No active profile set, falling back to 1 default profile: "default"
+2024-12-22 00:04:27 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2024-12-22 00:04:27 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2024-12-22 00:04:27 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-12-22 00:04:27 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-12-22 00:04:28 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-12-22 00:04:28 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1812 ms
+2024-12-22 00:04:28 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2024-12-22 00:04:28 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+2024-12-22 00:04:28 [main] INFO  r.i.calculator.CalculatorApplication - Started CalculatorApplication in 3.184 seconds (process running for 4.215)
+2024-12-22 00:04:57 [main] INFO  r.i.calculator.CalculatorApplication - Application start
+2024-12-22 00:04:58 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-12-22 00:04:58 [main] INFO  r.i.calculator.CalculatorApplication - Starting CalculatorApplication using Java 17.0.12 with PID 11920 (D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator\target\classes started by Iguan04ka in D:\JDK and IDEA\Projects JAVA\NeoStudyProject\calculator)
+2024-12-22 00:04:58 [main] INFO  r.i.calculator.CalculatorApplication - No active profile set, falling back to 1 default profile: "default"
+2024-12-22 00:05:00 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2024-12-22 00:05:00 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2024-12-22 00:05:00 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-12-22 00:05:00 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-12-22 00:05:00 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-12-22 00:05:00 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1817 ms
+2024-12-22 00:05:01 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2024-12-22 00:05:01 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+2024-12-22 00:05:01 [main] INFO  r.i.calculator.CalculatorApplication - Started CalculatorApplication in 3.388 seconds (process running for 4.652)
+2024-12-22 00:06:55 [http-nio-8081-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-12-22 00:06:55 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-12-22 00:06:55 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2024-12-22 00:06:56 [http-nio-8081-exec-4] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 459 ms

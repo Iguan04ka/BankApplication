@@ -1,0 +1,100 @@
+openapi: 3.0.1
+info:
+  title: Statement microservice API's
+servers:
+- url: http://localhost:8082
+paths:
+  /statement:
+    post:
+      tags:
+      - statement-controller
+      operationId: getLoanOffers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoanStatementRequestDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/JsonNode"
+  /statement/offer:
+    post:
+      tags:
+      - statement-controller
+      operationId: selectLoanOffer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JsonNode"
+        required: true
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    LoanStatementRequestDto:
+      required:
+      - amount
+      - birthdate
+      - email
+      - firstName
+      - lastName
+      - passportNumber
+      - passportSeries
+      - term
+      type: object
+      properties:
+        amount:
+          minimum: 20000.0
+          exclusiveMinimum: false
+          type: number
+          description: Requested loan amount
+        term:
+          minimum: 6
+          type: integer
+          description: Loan term in months
+          format: int32
+        firstName:
+          maxLength: 30
+          minLength: 2
+          type: string
+          description: Borrower's first name
+        lastName:
+          maxLength: 30
+          minLength: 2
+          type: string
+          description: Borrower's last name
+        middleName:
+          maxLength: 30
+          minLength: 2
+          type: string
+          description: Borrower's middle name
+        email:
+          type: string
+          description: Borrower's email address
+        birthdate:
+          type: string
+          description: Borrower's date of birth
+          format: date
+        passportSeries:
+          maxLength: 4
+          minLength: 4
+          pattern: "^[0-9]+$"
+          type: string
+          description: Passport series of the borrower
+        passportNumber:
+          maxLength: 6
+          minLength: 6
+          pattern: "^[0-9]+$"
+          type: string
+          description: Passport number of the borrower
+    JsonNode:
+      type: object

@@ -2,6 +2,7 @@ spring:
   liquibase:
     enabled: true
     change-log: db/changelog/main-changelog.xml
+
   jpa:
     properties:
       '[hypersistence.utils.enable_types_contributor]': false
@@ -26,9 +27,3 @@ microservice:
 server:
   port: 8082
 
-springdoc:
-  api-docs:
-    path: /api-docs
-  swagger-ui:
-    enabled: true
-  pre-loading-enabled: true
