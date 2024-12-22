@@ -2,6 +2,7 @@ package ru.iguana.statement.api.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -15,27 +16,35 @@ import java.util.stream.StreamSupport;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class StatementService {
 
     private final WebClient webClient;
 
     public Mono<List<JsonNode>> getLoanOfferList(LoanStatementRequestDto request) {
-        return fetchLoanOffers(request); // Возвращаем реактивный поток данных
+        log.info("Received request for getLoanOfferList");
+        log.debug("Received request for getLoanOfferList: {}", request);
+        return fetchLoanOffers(request)
+                .doOnSuccess(response -> log.info("Response for getLoanOfferList: {}", response))
+                .doOnError(error -> log.error("Error in getLoanOfferList: {}", error.getMessage(), error));
     }
 
     private Mono<List<JsonNode>> fetchLoanOffers(LoanStatementRequestDto request) {
+        log.info("Fetching loan offers with request");
+        log.debug("Fetching loan offers with request: {}", request);
         return webClient.post()
                 .uri("/deal/statement")
                 .bodyValue(request)
                 .retrieve()
-                .bodyToMono(JsonNode.class) // Получаем реактивный Mono<JsonNode>
-                .flatMap(response -> { // Работаем с ответом реактивно
+                .bodyToMono(JsonNode.class)
+                .flatMap(response -> {
                     if (response != null && response.isArray()) {
-                        // Преобразуем JSON-ответ в список
                         List<JsonNode> list = StreamSupport.stream(response.spliterator(), false)
                                 .collect(Collectors.toList());
+                        log.info("Successfully fetched and processed loan offers: {}", list);
                         return Mono.just(list);
                     } else {
+                        log.error("Invalid response structure: expected JSON array, got: {}", response);
                         return Mono.error(new IllegalStateException("Invalid response structure: expected JSON array"));
                     }
                 });
