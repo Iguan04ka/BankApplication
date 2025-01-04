@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: dossier
+server:
+  port: 8085

@@ -4,10 +4,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.iguana.deal.api.dto.EmailMessageDto;
+import ru.iguana.deal.kafka.KafkaProducer;
+import ru.iguana.deal.model.entity.Client;
 import ru.iguana.deal.model.entity.Jsonb.StatusHistory;
 import ru.iguana.deal.model.entity.Statement;
 import ru.iguana.deal.model.entity.enums.ApplicationStatus;
 import ru.iguana.deal.model.entity.enums.ChangeType;
+import ru.iguana.deal.model.entity.enums.EmailTheme;
+import ru.iguana.deal.model.repository.ClientRepository;
 import ru.iguana.deal.model.repository.StatementRepository;
 
 import java.sql.Timestamp;
@@ -20,6 +25,10 @@ import java.util.UUID;
 @Slf4j
 public class SelectOfferService {
     private final StatementRepository statementRepository;
+
+    private final ClientRepository clientRepository;
+
+    private final KafkaProducer kafkaProducer;
 
     public void selectLoanOffer(JsonNode json) {
         log.info("Received request to select loan offer");
@@ -44,6 +53,8 @@ public class SelectOfferService {
 
             // Устанавливаем стейтменту принятый оффер и сохраняем
             statement.setAppliedOffer(json);
+            //отправляем EmailMessage в кафку
+            sendEmailMessageDtoToKafka(json);
             log.info("Set applied offer for statementId: {}", statementUuid);
             statementRepository.save(statement);
             log.info("Statement successfully saved for statementId: {}", statementUuid);
@@ -81,5 +92,19 @@ public class SelectOfferService {
         }
 
         return optionalStatement.get();
+    }
+
+    private void sendEmailMessageDtoToKafka(JsonNode json){
+        Statement statement = statementRepository.findById(getStatementIdFromJson(json)).orElseThrow();
+
+        Client client = clientRepository.findById(statement.getClientId()).orElseThrow();
+
+        EmailMessageDto message = new EmailMessageDto()
+                .setAddress(client.getEmail())
+                .setTheme(EmailTheme.FINISH_REGISTRATION)
+                .setStatementId(statement.getStatementId())
+                .setText("Завершите оформление");
+
+        kafkaProducer.sendMessageToFinishRegistrationTopic(message);
     }
 }
