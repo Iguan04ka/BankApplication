@@ -3,6 +3,7 @@ package ru.iguana.deal.api.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.iguana.deal.api.dto.EmailMessageDto;
+import ru.iguana.deal.api.service.DocumentService;
 import ru.iguana.deal.kafka.KafkaProducer;
 import ru.iguana.deal.model.entity.Client;
 import ru.iguana.deal.model.entity.Statement;
@@ -17,28 +18,20 @@ import java.util.UUID;
 @AllArgsConstructor
 public class DocumentController {
 
-    private final KafkaProducer kafkaProducer;
-
-    private  final StatementRepository statementRepository;
-
-    private final ClientRepository clientRepository;
-
-
-    //TODO service
+    private final DocumentService documentService;
 
     @PostMapping("/send")
     public void send(@PathVariable UUID statementId){
-        Statement statement = statementRepository.findById(statementId).orElseThrow();
+        documentService.sendDocuments(statementId);
+    }
 
-        Client client = clientRepository.findById(statement.getClientId()).orElseThrow();
+    @PostMapping("/sign")
+    public void sign(@PathVariable UUID statementId){
+        documentService.signDocuments(statementId);
+    }
 
-        String email = client.getEmail();
-
-        EmailMessageDto message = new EmailMessageDto()
-                .setAddress(email)
-                .setStatementId(statement.getStatementId())
-                .setTheme(EmailTheme.SEND_DOCUMENTS)
-                .setText("Send documents");
-        kafkaProducer.sendMessageToSendSesTopic(message);
+    @PostMapping("/code")
+    public void code(@PathVariable UUID statementId){
+        documentService.codeDocuments(statementId);
     }
 }
