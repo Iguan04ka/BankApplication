@@ -3,6 +3,7 @@ package ru.iguana.dossier.service;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,11 +12,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MailSenderService {
     private final JavaMailSender javaMailSender;
-
-    @Value("${spring.mail.username}")
-    private String from;
 
     public void sendEmail(String to, String subject, String text) {
         try {
@@ -26,9 +25,9 @@ public class MailSenderService {
             helper.setText(text, false);
 
             javaMailSender.send(message);
-            System.out.println("Email sent successfully to: " + to);
+            log.info("Email sent successfully to: {}", to);
         } catch (MessagingException e) {
-            System.err.println("Failed to send email: " + e.getMessage());
+            log.error("Failed to send email to: {}. Error: {}", to, e.getMessage(), e);
         }
     }
 }
