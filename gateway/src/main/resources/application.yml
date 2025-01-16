@@ -1,0 +1,5 @@
+server:
+  port: 8086
+
+microservice:
+  base-url: http://localhost:8086
