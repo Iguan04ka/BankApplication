@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,8 @@ public class StatementOfferService {
                 .retrieve()
                 .bodyToMono(Void.class)
                 .doOnSuccess(response -> log.info("Successfully sent offer request: {}", request))
-                .doOnError(error -> log.error("Error occurred while sending offer request: {}", error.getMessage(), error));
+                .doOnError(error -> log.error("Error occurred while sending offer request: {}", error.getMessage(), error))
+                .subscribe();
     }
+
 }

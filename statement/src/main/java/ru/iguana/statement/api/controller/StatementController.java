@@ -3,6 +3,7 @@ package ru.iguana.statement.api.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -37,6 +38,7 @@ public class StatementController {
                 .map(ResponseEntity::ok);
     }
     @PostMapping("/statement/offer")
+    @SneakyThrows
     public ResponseEntity<Void> selectLoanOffer(@RequestBody JsonNode request){
         log.info("Received request for selectLoanOffer");
         log.debug("Received request for selectLoanOffer: {}", request);
