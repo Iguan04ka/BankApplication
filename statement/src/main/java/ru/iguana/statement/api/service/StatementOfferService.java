@@ -31,7 +31,6 @@ public class StatementOfferService {
                 .retrieve()
                 .bodyToMono(Void.class)
                 .doOnSuccess(response -> log.info("Successfully sent offer request: {}", request))
-                .doOnError(error -> log.error("Error occurred while sending offer request: {}", error.getMessage(), error))
-                .block();
+                .doOnError(error -> log.error("Error occurred while sending offer request: {}", error.getMessage(), error));
     }
 }

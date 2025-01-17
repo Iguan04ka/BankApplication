@@ -2,4 +2,5 @@ server:
   port: 8086
 
 microservice:
-  base-url: http://localhost:8086
+  deal-url: http://localhost:8080
+  statement-url: http://localhost:8082
