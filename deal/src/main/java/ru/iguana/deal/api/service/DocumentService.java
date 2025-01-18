@@ -55,7 +55,7 @@ public class DocumentService {
                 .setAddress(getEmailFromClient(statementId))
                 .setTheme(EmailTheme.CREDIT_ISSUED)
                 .setStatementId(statementId)
-                .setText("Подпишите документы");
+                .setText("Кредит одобрен");
 
         log.info("Sending message to 'send-ses' topic");
         log.debug("Sending message to 'send-ses' topic: {}", message);

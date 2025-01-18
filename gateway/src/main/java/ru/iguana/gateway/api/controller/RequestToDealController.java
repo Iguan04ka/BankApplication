@@ -21,4 +21,19 @@ public class RequestToDealController {
                 statementId);
     }
 
+    @PostMapping("document/{statementId}")
+    public void sendDocuments(@PathVariable String statementId){
+        requestToDealService.sendDocuments(statementId);
+    }
+
+    @PostMapping("document/{statementId}/sign")
+    public void signDocuments(@PathVariable String statementId){
+        requestToDealService.signDocuments(statementId);
+    }
+
+    @PostMapping("document/{statementId}/code")
+    public void codeDocuments(@PathVariable String statementId){
+        requestToDealService.codeDocuments(statementId);
+    }
+
 }

@@ -21,7 +21,7 @@ public class RequestToStatementController {
     private RequestToStatementService requestToStatementService;
 
     @PostMapping("/statement")
-    public Mono<ResponseEntity<List<JsonNode>>> getLoanOffers(@RequestBody @Validated
+    public Mono<ResponseEntity<List<JsonNode>>> getLoanOffers(@RequestBody
                                                               LoanStatementRequestDto request) {
         log.info("Received request for getLoanOffers");
         log.debug("Received request for getLoanOffers: {}", request);

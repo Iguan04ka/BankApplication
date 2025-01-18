@@ -24,12 +24,7 @@ public class RequestToDealService {
     public void finishRegistration(FinishRegistrationRequestDto finishRegistrationRequestDto,
                                    String statementId){
 
-        sendFinishRegistrationInfo(finishRegistrationRequestDto, statementId);
-    }
-
-    private void sendFinishRegistrationInfo(FinishRegistrationRequestDto finishRegistrationRequestDto,
-                                            String statementId) {
-        log.info("Sending FinishRegistrationInfo request to external service");
+        log.info("Sending FinishRegistrationInfo request to deal service");
         webClient.post()
                 .uri("/deal/calculate/{statementId}", statementId)
                 .bodyValue(finishRegistrationRequestDto)
@@ -37,6 +32,26 @@ public class RequestToDealService {
                 .bodyToMono(Void.class)
                 .doOnSuccess(response -> log.info("Successfully sent offer request: {}", finishRegistrationRequestDto))
                 .doOnError(error -> log.error("Error occurred while sending offer request: {}", error.getMessage(), error))
+                .block();
+    }
+
+    public void sendDocuments(String statementId){
+        sendRequestToDealDocument("deal/document/{statementId}/send", statementId);
+    }
+
+    public void signDocuments(String statementId){
+        sendRequestToDealDocument("deal/document/{statementId}/sign", statementId);
+    }
+
+    public void codeDocuments(String statementId){
+        sendRequestToDealDocument("deal/document/{statementId}/code", statementId);
+    }
+
+    private void sendRequestToDealDocument(String uri, String statementId){
+        webClient.post()
+                .uri(uri, statementId)
+                .retrieve()
+                .bodyToMono(Void.class)
                 .block();
     }
 }
