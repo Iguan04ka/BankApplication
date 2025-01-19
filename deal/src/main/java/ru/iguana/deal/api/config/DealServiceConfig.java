@@ -9,6 +9,7 @@ import ru.iguana.deal.api.convertor.ScoringDataDtoConvertor;
 import ru.iguana.deal.api.convertor.StatementConvertor;
 import ru.iguana.deal.api.service.CalculateCreditService;
 import ru.iguana.deal.api.service.StatementService;
+import ru.iguana.deal.kafka.KafkaProducer;
 import ru.iguana.deal.model.repository.ClientRepository;
 import ru.iguana.deal.model.repository.CreditRepository;
 import ru.iguana.deal.model.repository.StatementRepository;
@@ -27,7 +28,7 @@ public class DealServiceConfig {
                                                          CreditConvertor creditConvertor,
                                                          CreditRepository creditRepository,
                                                          ScoringDataDtoConvertor scoringDataDtoConvertor,
-                                                         DealProperties dealProperties,
+                                                         KafkaProducer kafkaProducer,
                                                          WebClient webClient) {
         return new CalculateCreditService(
                 statementRepository,
@@ -35,7 +36,7 @@ public class DealServiceConfig {
                 creditConvertor,
                 creditRepository,
                 scoringDataDtoConvertor,
-                dealProperties,
+                kafkaProducer,
                 webClient
         );
     }
