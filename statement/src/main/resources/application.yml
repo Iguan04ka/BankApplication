@@ -1,18 +1,15 @@
 spring:
-  kafka:
-    producer:
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-    consumer:
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring.json.trusted.packages: "*"
+  liquibase:
+    enabled: true
+    change-log: db/changelog/main-changelog.xml
+
   jpa:
     properties:
       '[hypersistence.utils.enable_types_contributor]': false
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
   datasource:
     url: jdbc:postgresql://localhost:5432/deal
     username: postgres
@@ -22,8 +19,11 @@ spring:
     init:
       platform: postgres
   application:
-    name: deal
-
+    name: statement
 
 microservice:
-  base-url: http://localhost:8081
+  base-url: http://localhost:8080
+
+server:
+  port: 8082
+

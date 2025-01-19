@@ -1,0 +1,185 @@
+openapi: 3.0.1
+info:
+  title: Statement microservice API's
+servers:
+- url: http://localhost:8082
+paths:
+  /statement:
+    post:
+      tags:
+        - statement-controller
+      operationId: getLoanOffers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoanStatementRequestDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    statementId:
+                      type: string
+                      format: uuid
+                      description: Unique identifier for the statement
+                    requestedAmount:
+                      type: string
+                      format: decimal
+                      description: Requested amount in BigDecimal format
+                    totalAmount:
+                      type: string
+                      format: decimal
+                      description: Total amount in BigDecimal format
+                    term:
+                      type: integer
+                      description: Term in months
+                    monthlyPayment:
+                      type: string
+                      format: decimal
+                      description: Monthly payment in BigDecimal format
+                    rate:
+                      type: string
+                      format: decimal
+                      description: Interest rate in BigDecimal format
+                    isInsuranceEnabled:
+                      type: boolean
+                      description: Indicates if insurance is enabled
+                    isSalaryClient:
+                      type: boolean
+                      description: Indicates if the client is a salary client
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+                  code:
+                    type: integer
+                    description: Error code
+  /statement/offer:
+    post:
+      tags:
+        - statement-controller
+      operationId: selectLoanOffer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  statementId:
+                    type: string
+                    format: uuid
+                    description: Unique identifier for the statement
+                  requestedAmount:
+                    type: string
+                    description: Requested amount as string
+                  totalAmount:
+                    type: string
+                    description: Total amount as string
+                  term:
+                    type: integer
+                    description: Term in months
+                  monthlyPayment:
+                    type: string
+                    description: Monthly payment as string
+                  rate:
+                    type: string
+                    description: Interest rate as string
+                  isInsuranceEnabled:
+                    type: boolean
+                    description: Indicates if insurance is enabled
+                  isSalaryClient:
+                    type: boolean
+                    description: Indicates if the client is a salary client
+        required: true
+      responses:
+        "200":
+          description: No Content
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+                  code:
+                    type: integer
+                    description: Error code
+
+components:
+  schemas:
+    LoanStatementRequestDto:
+      required:
+      - amount
+      - birthdate
+      - email
+      - firstName
+      - lastName
+      - passportNumber
+      - passportSeries
+      - term
+      type: object
+      properties:
+        amount:
+          minimum: 20000.0
+          exclusiveMinimum: false
+          type: number
+          description: Requested loan amount
+        term:
+          minimum: 6
+          type: integer
+          description: Loan term in months
+          format: int32
+        firstName:
+          maxLength: 30
+          minLength: 2
+          type: string
+          description: Borrower's first name
+        lastName:
+          maxLength: 30
+          minLength: 2
+          type: string
+          description: Borrower's last name
+        middleName:
+          maxLength: 30
+          minLength: 2
+          type: string
+          description: Borrower's middle name
+        email:
+          type: string
+          description: Borrower's email address
+        birthdate:
+          type: string
+          description: Borrower's date of birth
+          format: date
+        passportSeries:
+          maxLength: 4
+          minLength: 4
+          pattern: "^[0-9]+$"
+          type: string
+          description: Passport series of the borrower
+        passportNumber:
+          maxLength: 6
+          minLength: 6
+          pattern: "^[0-9]+$"
+          type: string
+          description: Passport number of the borrower
+    JsonNode:
+      type: object

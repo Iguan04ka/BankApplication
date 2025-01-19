@@ -50,8 +50,6 @@ public class StatementService {
         this.statementRepository = statementRepository;
     }
 
-
-
     public ResponseEntity<List<JsonNode>> getLoanOfferList(JsonNode json) {
         log.info("Received request to fetch loan offers with data");
         log.debug("Received request to fetch loan offers with data: {}", json);

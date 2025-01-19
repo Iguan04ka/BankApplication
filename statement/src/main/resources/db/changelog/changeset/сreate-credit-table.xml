@@ -1,0 +1,59 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create-credit" author="iguan04ka">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="credit"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="credit">
+
+            <column name="credit_id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="amount" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="term" type="integer">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="monthly_payment" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="rate" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="psk" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="payment_schedule" type="jsonb">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="insurance_enabled" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="salary_client" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="credit_status" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
