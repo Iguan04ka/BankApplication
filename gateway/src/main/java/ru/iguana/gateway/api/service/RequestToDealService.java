@@ -36,14 +36,17 @@ public class RequestToDealService {
     }
 
     public void sendDocuments(String statementId){
+        log.info("A request has been received to send documents regarding the case: {}", statementId);
         sendRequestToDealDocument("deal/document/{statementId}/send", statementId);
     }
 
     public void signDocuments(String statementId){
+        log.info("Request to sign documents on the case has been received: {}", statementId);
         sendRequestToDealDocument("deal/document/{statementId}/sign", statementId);
     }
 
     public void codeDocuments(String statementId){
+        log.info("Received a request to confirm the code for the case: {}", statementId);
         sendRequestToDealDocument("deal/document/{statementId}/code", statementId);
     }
 
@@ -52,6 +55,8 @@ public class RequestToDealService {
                 .uri(uri, statementId)
                 .retrieve()
                 .bodyToMono(Void.class)
+                .doOnSuccess(response -> log.info("Successfully sent request to deal/document"))
+                .doOnError(error -> log.error("Error occurred while sending request to deal/document: {}", error.getMessage(), error))
                 .block();
     }
 }
