@@ -41,7 +41,7 @@ public class DocumentService {
         log.info("Preparing to sign documents for statementId: {}", statementId);
         EmailMessageDto message = new EmailMessageDto()
                 .setAddress(getEmailFromClient(statementId))
-                .setTheme(EmailTheme.CREATE_DOCUMENTS)
+                .setTheme(EmailTheme.SEND_SES)
                 .setStatementId(statementId)
                 .setText("Документы сформированы");
         log.info("Sending message to 'create-documents' topic");
@@ -53,9 +53,9 @@ public class DocumentService {
         log.info("Preparing to send SES code for statementId: {}", statementId);
         EmailMessageDto message = new EmailMessageDto()
                 .setAddress(getEmailFromClient(statementId))
-                .setTheme(EmailTheme.SEND_SES)
+                .setTheme(EmailTheme.CREDIT_ISSUED)
                 .setStatementId(statementId)
-                .setText("Подпишите документы");
+                .setText("Кредит одобрен");
 
         log.info("Sending message to 'send-ses' topic");
         log.debug("Sending message to 'send-ses' topic: {}", message);

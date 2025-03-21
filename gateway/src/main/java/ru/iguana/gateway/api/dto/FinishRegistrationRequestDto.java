@@ -1,4 +1,4 @@
-package ru.iguana.deal.api.dto;
+package ru.iguana.gateway.api.dto;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.media.Schema;

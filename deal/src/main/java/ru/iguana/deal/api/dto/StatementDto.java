@@ -1,5 +1,6 @@
 package ru.iguana.deal.api.dto;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -23,7 +24,7 @@ public class StatementDto {
 
     Timestamp creationDate;
 
-    String appliedOffer;
+    JsonNode appliedOffer;
 
     Timestamp signDate;
 
