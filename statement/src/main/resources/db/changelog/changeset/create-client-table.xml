@@ -1,0 +1,57 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create-client" author="iguan04ka">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="client"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="client">
+
+            <column name="client_id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="last_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="first_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="middle_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="birth_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="gender" type="varchar(255)"/>
+
+            <column name="marital_status" type="varchar(255)"/>
+
+            <column name="dependent_amount" type="integer"/>
+
+            <column name="passport" type="jsonb">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="employment" type="jsonb"/>
+
+            <column name="account_number" type="varchar(255)"/>
+
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
