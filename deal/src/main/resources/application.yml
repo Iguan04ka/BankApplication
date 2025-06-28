@@ -6,24 +6,30 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: "*"
+    bootstrap-servers: kafka:9092
   jpa:
     properties:
       '[hypersistence.utils.enable_types_contributor]': false
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: validate
-  datasource:
-    url: jdbc:postgresql://localhost:5432/deal
-    username: postgres
-    password: 12345
-    driverClassName: org.postgresql.Driver
+      ddl-auto: update
+
   sql:
     init:
       platform: postgres
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/deal
+    username: iguana
+    password: postgres
+    driverClassName: org.postgresql.Driver
+
   application:
     name: deal
 
+server:
+  port: 8082
 
 microservice:
-  base-url: http://localhost:8081
+  base-url: http://calculator:8081

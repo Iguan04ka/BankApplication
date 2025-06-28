@@ -1,4 +1,8 @@
 spring:
+
+  kafka:
+    bootstrap-servers: kafka:9092
+
   application:
     name: dossier
   mail:
@@ -13,4 +17,4 @@ spring:
           starttls:
             enable: true
 server:
-  port: 8085
+  port: 8084
