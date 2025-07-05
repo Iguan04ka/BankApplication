@@ -30,23 +30,6 @@ public class IntegrationRolesService {
 
     private final UserResponseMapper rolesDtoMapper;
 
-    public void saveUsers(List<UserWithRolesDto> users){
-
-        for (UserWithRolesDto dto : users) {
-            for (UserWithRolesDto.RoleWrapper wrapper : dto.getRoles()) {
-                RoleEntity role = wrapper.getRole();
-                if (!roleRepository.existsById(role.getId())) {
-                    roleRepository.save(role);
-                }
-            }
-        }
-
-        List<UserEntity> usersEntity = mapper.mapToUserEntities(users);
-
-        userRepository.saveAll(usersEntity);
-
-    }
-
     public Map<Long, UserResponseDto> getUsersWithRolesByIds(List<Long> ids) {
         List<UserEntity> users = userRepository.findAllById(ids);
 

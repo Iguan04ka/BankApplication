@@ -6,7 +6,7 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: "*"
-    bootstrap-servers: kafka:9092
+    bootstrap-servers: kafka:29092
   jpa:
     properties:
       '[hypersistence.utils.enable_types_contributor]': false

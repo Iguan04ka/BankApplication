@@ -15,12 +15,6 @@ import java.util.Map;
 public class IntegrationRolesController {
     private final IntegrationRolesService integrationRolesService;
 
-    @PostMapping("/roles/saveUsers")
-    public ResponseEntity<Void> saveUsers(@RequestBody List<UserWithRolesDto> users){
-        integrationRolesService.saveUsers(users);
-        return ResponseEntity.ok().build();
-    }
-
     @PostMapping("/roles/usersRoles")
     public ResponseEntity<Map<Long, UserResponseDto>> usersRoles(@RequestBody List<Long> ids){
         var response = integrationRolesService.getUsersWithRolesByIds(ids);

@@ -2,7 +2,6 @@ package ru.iguana.integrationroles.api.dto;
 
 import lombok.Data;
 
-import javax.management.relation.Role;
 import java.util.Set;
 
 @Data
