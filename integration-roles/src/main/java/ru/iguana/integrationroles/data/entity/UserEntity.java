@@ -21,7 +21,7 @@ public class UserEntity implements Serializable {
     private UserKey userKey;
 
     @Column(name = "is_blocked", nullable = false)
-    private boolean isBlocked;
+    private boolean blocked;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserRole> roles = new HashSet<>();

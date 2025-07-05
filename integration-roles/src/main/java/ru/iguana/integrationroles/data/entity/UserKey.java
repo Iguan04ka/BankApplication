@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class UserKey implements Serializable {
 
     private String sub;
+
     private String systemCode;
 
 }
