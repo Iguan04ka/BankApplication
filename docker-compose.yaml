@@ -127,6 +127,16 @@ services:
     networks:
       - app-network
 
+  integration-roles:
+    build:
+      context: ./integration-roles
+      dockerfile: dockerfile
+    container_name: integration-roles
+    ports:
+      - "8086:8086"
+    networks:
+      - app-network
+
 volumes:
   pg_data:
 

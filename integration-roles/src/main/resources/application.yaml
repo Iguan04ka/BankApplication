@@ -1,1 +1,29 @@
+spring:
 
+  sql:
+    init:
+      platform: postgres
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/deal
+    username: iguana
+    password: postgres
+    driverClassName: org.postgresql.Driver
+
+  jpa:
+    properties:
+      '[hypersistence.utils.enable_types_contributor]': false
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+
+  liquibase:
+    enabled: false
+    change-log: db/changelog/changelog-master.xml
+
+  application:
+    name: integration-roles
+
+server:
+  port: 8086
