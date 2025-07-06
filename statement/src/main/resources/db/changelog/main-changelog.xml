@@ -10,4 +10,10 @@
 
     <include file="changeset/create-statement-table.xml" relativeToChangelogFile="true"/>
 
+    <include file="changeset/001-create-table-roles.xml" relativeToChangelogFile="true"/>
+
+    <include file="changeset/002-create-table-users.xml" relativeToChangelogFile="true"/>
+
+    <include file="changeset/003-create-table-user-roles.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>
