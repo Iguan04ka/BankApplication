@@ -54,10 +54,10 @@ public class RoleServiceRestClient {
 
             userRepository.saveAll(usersEntity);
 
-            log.info("Загружено {} пользователей по REST", users.size());
+            log.info("Loaded {} users via REST", users.size());
 
         } catch (Exception e) {
-            log.error("Ошибка при загрузке данных из Ролевой модели по REST: {}", e.getMessage());
+            log.error("Error loading data from Role Model via REST: {}", e.getMessage());
         }
     }
 }
