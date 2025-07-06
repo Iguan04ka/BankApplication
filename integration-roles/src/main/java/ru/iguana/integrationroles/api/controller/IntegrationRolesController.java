@@ -16,7 +16,7 @@ public class IntegrationRolesController {
     private final IntegrationRolesService integrationRolesService;
 
     @PostMapping("/roles/usersRoles")
-    public ResponseEntity<Map<Long, UserResponseDto>> usersRoles(@RequestBody List<Long> ids){
+    public ResponseEntity<Map<String, UserResponseDto>> usersRoles(@RequestBody List<Long> ids){
         var response = integrationRolesService.getUsersWithRolesByIds(ids);
         return ResponseEntity.ok(response);
     }

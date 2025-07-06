@@ -2,6 +2,7 @@ package ru.iguana.integrationroles.api.service;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,21 +22,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class IntegrationRolesService {
-
-    private final UserWithRolesMapper mapper;
-
     private final UserRepository userRepository;
-
-    private final RoleRepository roleRepository;
-
     private final UserResponseMapper rolesDtoMapper;
 
-    public Map<Long, UserResponseDto> getUsersWithRolesByIds(List<Long> ids) {
-        List<UserEntity> users = userRepository.findAllById(ids);
-
-        return users.stream()
+    @Cacheable(value = "usersWithRoles", key = "#ids")
+    public Map<String, UserResponseDto> getUsersWithRolesByIds(List<Long> ids) {
+        return userRepository.findAllById(ids).stream()
                 .collect(Collectors.toMap(
-                        UserEntity::getId,
+                        user -> String.valueOf(user.getId()),  // преобразуем Long в String
                         rolesDtoMapper::toDto
                 ));
     }
