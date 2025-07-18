@@ -4,3 +4,4 @@ server:
 microservice:
   deal-url: http://deal:8082
   statement-url: http://statement:8083
+  roles-url: http://integration-roles:8086

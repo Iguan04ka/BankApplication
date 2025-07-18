@@ -14,11 +14,8 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class KafkaConsumer {
-
     private final RoleRepository roleRepository;
-
     private final UserRepository userRepository;
-
     private final UserWithRolesMapper mapper;
 
     @KafkaListener(topics = "roles", groupId = "saveRoles")
@@ -37,5 +34,6 @@ public class KafkaConsumer {
 
         userRepository.saveAll(usersEntity);
     }
-
 }
+
+
