@@ -14,4 +14,5 @@ import org.springframework.stereotype.Component;
 public class GatewayProperties {
     private String dealUrl;
     private String statementUrl;
+    private String rolesUrl;
 }

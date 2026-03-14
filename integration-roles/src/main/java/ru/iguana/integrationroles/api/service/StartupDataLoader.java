@@ -16,10 +16,8 @@ import java.util.concurrent.TimeUnit;
 @Component
 @RequiredArgsConstructor
 public class StartupDataLoader implements ApplicationRunner {
-
     private final AdminClient adminClient;
     private final RoleServiceRestClient restClient;
-
     @Override
     public void run(ApplicationArguments args) {
         if (isKafkaAvailable()) {
@@ -42,4 +40,6 @@ public class StartupDataLoader implements ApplicationRunner {
         }
     }
 }
+
+
 

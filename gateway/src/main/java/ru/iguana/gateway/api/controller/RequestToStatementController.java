@@ -21,16 +21,14 @@ public class RequestToStatementController {
     private RequestToStatementService requestToStatementService;
 
     @PostMapping("/statement")
-    public Mono<ResponseEntity<List<JsonNode>>> getLoanOffers(@RequestBody
+    public ResponseEntity<List<JsonNode>> getLoanOffers(@RequestBody
                                                               LoanStatementRequestDto request) {
         log.info("Received request for getLoanOffers");
         log.debug("Received request for getLoanOffers: {}", request);
-        return requestToStatementService.getLoanOffer(request)
-                .doOnNext(response -> {
-                    log.debug("Response for getLoanOffers: {}", response);
-                    log.info("Response for getLoanOffers");
-                })
-                .map(ResponseEntity::ok);
+        List<JsonNode> offers = requestToStatementService.getLoanOffer(request);
+        log.debug("Response for getLoanOffers: {}", offers);
+        log.info("Response for getLoanOffers");
+        return ResponseEntity.ok(offers);
     }
 
     @PostMapping("/statement/select")
