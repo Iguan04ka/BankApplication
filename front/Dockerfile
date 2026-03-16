@@ -12,7 +12,7 @@ RUN npm run build
 
 # Финальный образ на nginx для отдачи статических файлов
 FROM nginx:alpine
-# Удаляем дефолтный конфиг и добавляем простой конфиг для SPA (try_files -> index.html)
+# Удаляем дефолтный конфиг и добавляем конфиг для SPA и проксирования /statement к gateway
 RUN rm /etc/nginx/conf.d/default.conf \
  && cat > /etc/nginx/conf.d/default.conf <<'NGINX_CONF'
 server {
@@ -20,9 +20,21 @@ server {
   server_name localhost;
   root /usr/share/nginx/html;
   index index.html;
+
+  # Прокси для запроса формы к backend-сервису в docker-compose
+  location = /statement {
+    proxy_pass http://gateway:8085/statement;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+  }
+
+  # Всё прочее — отдаём SPA
   location / {
     try_files $uri $uri/ /index.html;
   }
+
   location /static/ {
     expires 1y;
     add_header Cache-Control "public, must-revalidate";
