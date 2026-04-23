@@ -5,3 +5,9 @@ microservice:
   deal-url: http://deal:8082
   statement-url: http://statement:8083
   roles-url: http://integration-roles:8086
+
+spring:
+  data:
+    redis:
+      host: redis
+      port: 6379

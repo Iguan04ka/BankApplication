@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.iguana.gateway.api.dto.LoginRequestDto;
 import ru.iguana.gateway.api.dto.RefreshRequestDto;
+import ru.iguana.gateway.api.dto.RegisterRequestDto;
 import ru.iguana.gateway.api.dto.UserResponseDto;
 import ru.iguana.gateway.api.service.JwtService;
 import ru.iguana.gateway.api.service.RefreshTokenStore;
@@ -23,31 +24,52 @@ public class AuthController {
 
     private final JwtService jwtService;
     private final RequestToIntegrationRolesService rolesService;
-
     private final RefreshTokenStore refreshTokenStore;
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequestDto request) {
+
+        if (request.getSub() == null || request.getSub().isBlank()
+                || request.getPassword() == null || request.getPassword().isBlank()) {
+            return ResponseEntity.badRequest().body("Sub and password are required");
+        }
+
+        try {
+            UserResponseDto userDto = rolesService.createUser(request);
+
+            if (userDto == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("User creation failed");
+            }
+
+            return ResponseEntity.ok("User successfully registered");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Registration failed: " + e.getMessage());
+        }
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto request) {
 
-        if (request.getSub() == null || request.getSub().isBlank()) {
-            return ResponseEntity.badRequest().body("Sub is required");
+        if (request.getSub() == null || request.getSub().isBlank()
+                || request.getPassword() == null || request.getPassword().isBlank()) {
+            return ResponseEntity.badRequest().body("Sub and password are required");
         }
 
         UserResponseDto userDto;
 
-
         try {
-            userDto = rolesService.getUserBySub(request);
+            userDto = rolesService.authenticate(request);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Failed to retrieve user: " + e.getMessage());
+                    .body("Invalid credentials");
         }
-
-        var sub = userDto.getUserKey().getSub();
 
         if (userDto == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("User not found");
+                    .body("Invalid credentials");
         }
 
         if (userDto.isBlocked()) {
@@ -55,10 +77,7 @@ public class AuthController {
                     .body("User is blocked");
         }
 
-        if (userDto.getRoles() == null || userDto.getRoles().isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("User has no roles");
-        }
+        String sub = userDto.getUserKey().getSub();
 
         String accessToken = jwtService.generateAccessToken(sub);
         String refreshToken = jwtService.generateRefreshToken(sub);
@@ -70,6 +89,7 @@ public class AuthController {
                 "refreshToken", refreshToken
         ));
     }
+
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(@RequestBody RefreshRequestDto request) {
 
@@ -96,6 +116,7 @@ public class AuthController {
                 "accessToken", newAccessToken
         ));
     }
+
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestBody RefreshRequestDto request) {
 

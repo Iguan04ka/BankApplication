@@ -57,7 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         try {
-            UserResponseDto userDto = service.getUserBySub(new LoginRequestDto(sub));
+            UserResponseDto userDto = service.getUserBySub(sub);
 
             if (userDto == null) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -96,5 +96,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return request.getServletPath().startsWith("/auth/");
     }
 }

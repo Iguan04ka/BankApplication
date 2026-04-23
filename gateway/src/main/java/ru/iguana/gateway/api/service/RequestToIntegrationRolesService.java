@@ -2,10 +2,12 @@ package ru.iguana.gateway.api.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import ru.iguana.gateway.api.dto.LoginRequestDto;
+import ru.iguana.gateway.api.dto.RegisterRequestDto;
 import ru.iguana.gateway.api.dto.UserResponseDto;
 
 import java.util.List;
@@ -27,11 +29,29 @@ public class RequestToIntegrationRolesService {
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
     }
-    public UserResponseDto getUserBySub(LoginRequestDto loginRequestDto){
+    @Cacheable(value = "users", key = "#sub")
+    public UserResponseDto getUserBySub(String sub){
         return rolesRestClient
                 .post()
                 .uri("/roles/userBySub")
-                .body(loginRequestDto)
+                .body(Map.of("sub", sub))
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+    }
+
+    public UserResponseDto authenticate(LoginRequestDto request) {
+        return rolesRestClient
+                .post()
+                .uri("/roles/authenticate")
+                .body(request)
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+    }
+    public UserResponseDto createUser(RegisterRequestDto request) {
+        return rolesRestClient
+                .post()
+                .uri("/roles/createUser")
+                .body(request)
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
     }

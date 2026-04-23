@@ -15,10 +15,14 @@ import java.util.Set;
 public class UserEntity implements Serializable {
 
     @Id
+    @GeneratedValue()
     private Long id;
 
     @Embedded
     private UserKey userKey;
+
+    @Column(name = "password", nullable = false)
+    private String password;
 
     @Column(name = "is_blocked", nullable = false)
     private boolean blocked;

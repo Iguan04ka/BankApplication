@@ -1,11 +1,13 @@
 package ru.iguana.gateway.api.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRequestDto {
+public class RegisterRequestDto {
     private String sub;
     private String password;
 }

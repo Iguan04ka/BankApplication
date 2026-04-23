@@ -6,7 +6,6 @@ import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.DescribeTopicsResult;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.iguana.integrationroles.api.dto.LoginRequestDto;
+import ru.iguana.integrationroles.api.dto.RegisterRequestDto;
+import ru.iguana.integrationroles.api.dto.SubRequestDto;
 import ru.iguana.integrationroles.api.dto.UserResponseDto;
 import ru.iguana.integrationroles.api.service.IntegrationRolesService;
 
@@ -34,8 +36,20 @@ public class IntegrationRolesController {
         return ResponseEntity.ok(result);
     }
     @PostMapping("/roles/userBySub")
-    public ResponseEntity<UserResponseDto> getUserBySub (@RequestBody LoginRequestDto loginRequestDto){
-        var result = integrationRolesService.getUserResponseDtoBySub(loginRequestDto.getSub());
+    public ResponseEntity<UserResponseDto> getUserBySub (@RequestBody SubRequestDto subRequestDto){
+        var result = integrationRolesService.getUserResponseDtoBySub(subRequestDto.getSub());
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/roles/createUser")
+    public ResponseEntity<UserResponseDto> createUser(@RequestBody RegisterRequestDto request) {
+        var result = integrationRolesService.createUser(request);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/roles/authenticate")
+    public ResponseEntity<UserResponseDto> authenticate(@RequestBody LoginRequestDto request) {
+        var result = integrationRolesService.authenticate(request);
         return ResponseEntity.ok(result);
     }
 }
