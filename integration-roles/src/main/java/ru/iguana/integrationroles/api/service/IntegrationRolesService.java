@@ -6,10 +6,12 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.iguana.integrationroles.api.dto.UserResponseDto;
 import ru.iguana.integrationroles.api.mapper.UserResponseMapper;
+import ru.iguana.integrationroles.data.entity.UserEntity;
 import ru.iguana.integrationroles.data.repository.UserRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +40,11 @@ public class IntegrationRolesService {
         var logins = userRepository.findUserLoginsByRoleName(roleName);
         log.info("getUserLoginsByRole result: {}", logins);
         return logins;
+    }
+    public UserResponseDto getUserResponseDtoBySub(String sub){
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserKey_Sub(sub);
+        UserEntity userEntity = userEntityOptional.orElseThrow(() -> new IllegalArgumentException("Значение не найдено"));
+        return rolesDtoMapper.toDto(userEntity);
     }
 }
 

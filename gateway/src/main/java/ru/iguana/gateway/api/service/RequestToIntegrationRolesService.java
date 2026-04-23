@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import ru.iguana.gateway.api.dto.LoginRequestDto;
 import ru.iguana.gateway.api.dto.UserResponseDto;
 
 import java.util.List;
@@ -23,6 +24,14 @@ public class RequestToIntegrationRolesService {
         return rolesRestClient.post()
                 .uri("/roles/usersRoles")
                 .body(ids)
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+    }
+    public UserResponseDto getUserBySub(LoginRequestDto loginRequestDto){
+        return rolesRestClient
+                .post()
+                .uri("/roles/userBySub")
+                .body(loginRequestDto)
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
     }

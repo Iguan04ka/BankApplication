@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import java.util.List;
 public class RequestToStatementController {
     private RequestToStatementService requestToStatementService;
 
+    @PreAuthorize("hasAuthority('base_user')")
     @PostMapping("/statement")
     public ResponseEntity<List<JsonNode>> getLoanOffers(@RequestBody
                                                               LoanStatementRequestDto request) {

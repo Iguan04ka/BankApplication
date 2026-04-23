@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.iguana.integrationroles.api.dto.LoginRequestDto;
 import ru.iguana.integrationroles.api.dto.UserResponseDto;
 import ru.iguana.integrationroles.api.service.IntegrationRolesService;
 
@@ -30,6 +31,11 @@ public class IntegrationRolesController {
         log.info("GET /roles/usersByRole called with roleName: {}", roleName);
         var result = integrationRolesService.getUserLoginsByRole(roleName);
         log.info("Response for /roles/usersByRole: {}", result);
+        return ResponseEntity.ok(result);
+    }
+    @PostMapping("/roles/userBySub")
+    public ResponseEntity<UserResponseDto> getUserBySub (@RequestBody LoginRequestDto loginRequestDto){
+        var result = integrationRolesService.getUserResponseDtoBySub(loginRequestDto.getSub());
         return ResponseEntity.ok(result);
     }
 }

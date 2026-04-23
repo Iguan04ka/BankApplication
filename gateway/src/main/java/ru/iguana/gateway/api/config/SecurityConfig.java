@@ -5,20 +5,25 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import ru.iguana.gateway.api.filter.HeaderUserRoleFilter;
+import ru.iguana.gateway.api.filter.JwtAuthenticationFilter;
+import ru.iguana.gateway.api.service.JwtService;
 import ru.iguana.gateway.api.service.RequestToIntegrationRolesService;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final RequestToIntegrationRolesService service;
+
+    private final JwtService jwtService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -29,10 +34,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/statement/**").authenticated()
+                        .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/document/**").authenticated()
                         .anyRequest().denyAll()
                 )
-                .addFilterBefore(new HeaderUserRoleFilter(service), BasicAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtService, service), BasicAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint((req, res, ex) -> {
                     res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import ru.iguana.integrationroles.data.entity.UserEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
@@ -14,5 +15,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             "JOIN ur.role r " +
             "WHERE r.name = :roleName")
     List<String> findUserLoginsByRoleName(@Param("roleName") String roleName);
+
+    Optional<UserEntity> findByUserKey_Sub(String sub);
 
 }
