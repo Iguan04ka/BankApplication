@@ -12,7 +12,7 @@ RUN npm run build
 
 # Финальный образ на nginx для отдачи статических файлов
 FROM nginx:alpine
-# Удаляем дефолтный конфиг и добавляем конфиг для SPA и проксирования /statement к gateway
+# Удаляем дефолтный конфиг и добавляем простой и безопасный конфиг для SPA и проксирования API к gateway
 RUN rm /etc/nginx/conf.d/default.conf \
  && cat > /etc/nginx/conf.d/default.conf <<'NGINX_CONF'
 server {
@@ -21,13 +21,41 @@ server {
   root /usr/share/nginx/html;
   index index.html;
 
-  # Прокси для запроса формы к backend-сервису в docker-compose
+  # Явно отдаём SPA по /statement
   location = /statement {
-    proxy_pass http://gateway:8085/statement;
+    try_files /index.html =404;
+  }
+  location ^~ /statement/ {
+    try_files /index.html =404;
+  }
+
+  # Явно отдаём SPA на GET /auth/login и /auth/register
+  location = /auth/login { try_files /index.html =404; }
+  location = /auth/register { try_files /index.html =404; }
+
+  # Прокси для API: /api/* -> gateway, убираем префикс /api
+  location /api/ {
+    rewrite ^/api/(.*)$ /$1 break;
+    proxy_pass http://gateway:8085;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header Authorization $http_authorization;
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+  }
+
+  # Прокси для auth endpoints (все методы) — backend сам обрабатывает GET/POST
+  location /auth/ {
+    proxy_pass http://gateway:8085;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header Authorization $http_authorization;
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
   }
 
   # Всё прочее — отдаём SPA

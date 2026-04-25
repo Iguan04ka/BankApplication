@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import client from '../../api/client';
 
 const initial = {
   amount: 500000.0,
@@ -24,19 +24,33 @@ export default function Statement() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const getEndpoint = () => {
+    const isDev = process.env.NODE_ENV === 'development';
+    return isDev ? '/statement' : '/api/statement';
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     setResponse(null);
     try {
-      // Используем относительный путь: nginx проксирует /statement -> gateway:8085
-      const res = await axios.post('/statement', form, {
-        headers: {
-          'Content-Type': 'application/json',
-          login: '123',
-        },
-      });
+      const endpoint = getEndpoint();
+      const payload = {
+        ...form,
+        amount: typeof form.amount === 'string' ? parseFloat(form.amount) : form.amount,
+        term: typeof form.term === 'string' ? parseInt(form.term, 10) : form.term,
+      };
+
+      const token = localStorage.getItem('accessToken');
+      const headers = {
+        login: '123',
+      };
+      if (token) headers.Authorization = `Bearer ${token}`;
+
+      console.debug('Statement: sending request', { endpoint, headers, payload });
+
+      const res = await client.post(endpoint, payload, { headers });
       setResponse(res.data);
     } catch (err) {
       setError(err.message || 'Request failed');
