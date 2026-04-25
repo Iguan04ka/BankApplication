@@ -35,6 +35,9 @@ public class LoanStatementRequestDto {
     @Size(min = 2, max = 30, message = "Middle name should not exceed 30 characters")
     String middleName;
 
+    @Size(min = 2, max = 30, message = "Login should not exceed 30 characters")
+    String userSub;
+
     @NotNull()
     @Email(message = "Invalid email format")
     @NotBlank(message = "Email cannot be empty")

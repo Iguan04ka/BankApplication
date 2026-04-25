@@ -38,6 +38,9 @@ public class Client {
     @Column(name = "middle_name")
     String middleName;
 
+    @Column(name = "user_sub")
+    String userSub;
+
     @Column(name = "birth_date")
     LocalDate birthDate;
 

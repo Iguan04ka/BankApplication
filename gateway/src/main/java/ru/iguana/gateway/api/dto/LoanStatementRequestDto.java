@@ -32,6 +32,8 @@ public class LoanStatementRequestDto {
     @Schema(description = "Borrower's middle name")
     String middleName;
 
+    String userSub;
+
     @Schema(description = "Borrower's email address")
     String email;
 
@@ -44,5 +46,7 @@ public class LoanStatementRequestDto {
 
     @Schema(description = "Passport number of the borrower")
     String passportNumber;
+
+
 }
 

@@ -19,6 +19,8 @@ public class ClientDto {
 
     String middleName;
 
+    String userSub;
+
     LocalDate birthDate;
 
     String email;

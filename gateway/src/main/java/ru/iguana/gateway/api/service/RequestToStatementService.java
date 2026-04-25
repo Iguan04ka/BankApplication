@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -27,6 +28,11 @@ public class RequestToStatementService {
 
     public List<JsonNode> getLoanOffer(LoanStatementRequestDto request) {
         log.info("Fetching loan offers with request: {}", request);
+
+        String sub = SecurityContextHolder.getContext().getAuthentication().getName();
+        request.setUserSub(sub);
+
+        log.info("после добавления логина: {}", request);
         JsonNode response = restClient.post()
                 .uri("/statement")
                 .body(request)

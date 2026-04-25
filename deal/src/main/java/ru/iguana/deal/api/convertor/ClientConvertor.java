@@ -1,6 +1,7 @@
 package ru.iguana.deal.api.convertor;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.iguana.deal.api.dto.ClientDto;
 import ru.iguana.deal.model.entity.Client;
@@ -8,6 +9,7 @@ import ru.iguana.deal.model.entity.Jsonb.Passport;
 
 import java.time.LocalDate;
 @Component
+@Slf4j
 public class ClientConvertor {
 
     public ClientDto jsonToClientDto(JsonNode jsonRequest){
@@ -20,6 +22,8 @@ public class ClientConvertor {
 
                 .setMiddleName(jsonRequest.path("middleName").asText())
 
+                .setUserSub(jsonRequest.path("userSub").asText())
+
                 .setEmail(jsonRequest.path("email").asText())
 
                 .setBirthDate(LocalDate.parse(jsonRequest.path("birthdate").asText()))
@@ -28,7 +32,7 @@ public class ClientConvertor {
                                 .setSeries(jsonRequest.path("passportSeries").asText())
                                 .setNumber(jsonRequest.path("passportNumber").asText())
                 );
-
+        log.info("из джсона в дто: {}", clientDto);
         return clientDto;
     }
 
@@ -41,12 +45,14 @@ public class ClientConvertor {
 
                 .setMiddleName(clientDto.getMiddleName())
 
+                .setUserSub(clientDto.getUserSub())
+
                 .setEmail(clientDto.getEmail())
 
                 .setBirthDate(clientDto.getBirthDate())
 
                 .setPassport(clientDto.getPassport());
-
+        log.info("из дто в ентити: {}", entity);
         return entity;
 
     }
