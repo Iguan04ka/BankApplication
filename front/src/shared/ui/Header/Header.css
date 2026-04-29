@@ -1,0 +1,66 @@
+.header-nav {
+  background: linear-gradient(135deg, #e8f4f8 0%, #f0f8ff 100%);
+  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.1);
+  border-bottom: 2px solid #87ceeb;
+  padding: 1rem 0;
+}
+
+.navbar-brand {
+  font-size: 1.8rem;
+  color: #0066cc !important;
+}
+
+.brand-icon {
+  margin-right: 0.5rem;
+  font-size: 2rem;
+}
+
+.nav-link {
+  color: #0066cc !important;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin: 0 0.5rem;
+}
+
+.nav-link:hover {
+  color: #0052a3 !important;
+  text-decoration: underline;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  border: none;
+  color: white;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+}
+
+.btn-outline-danger {
+  border-color: #dc3545;
+  color: #dc3545;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.5rem;
+  }
+
+  .brand-icon {
+    font-size: 1.5rem;
+  }
+}
+

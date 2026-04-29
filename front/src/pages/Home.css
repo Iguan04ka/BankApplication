@@ -1,0 +1,252 @@
+.home-container {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
+  padding: 2rem 1rem;
+}
+
+.home-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-section {
+  text-align: center;
+  margin-top: 3rem;
+  margin-bottom: 4rem;
+  padding: 3rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 102, 204, 0.1);
+  border: 1px solid rgba(0, 102, 204, 0.1);
+}
+
+.hero-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.hero-icon {
+  font-size: 3rem;
+  margin-right: 1rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+.hero-title h1 {
+  font-size: 2.5rem;
+  color: #0066cc;
+  font-weight: 700;
+  margin: 0;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: #0066cc99;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.hero-description {
+  margin: 1.5rem 0;
+  color: #555;
+  font-size: 1rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.btn {
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 102, 204, 0.3);
+}
+
+.btn-outline-primary {
+  border: 2px solid #0066cc;
+  color: #0066cc;
+  background: transparent;
+}
+
+.btn-outline-primary:hover {
+  background: #0066cc;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 102, 204, 0.2);
+}
+
+.btn-lg {
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+}
+
+.features-section {
+  margin: 3rem 0;
+}
+
+.section-title {
+  font-size: 2rem;
+  color: #0066cc;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.feature-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0, 102, 204, 0.1);
+  border: 1px solid rgba(0, 102, 204, 0.1);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 102, 204, 0.2);
+  border-color: rgba(0, 102, 204, 0.2);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+  animation: float 3s ease-in-out infinite;
+}
+
+.feature-card h3 {
+  color: #0066cc;
+  font-weight: 600;
+  margin: 1rem 0;
+  font-size: 1.25rem;
+}
+
+.feature-card p {
+  color: #666;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.cta-section {
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: white;
+  margin-top: 3rem;
+  box-shadow: 0 4px 20px rgba(0, 102, 204, 0.3);
+}
+
+.cta-content h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.cta-content p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.95;
+}
+
+.cta-section .btn-primary {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid white;
+  color: white;
+}
+
+.cta-section .btn-primary:hover {
+  background: white;
+  color: #0066cc;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 2rem 1rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-icon {
+    font-size: 2.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .hero-title h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-section {
+    padding: 2rem 1rem;
+  }
+
+  .cta-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .cta-content p {
+    font-size: 1rem;
+  }
+}

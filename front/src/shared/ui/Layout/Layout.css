@@ -1,0 +1,23 @@
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+.layout-main {
+  flex: 1;
+  padding: 2rem 0;
+}
+
+.layout-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .layout-main {
+    padding: 1rem 0;
+  }
+}
+
