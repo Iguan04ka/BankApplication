@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.iguana.deal.api.dto.ClientDto;
 import ru.iguana.deal.model.entity.Client;
+import ru.iguana.deal.model.entity.Jsonb.Employment;
 import ru.iguana.deal.model.entity.Jsonb.Passport;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 @Component
 @Slf4j
@@ -54,6 +56,24 @@ public class ClientConvertor {
                 .setPassport(clientDto.getPassport());
         log.info("из дто в ентити: {}", entity);
         return entity;
+
+    }
+    public Employment employmentJsonToDto(JsonNode json){
+        Employment employment = new Employment();
+        employment.setStatus(json.path("employmentStatus").asText());
+
+        employment.setEmployer_inn(json.path("employerINN").asText());
+
+        BigDecimal salary = new BigDecimal(json.path("salary").asText());
+        employment.setSalary(salary);
+
+        employment.setPosition(json.path("position").asText());
+
+        employment.setWorkExperienceCurrent(json.path("salary").asInt());
+
+        employment.setWorkExperienceTotal(json.path("salary").asInt());
+
+        return employment;
 
     }
 

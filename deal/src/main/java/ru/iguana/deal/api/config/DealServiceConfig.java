@@ -29,7 +29,8 @@ public class DealServiceConfig {
                                                          CreditRepository creditRepository,
                                                          ScoringDataDtoConvertor scoringDataDtoConvertor,
                                                          KafkaProducer kafkaProducer,
-                                                         WebClient webClient) {
+                                                         WebClient webClient,
+                                                         ClientConvertor clientConvertor) {
         return new CalculateCreditService(
                 statementRepository,
                 clientRepository,
@@ -37,7 +38,8 @@ public class DealServiceConfig {
                 creditRepository,
                 scoringDataDtoConvertor,
                 kafkaProducer,
-                webClient
+                webClient,
+                clientConvertor
         );
     }
 

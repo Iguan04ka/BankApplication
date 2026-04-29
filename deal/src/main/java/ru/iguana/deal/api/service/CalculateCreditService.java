@@ -1,9 +1,11 @@
 package ru.iguana.deal.api.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import ru.iguana.deal.api.convertor.ClientConvertor;
 import ru.iguana.deal.api.convertor.ScoringDataDtoConvertor;
 import ru.iguana.deal.api.dto.CreditDto;
 import ru.iguana.deal.api.dto.EmailMessageDto;
@@ -38,6 +40,8 @@ public class CalculateCreditService {
     private final KafkaProducer kafkaProducer;
     private final CreditConvertor creditConvertor;
 
+    private final ClientConvertor clientConvertor;
+
     private final ScoringDataDtoConvertor scoringDataDtoConvertor;
 
     public CalculateCreditService(StatementRepository statementRepository,
@@ -46,7 +50,8 @@ public class CalculateCreditService {
                                   CreditRepository creditRepository,
                                   ScoringDataDtoConvertor scoringDataDtoConvertor,
                                   KafkaProducer kafkaProducer,
-                                  WebClient webClient) {
+                                  WebClient webClient,
+                                  ClientConvertor clientConvertor) {
         this.statementRepository = statementRepository;
         this.clientRepository = clientRepository;
         this.kafkaProducer = kafkaProducer;
@@ -54,8 +59,10 @@ public class CalculateCreditService {
         this.creditConvertor = creditConvertor;
         this.creditRepository = creditRepository;
         this.scoringDataDtoConvertor = scoringDataDtoConvertor;
+        this.clientConvertor = clientConvertor;
     }
 
+    @Transactional
     public void calculate(FinishRegistrationRequestDto finishRegistrationRequestDto,
                           String statementId) {
         log.info("Starting credit calculation for statementId: {}", statementId);
@@ -64,6 +71,12 @@ public class CalculateCreditService {
         Statement statement = getStatementByStatementId(statementId);
         Client client = getClientByClientIdInStatement(statement);
         log.info("Statement and Client successfully retrieved for statementId: {}", statementId);
+
+        client.setGender(finishRegistrationRequestDto.getGender());
+        client.setAccountNumber(finishRegistrationRequestDto.getAccountNumber());
+        client.setMaritalStatus(finishRegistrationRequestDto.getMaritalStatus());
+        client.setDependentAmount(finishRegistrationRequestDto.getDependentAmount());
+        client.setEmployment(clientConvertor.employmentJsonToDto(finishRegistrationRequestDto.getEmployment()));
 
         // Насыщаем scoringDataDto
         JsonNode scoringDataDto = scoringDataDtoConvertor.createScoringDataDto(finishRegistrationRequestDto, client);
@@ -89,6 +102,7 @@ public class CalculateCreditService {
 
         sendEmailMessageDtoToKafka(statement);
         statementRepository.save(statement);
+        clientRepository.save(client);
         log.info("Statement updated with status: {}", ApplicationStatus.CC_APPROVED);
     }
 
