@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Type;
 import ru.iguana.deal.model.entity.Jsonb.StatusHistory;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -47,6 +48,12 @@ public class Statement {
     @Type(JsonType.class)
     @Column(name = "applied_offer", columnDefinition = "jsonb")
     JsonNode appliedOffer;
+
+    @Column(name = "requested_amount")
+    BigDecimal requestedAmount;
+
+    @Column(name = "requested_term")
+    Integer requestedTerm;
 
     @Column(name = "sign_date")
     Timestamp signDate;

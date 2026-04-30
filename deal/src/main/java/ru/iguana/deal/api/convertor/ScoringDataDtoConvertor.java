@@ -10,6 +10,8 @@ import ru.iguana.deal.api.dto.FinishRegistrationRequestDto;
 import ru.iguana.deal.model.entity.Client;
 import ru.iguana.deal.model.repository.StatementRepository;
 
+import java.util.UUID;
+
 @Component
 @Slf4j
 @AllArgsConstructor
@@ -19,14 +21,14 @@ public class ScoringDataDtoConvertor {
     private final StatementRepository statementRepository;
 
     public JsonNode createScoringDataDto(FinishRegistrationRequestDto finishRegistrationRequestDto,
-                                          Client client) {
-        log.info("Creating ScoringDataDto for clientId: {}", client.getClientId());
+                                          Client client, UUID statementId) {
+        log.info("Creating ScoringDataDto for statementId: {}", statementId);
 
         ObjectNode scoringDataDto = objectMapper.createObjectNode();
 
-        scoringDataDto.put("amount", statementRepository.findAmountByClientId(client.getClientId()));
+        scoringDataDto.put("amount", statementRepository.findAmountByStatementId(statementId));
 
-        scoringDataDto.put("term", statementRepository.findTermByClientId(client.getClientId()));
+        scoringDataDto.put("term", statementRepository.findTermByStatementId(statementId));
 
         scoringDataDto.put("firstName", client.getFirstName());
 
@@ -54,9 +56,9 @@ public class ScoringDataDtoConvertor {
 
         scoringDataDto.put("accountNumber", finishRegistrationRequestDto.getAccountNumber());
 
-        scoringDataDto.put("isInsuranceEnabled", statementRepository.findIsInsuranceEnabledByClientId(client.getClientId()));
+        scoringDataDto.put("isInsuranceEnabled", statementRepository.findIsInsuranceEnabledByStatementId(statementId));
 
-        scoringDataDto.put("isSalaryClient", statementRepository.findIsSalaryClientByClientId(client.getClientId()));
+        scoringDataDto.put("isSalaryClient", statementRepository.findIsSalaryClientByStatementId(statementId));
 
         log.debug("ScoringDataDto created: {}", scoringDataDto);
         return scoringDataDto;

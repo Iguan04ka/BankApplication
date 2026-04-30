@@ -16,7 +16,7 @@ export default function Login() {
 
   useEffect(() => {
     if (auth && auth.user) {
-      navigate('/statement');
+      navigate('/account');
     }
   }, [auth, navigate]);
 
@@ -45,8 +45,8 @@ export default function Login() {
         client.defaults.headers = client.defaults.headers || {};
         client.defaults.headers.common = client.defaults.headers.common || {};
         client.defaults.headers.common.Authorization = `Bearer ${token}`;
-        // redirect to statement
-        navigate('/statement');
+        // redirect to account
+        navigate('/account');
       } else {
         setError('Unexpected response: ' + JSON.stringify(res.data));
       }

@@ -1,11 +1,14 @@
 package ru.iguana.deal.api.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ResponseStatusException;
 import ru.iguana.deal.api.config.DealProperties;
 import ru.iguana.deal.api.convertor.ClientConvertor;
 import ru.iguana.deal.api.convertor.StatementConvertor;
@@ -19,9 +22,12 @@ import ru.iguana.deal.model.entity.enums.ChangeType;
 import ru.iguana.deal.model.repository.ClientRepository;
 import ru.iguana.deal.model.repository.StatementRepository;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -33,35 +39,52 @@ public class StatementService {
     private final ClientRepository clientRepository;
     private final WebClient webClient;
     private final StatementRepository statementRepository;
-
     private final DealProperties dealProperties;
+    private final ObjectMapper objectMapper;
 
     public StatementService(WebClient webClient,
                             StatementConvertor statementConvertor,
                             ClientConvertor clientConvertor,
                             ClientRepository clientRepository,
                             StatementRepository statementRepository,
-                            DealProperties dealProperties) {
+                            DealProperties dealProperties,
+                            ObjectMapper objectMapper) {
         this.dealProperties = dealProperties;
         this.webClient = webClient;
         this.clientConvertor = clientConvertor;
         this.statementConvertor = statementConvertor;
         this.clientRepository = clientRepository;
         this.statementRepository = statementRepository;
+        this.objectMapper = objectMapper;
     }
 
     public ResponseEntity<List<JsonNode>> getLoanOfferList(JsonNode json) {
         log.info("Received request to fetch loan offers with data");
         log.debug("Received request to fetch loan offers with data: {}", json);
         try {
-            // Создаем клиента и сохраняем в БД
+            // Создаем DTO
             ClientDto clientDto = clientConvertor.jsonToClientDto(json);
-            Client clientEntity = clientConvertor.clientDtoToClientEntity(clientDto);
-            clientRepository.save(clientEntity);
-            log.info("Client successfully created and saved with ID: {}", clientEntity.getClientId());
 
-            // Создаем statementDto, добавляем id клиента и статус
+            // Получаем клиента по sub
+            Client clientEntity = clientRepository.findByUserSub(clientDto.getUserSub())
+                    .orElseThrow(() -> new IllegalArgumentException("Client not found"));
+
+            log.info("Client found with ID: {}", clientEntity.getClientId());
+
+            mergeClientFromDto(clientEntity, clientDto);
+
+            clientRepository.save(clientEntity);
+
+            // Создаем statementDto
             StatementDto statementDto = createStatementDto(clientEntity);
+
+            // Сохраняем сумму и срок запроса для возможности повторной генерации предложений
+            if (json.has("amount") && !json.get("amount").isNull()) {
+                statementDto.setRequestedAmount(new BigDecimal(json.get("amount").asText()));
+            }
+            if (json.has("term") && !json.get("term").isNull()) {
+                statementDto.setRequestedTerm(json.get("term").intValue());
+            }
 
             // Сохраняем стейтмент
             Statement statementEntity = statementConvertor.statementDtoToStatementEntity(statementDto);
@@ -71,7 +94,7 @@ public class StatementService {
             // Получаем лист офферов
             List<JsonNode> loanOffers = fetchLoanOffers(json);
 
-            // Меняем statementId на id statement'а
+            // Меняем statementId
             changeStatementId(loanOffers, statementEntity);
             log.info("Successfully fetched and updated loan offers for statement ID: {}", statementEntity.getStatementId());
 
@@ -127,5 +150,70 @@ public class StatementService {
             ObjectNode mutableOffer = (ObjectNode) offer;
             mutableOffer.put("statementId", statementEntity.getStatementId().toString());
         });
+    }
+
+    // Fills in only the fields that are currently null in the client entity.
+    // Existing (non-null) profile data is never overwritten by incoming request data.
+    private void mergeClientFromDto(Client clientEntity, ClientDto clientDto) {
+        if (clientEntity.getLastName() == null)      clientEntity.setLastName(clientDto.getLastName());
+        if (clientEntity.getFirstName() == null)     clientEntity.setFirstName(clientDto.getFirstName());
+        if (clientEntity.getMiddleName() == null)    clientEntity.setMiddleName(clientDto.getMiddleName());
+        if (clientEntity.getBirthDate() == null)     clientEntity.setBirthDate(clientDto.getBirthDate());
+        if (clientEntity.getEmail() == null)         clientEntity.setEmail(clientDto.getEmail());
+        if (clientEntity.getGender() == null)        clientEntity.setGender(clientDto.getGender());
+        if (clientEntity.getMaritalStatus() == null) clientEntity.setMaritalStatus(clientDto.getMaritalStatus());
+        if (clientEntity.getDependentAmount() == null) clientEntity.setDependentAmount(clientDto.getDependentAmount());
+        if (clientEntity.getPassport() == null)      clientEntity.setPassport(clientDto.getPassport());
+        if (clientEntity.getEmployment() == null)    clientEntity.setEmployment(clientDto.getEmployment());
+        if (clientEntity.getAccountNumber() == null) clientEntity.setAccountNumber(clientDto.getAccountNumber());
+    }
+
+    public ResponseEntity<List<JsonNode>> getOffersForPreapprovalStatement(
+            UUID statementId, String userSub, BigDecimal fallbackAmount, Integer fallbackTerm) {
+        log.info("Re-generating offers for PREAPPROVAL statementId: {}", statementId);
+
+        Statement statement = statementRepository.findById(statementId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Statement not found"));
+
+        if (!ApplicationStatus.PREAPPROVAL.name().equals(statement.getStatus())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Statement is not in PREAPPROVAL status: " + statement.getStatus());
+        }
+
+        Client client = clientRepository.findByUserSub(userSub)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
+
+        if (!statement.getClientId().equals(client.getClientId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
+        }
+
+        // Use stored values if available, otherwise fall back to the values provided by the caller
+        BigDecimal amount = statement.getRequestedAmount() != null ? statement.getRequestedAmount() : fallbackAmount;
+        Integer term    = statement.getRequestedTerm()    != null ? statement.getRequestedTerm()    : fallbackTerm;
+
+        if (amount == null || term == null) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                    "Cannot determine loan parameters: provide amount and term");
+        }
+
+        ObjectNode loanRequest = objectMapper.createObjectNode();
+        loanRequest.put("amount", amount);
+        loanRequest.put("term", term);
+        loanRequest.put("firstName", client.getFirstName());
+        loanRequest.put("lastName", client.getLastName());
+        loanRequest.put("middleName", client.getMiddleName());
+        loanRequest.put("email", client.getEmail());
+        if (client.getBirthDate() != null) {
+            loanRequest.put("birthdate", client.getBirthDate().toString());
+        }
+        if (client.getPassport() != null) {
+            loanRequest.put("passportSeries", client.getPassport().getSeries());
+            loanRequest.put("passportNumber", client.getPassport().getNumber());
+        }
+
+        List<JsonNode> loanOffers = fetchLoanOffers(loanRequest);
+        changeStatementId(loanOffers, statement);
+        log.info("Successfully re-generated {} offers for statementId: {}", loanOffers.size(), statementId);
+        return ResponseEntity.ok(loanOffers);
     }
 }

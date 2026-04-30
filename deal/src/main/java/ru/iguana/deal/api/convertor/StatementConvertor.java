@@ -15,13 +15,11 @@ public class StatementConvertor {
     public Statement statementDtoToStatementEntity(StatementDto statementDto){
         Statement entity = new Statement();
         entity.setClientId(statementDto.getClientId());
-
         entity.getStatusHistory().addAll(statementDto.getStatusHistory());
-
         entity.setStatus(statementDto.getStatus());
-
+        entity.setRequestedAmount(statementDto.getRequestedAmount());
+        entity.setRequestedTerm(statementDto.getRequestedTerm());
         return entity;
-
     }
     public StatementDto statementEntityToStatementDto(Statement statement){
         StatementDto statementDto = new StatementDto();

@@ -69,9 +69,9 @@ public class ClientConvertor {
 
         employment.setPosition(json.path("position").asText());
 
-        employment.setWorkExperienceCurrent(json.path("salary").asInt());
+        employment.setWorkExperienceCurrent(json.path("workExperienceCurrent").asInt());
 
-        employment.setWorkExperienceTotal(json.path("salary").asInt());
+        employment.setWorkExperienceTotal(json.path("workExperienceTotal").asInt());
 
         return employment;
 

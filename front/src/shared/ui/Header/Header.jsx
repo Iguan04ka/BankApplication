@@ -31,6 +31,11 @@ export default function Header() {
             {user ? (
               <>
                 <li className="nav-item">
+                  <Link className="nav-link" to="/account">
+                    Личный кабинет
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <Link className="nav-link" to="/statement">
                     Заявка
                   </Link>

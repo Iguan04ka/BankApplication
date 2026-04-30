@@ -5,17 +5,21 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import ru.iguana.deal.model.entity.Statement;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface StatementRepository extends CrudRepository<Statement, UUID> {
-    @Query(value = "SELECT applied_offer->>'requestedAmount' AS amount FROM statement WHERE client_id = :clientId", nativeQuery = true)
-    String findAmountByClientId(@Param("clientId") UUID clientId);
-    @Query(value = "SELECT applied_offer->>'term' AS term FROM statement WHERE client_id = :clientId", nativeQuery = true)
-    String findTermByClientId(@Param("clientId") UUID clientId);
+    List<Statement> findAllByClientId(UUID clientId);
 
-    @Query(value = "SELECT applied_offer->>'isInsuranceEnabled' AS isInsuranceEnabled FROM statement WHERE client_id = :clientId", nativeQuery = true)
-    String findIsInsuranceEnabledByClientId(@Param("clientId") UUID clientId);
+    @Query(value = "SELECT applied_offer->>'requestedAmount' FROM statement WHERE statement_id = :statementId", nativeQuery = true)
+    String findAmountByStatementId(@Param("statementId") UUID statementId);
 
-    @Query(value = "SELECT applied_offer->>'isSalaryClient' AS isSalaryClient FROM statement WHERE client_id = :clientId", nativeQuery = true)
-    String findIsSalaryClientByClientId(@Param("clientId") UUID clientId);
+    @Query(value = "SELECT applied_offer->>'term' FROM statement WHERE statement_id = :statementId", nativeQuery = true)
+    String findTermByStatementId(@Param("statementId") UUID statementId);
+
+    @Query(value = "SELECT applied_offer->>'isInsuranceEnabled' FROM statement WHERE statement_id = :statementId", nativeQuery = true)
+    String findIsInsuranceEnabledByStatementId(@Param("statementId") UUID statementId);
+
+    @Query(value = "SELECT applied_offer->>'isSalaryClient' FROM statement WHERE statement_id = :statementId", nativeQuery = true)
+    String findIsSalaryClientByStatementId(@Param("statementId") UUID statementId);
 }

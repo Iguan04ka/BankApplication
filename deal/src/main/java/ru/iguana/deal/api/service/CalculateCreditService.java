@@ -72,14 +72,10 @@ public class CalculateCreditService {
         Client client = getClientByClientIdInStatement(statement);
         log.info("Statement and Client successfully retrieved for statementId: {}", statementId);
 
-        client.setGender(finishRegistrationRequestDto.getGender());
-        client.setAccountNumber(finishRegistrationRequestDto.getAccountNumber());
-        client.setMaritalStatus(finishRegistrationRequestDto.getMaritalStatus());
-        client.setDependentAmount(finishRegistrationRequestDto.getDependentAmount());
-        client.setEmployment(clientConvertor.employmentJsonToDto(finishRegistrationRequestDto.getEmployment()));
+        mergeClientFromRegistration(client, finishRegistrationRequestDto);
 
         // Насыщаем scoringDataDto
-        JsonNode scoringDataDto = scoringDataDtoConvertor.createScoringDataDto(finishRegistrationRequestDto, client);
+        JsonNode scoringDataDto = scoringDataDtoConvertor.createScoringDataDto(finishRegistrationRequestDto, client, statement.getStatementId());
         log.debug("ScoringDataDto created: {}", scoringDataDto);
 
         // Отправляем scoringDataDto в калькулятор и получаем creditDto
@@ -99,6 +95,7 @@ public class CalculateCreditService {
         statement.setStatus(String.valueOf(ApplicationStatus.CC_APPROVED));
         statement.getStatusHistory().add(new StatusHistory(ApplicationStatus.CC_APPROVED,
                 Timestamp.from(Instant.now()), ChangeType.AUTOMATIC));
+        statement.setCredit(creditEntity.getCreditId());
 
         sendEmailMessageDtoToKafka(statement);
         statementRepository.save(statement);
@@ -147,5 +144,16 @@ public class CalculateCreditService {
                 .setText("Документы созданы");
 
         kafkaProducer.sendMessageToCreateDocumentsTopic(message);
+    }
+
+    // Fills in only the fields that are currently null in the client entity.
+    // Existing (non-null) profile data is never overwritten by the registration request.
+    private void mergeClientFromRegistration(Client client, FinishRegistrationRequestDto dto) {
+        if (client.getGender() == null)        client.setGender(dto.getGender());
+        if (client.getMaritalStatus() == null) client.setMaritalStatus(dto.getMaritalStatus());
+        if (client.getDependentAmount() == null) client.setDependentAmount(dto.getDependentAmount());
+        if (client.getAccountNumber() == null) client.setAccountNumber(dto.getAccountNumber());
+        if (client.getEmployment() == null)
+            client.setEmployment(clientConvertor.employmentJsonToDto(dto.getEmployment()));
     }
 }

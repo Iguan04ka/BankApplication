@@ -1,5 +1,6 @@
 package ru.iguana.deal.api.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -49,14 +50,16 @@ public class DealServiceConfig {
                                              ClientConvertor clientConvertor,
                                              ClientRepository clientRepository,
                                              StatementRepository statementRepository,
-                                             DealProperties dealProperties) {
+                                             DealProperties dealProperties,
+                                             ObjectMapper objectMapper) {
         return new StatementService(
                 webClient,
                 statementConvertor,
                 clientConvertor,
                 clientRepository,
                 statementRepository,
-                dealProperties
+                dealProperties,
+                objectMapper
         );
     }
 }

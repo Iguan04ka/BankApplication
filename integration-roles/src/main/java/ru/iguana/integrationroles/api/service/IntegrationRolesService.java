@@ -1,5 +1,6 @@
 package ru.iguana.integrationroles.api.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -15,6 +16,9 @@ import ru.iguana.integrationroles.data.entity.UserKey;
 import ru.iguana.integrationroles.data.entity.UserRole;
 import ru.iguana.integrationroles.data.repository.RoleRepository;
 import ru.iguana.integrationroles.data.repository.UserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import java.util.UUID;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +35,9 @@ public class IntegrationRolesService {
 
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Cacheable(value = "usersWithRoles", key = "#ids")
     public Map<String, UserResponseDto> getUsersWithRolesByIds(List<Long> ids) {
@@ -57,6 +64,7 @@ public class IntegrationRolesService {
         return rolesDtoMapper.toDto(userEntity);
     }
 
+    @Transactional
     public UserResponseDto createUser(RegisterRequestDto request) {
 
         if (request.getSub() == null || request.getSub().isBlank()
@@ -72,7 +80,7 @@ public class IntegrationRolesService {
 
         UserKey key = new UserKey();
         key.setSub(request.getSub());
-        key.setSystemCode("DEFAULT"); // или передавай из DTO
+        key.setSystemCode("DEFAULT");
 
         user.setUserKey(key);
         user.setBlocked(false);
@@ -89,6 +97,16 @@ public class IntegrationRolesService {
         user.getRoles().add(userRole);
 
         userRepository.save(user);
+        UUID clientId = UUID.randomUUID();
+        String userSub = user.getUserKey().getSub();
+
+        entityManager.createNativeQuery("""
+        INSERT INTO client (client_id, user_sub)
+        VALUES (:clientId, :userSub)
+    """)
+                .setParameter("clientId", clientId)
+                .setParameter("userSub", userSub)
+                .executeUpdate();
 
         return rolesDtoMapper.toDto(user);
     }
