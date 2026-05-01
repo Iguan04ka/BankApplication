@@ -15,7 +15,13 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/roles/createUser", "/roles/authenticate").permitAll()
+                        .requestMatchers(
+                                "/roles/createUser",
+                                "/roles/authenticate",
+                                "/roles/forgotPassword",
+                                "/roles/resetPassword",
+                                "/roles/verifyResetToken"
+                        ).permitAll()
                         .anyRequest().permitAll()
                 );
 

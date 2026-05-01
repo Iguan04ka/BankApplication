@@ -29,9 +29,17 @@ server {
     try_files /index.html =404;
   }
 
-  # Явно отдаём SPA на GET /auth/login и /auth/register
+  # Явно отдаём SPA на GET /auth/login, /auth/register, /auth/forgot-password
   location = /auth/login { try_files /index.html =404; }
   location = /auth/register { try_files /index.html =404; }
+  location = /auth/forgot-password { try_files /index.html =404; }
+
+  # GET /auth/reset-password/{token} (без trailing /valid) — это SPA-маршрут
+  # Регулярка: token = один сегмент без '/'. /auth/reset-password/{token}/valid сюда НЕ попадает
+  # и спустится ниже к прокси на gateway.
+  location ~ ^/auth/reset-password/[^/]+$ {
+    try_files /index.html =404;
+  }
 
   # Прокси для API: /api/* -> gateway, убираем префикс /api
   location /api/ {
@@ -47,6 +55,7 @@ server {
   }
 
   # Прокси для auth endpoints (все методы) — backend сам обрабатывает GET/POST
+  # SPA-страницы (login/register/forgot-password/reset-password/{token}) уже отловлены выше.
   location /auth/ {
     proxy_pass http://gateway:8085;
     proxy_set_header Host $host;

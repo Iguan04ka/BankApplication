@@ -50,6 +50,47 @@
   font-size: 1rem;
 }
 
+.account-page-heading {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.account-settings-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  border-radius: 10px;
+  background: #f0f8ff;
+  color: #0066cc;
+  border: 2px solid #87ceeb;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.account-settings-link:hover {
+  background: white;
+  border-color: #0066cc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.15);
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.account-settings-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease;
+}
+
+.account-settings-link:hover .account-settings-icon {
+  transform: rotate(60deg);
+}
+
 /* ── Tab Navigation ──────────────────────────────────────────────────────── */
 
 .account-tabs {
@@ -667,6 +708,19 @@ select.form-control {
   .account-page-header {
     padding: 1.25rem;
     gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .account-settings-link {
+    margin-left: auto;
+  }
+
+  .account-settings-label {
+    display: none;
+  }
+
+  .account-settings-link {
+    padding: 0.55rem 0.75rem;
   }
 
   .account-avatar {

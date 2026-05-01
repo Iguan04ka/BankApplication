@@ -19,6 +19,7 @@ import ru.iguana.integrationroles.data.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import java.util.List;
 import java.util.Map;
@@ -64,6 +65,9 @@ public class IntegrationRolesService {
         return rolesDtoMapper.toDto(userEntity);
     }
 
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+
     @Transactional
     public UserResponseDto createUser(RegisterRequestDto request) {
 
@@ -72,8 +76,21 @@ public class IntegrationRolesService {
             throw new IllegalArgumentException("Sub and password are required");
         }
 
+        if (request.getEmail() == null || request.getEmail().isBlank()) {
+            throw new IllegalArgumentException("Email is required");
+        }
+
+        String email = request.getEmail().trim().toLowerCase();
+        if (!EMAIL_PATTERN.matcher(email).matches()) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+
         if (userRepository.findByUserKey_Sub(request.getSub()).isPresent()) {
             throw new IllegalArgumentException("User already exists");
+        }
+
+        if (userRepository.existsByEmailIgnoreCase(email)) {
+            throw new IllegalArgumentException("Email is already in use");
         }
 
         UserEntity user = new UserEntity();
@@ -84,6 +101,7 @@ public class IntegrationRolesService {
 
         user.setUserKey(key);
         user.setBlocked(false);
+        user.setEmail(email);
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
@@ -101,11 +119,12 @@ public class IntegrationRolesService {
         String userSub = user.getUserKey().getSub();
 
         entityManager.createNativeQuery("""
-        INSERT INTO client (client_id, user_sub)
-        VALUES (:clientId, :userSub)
+        INSERT INTO client (client_id, user_sub, email)
+        VALUES (:clientId, :userSub, :email)
     """)
                 .setParameter("clientId", clientId)
                 .setParameter("userSub", userSub)
+                .setParameter("email", email)
                 .executeUpdate();
 
         return rolesDtoMapper.toDto(user);

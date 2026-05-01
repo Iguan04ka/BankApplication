@@ -24,6 +24,9 @@ public class UserEntity implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "is_blocked", nullable = false)
     private boolean blocked;
 

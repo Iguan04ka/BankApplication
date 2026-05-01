@@ -46,6 +46,13 @@ public class KafkaConsumer {
         sendSesConfirmation(message);
     }
 
+    @KafkaListener(topics = "password-reset", groupId = "dossier")
+    public void listenPasswordResetTopic(String message) {
+        log.info("Received message from topic 'password-reset'");
+        log.debug("Message: {}", message);
+        sendPasswordReset(message);
+    }
+
     private void sendFinishRegistration(String message) {
         try {
             String address = messageConvertor.getAddress(message);
@@ -81,6 +88,22 @@ public class KafkaConsumer {
             mailSenderService.sendHtmlEmail(address, "Код подтверждения — Атлас Банк", html);
         } catch (Exception e) {
             log.error("Failed to send SES email: {}. Error: {}", message, e.getMessage(), e);
+        }
+    }
+
+    private void sendPasswordReset(String message) {
+        try {
+            String address = messageConvertor.getAddress(message);
+
+            Map<String, Object> vars = new HashMap<>();
+            vars.put("resetUrl", messageConvertor.getResetUrl(message));
+            Integer ttl = messageConvertor.getTtlMinutes(message);
+            vars.put("ttlMinutes", ttl != null ? ttl : 30);
+
+            String html = templateService.render("password-reset", vars);
+            mailSenderService.sendHtmlEmail(address, "Восстановление пароля — Атлас Банк", html);
+        } catch (Exception e) {
+            log.error("Failed to send password-reset email: {}. Error: {}", message, e.getMessage(), e);
         }
     }
 

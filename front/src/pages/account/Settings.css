@@ -1,0 +1,362 @@
+/* ── Settings Page ──────────────────────────────────────────────────────── */
+
+.settings-page {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+/* The "window": 75% of viewport (3/4) */
+.settings-shell {
+  width: 75vw;
+  max-width: 1400px;
+  min-height: 75vh;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 102, 204, 0.18);
+  border: 1px solid rgba(0, 102, 204, 0.15);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* 1/3 sidebar, 2/3 workspace */
+  animation: settingsFadeIn 0.25s ease;
+}
+
+@keyframes settingsFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Sidebar (1/3) ──────────────────────────────────────────────────────── */
+
+.settings-sidebar {
+  background: linear-gradient(180deg, #f0f8ff 0%, #e8f4ff 100%);
+  border-right: 1px solid rgba(0, 102, 204, 0.12);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-sidebar-header {
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid rgba(0, 102, 204, 0.12);
+  margin-bottom: 1.5rem;
+}
+
+.settings-sidebar-title {
+  color: #0066cc;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.settings-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex-grow: 1;
+}
+
+.settings-nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0066cc;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.settings-nav-item:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.settings-nav-item--active,
+.settings-nav-item--active:hover {
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
+}
+
+.settings-nav-icon {
+  font-size: 1.05rem;
+}
+
+.settings-back {
+  margin-top: 1.5rem;
+  padding: 0.6rem 1rem;
+  background: transparent;
+  color: #0066cc;
+  border: 2px solid #87ceeb;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.settings-back:hover {
+  background: white;
+  border-color: #0066cc;
+  transform: translateY(-1px);
+}
+
+/* ── Main (2/3) ─────────────────────────────────────────────────────────── */
+
+.settings-main {
+  padding: 2.5rem 2.5rem;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+.settings-section-header {
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 2px solid #e8f4ff;
+}
+
+.settings-section-title {
+  color: #0066cc;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin: 0 0 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.settings-section-icon {
+  font-size: 1.4rem;
+}
+
+.settings-section-subtitle {
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 540px;
+}
+
+/* ── Form ───────────────────────────────────────────────────────────────── */
+
+.settings-form {
+  background: #f8faff;
+  border: 1px solid rgba(0, 102, 204, 0.12);
+  border-radius: 12px;
+  padding: 1.5rem 1.5rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.settings-form:last-child {
+  margin-bottom: 0;
+}
+
+.settings-form-header {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e8f4ff;
+}
+
+.settings-form-title {
+  color: #0066cc;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin: 0 0 0.25rem;
+}
+
+.settings-form-description {
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.settings-form-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 1100px) {
+  .settings-form-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: #0066cc;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.settings-input {
+  width: 100%;
+  border: 2px solid #87ceeb;
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.9rem;
+  background: white;
+  color: #333;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.settings-input:focus {
+  border-color: #0066cc;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  outline: none;
+}
+
+.settings-hint {
+  font-size: 0.78rem;
+  color: #0066cc99;
+  margin-top: 0.3rem;
+}
+
+.settings-form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ── Buttons (scoped to settings) ───────────────────────────────────────── */
+
+.settings-form .btn {
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.settings-form .btn-primary {
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  color: white;
+}
+
+.settings-form .btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+}
+
+.settings-form .btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.settings-form .spinner-border {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 0.18em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: settingsSpin 0.75s linear infinite;
+}
+
+.settings-form .spinner-border-sm {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.me-2 {
+  margin-right: 0.5rem;
+}
+
+@keyframes settingsSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Alerts (scoped) ────────────────────────────────────────────────────── */
+
+.settings-form .alert {
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1rem;
+  border: none;
+  font-size: 0.875rem;
+  animation: settingsFadeIn 0.25s ease;
+}
+
+.settings-form .alert-danger {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.settings-form .alert-success {
+  background: #d4edda;
+  color: #155724;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .settings-page {
+    padding: 1rem 0.5rem;
+  }
+
+  .settings-shell {
+    width: 100%;
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .settings-sidebar {
+    border-right: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.12);
+    padding: 1.5rem 1rem;
+  }
+
+  .settings-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-grow: 0;
+  }
+
+  .settings-back {
+    margin-top: 1rem;
+  }
+
+  .settings-main {
+    padding: 1.5rem 1.25rem;
+    max-height: none;
+  }
+
+  .settings-section-title {
+    font-size: 1.25rem;
+  }
+}

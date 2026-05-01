@@ -40,7 +40,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/statement/**").authenticated()
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers("/deal/**").authenticated()
+                        .requestMatchers("/account/**").authenticated()
                         .anyRequest().denyAll()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtService, service), BasicAuthenticationFilter.class)

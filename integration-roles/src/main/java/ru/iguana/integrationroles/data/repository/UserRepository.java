@@ -18,4 +18,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByUserKey_Sub(String sub);
 
+    Optional<UserEntity> findByEmailIgnoreCase(String email);
+
+    boolean existsByEmailIgnoreCase(String email);
+
 }

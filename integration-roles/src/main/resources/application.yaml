@@ -46,3 +46,8 @@ spring:
 
 server:
   port: 8086
+
+app:
+  frontend-base-url: ${FRONTEND_BASE_URL:http://localhost:3000}
+  password-reset:
+    ttl-minutes: 30

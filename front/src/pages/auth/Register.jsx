@@ -5,6 +5,7 @@ import './AuthForm.css';
 
 export default function Register() {
   const [login, setLogin] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
@@ -21,14 +22,15 @@ export default function Register() {
     setMessage(null);
     setError(null);
     try {
-      const payload = { sub: login, password };
+      const payload = { sub: login, password, email };
       const endpoint = getEndpoint();
       const res = await axios.post(endpoint, payload, {
         headers: { 'Content-Type': 'application/json' },
       });
       if (res.status === 200) {
-        setMessage('Registration successful! You can now login.');
+        setMessage('Регистрация прошла успешно! Теперь вы можете войти.');
         setLogin('');
+        setEmail('');
         setPassword('');
       } else {
         setError('Unexpected response status: ' + res.status);
@@ -59,7 +61,21 @@ export default function Register() {
                 className="form-control form-control-lg"
                 value={login}
                 onChange={(e) => setLogin(e.target.value)}
-                placeholder="Введите логин или e-mail"
+                placeholder="Придумайте логин"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">Электронная почта</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                className="form-control form-control-lg"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="example@mail.ru"
                 required
               />
             </div>

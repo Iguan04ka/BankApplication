@@ -12,4 +12,9 @@ public class KafkaConfig {
     public NewTopic rolesTopic() {
         return new NewTopic("roles", 1, (short) 1);
     }
+
+    @Bean
+    public NewTopic passwordResetTopic() {
+        return new NewTopic("password-reset", 1, (short) 1);
+    }
 }

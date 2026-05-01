@@ -38,6 +38,10 @@ public class MessageConvertor {
         return obj.has("ttlMinutes") && !obj.isNull("ttlMinutes") ? obj.getInt("ttlMinutes") : null;
     }
 
+    public String getResetUrl(String jsonString) {
+        return new JSONObject(jsonString).optString("resetUrl", "");
+    }
+
     public String getGreetingName(String jsonString) {
         JSONObject obj = new JSONObject(jsonString);
         String first = obj.optString("firstName", "").trim();
