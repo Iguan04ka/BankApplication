@@ -1,0 +1,20 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="add-ses-code-expires-at" author="iguan04ka">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="statement" columnName="ses_code_expires_at"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="statement">
+            <column name="ses_code_expires_at" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

@@ -61,14 +61,15 @@ public class Statement {
     @Column(name = "ses_code")
     String sesCode;
 
+    @Column(name = "ses_code_expires_at")
+    Timestamp sesCodeExpiresAt;
+
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb", name = "status_history")
     List<StatusHistory> statusHistory = new ArrayList<>();
 
     @PrePersist
-    private void onCreate(){
+    private void onCreate() {
         this.creationDate = Timestamp.from(Instant.now());
-        this.signDate = Timestamp.from(Instant.now()); //TODO заглушка
-        this.sesCode = "ses_code"; //TODO заглушка
     }
 }

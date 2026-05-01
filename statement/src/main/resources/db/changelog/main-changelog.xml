@@ -16,4 +16,6 @@
 
     <include file="changeset/003-create-table-user-roles.xml" relativeToChangelogFile="true"/>
 
+    <include file="changeset/004-add-ses-code-expires-at.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>

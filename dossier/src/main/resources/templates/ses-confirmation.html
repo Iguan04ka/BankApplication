@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Код подтверждения оформления кредита</title>
+</head>
+<body style="margin:0;padding:0;background:#f0f8ff;font-family:'Segoe UI',Arial,sans-serif;color:#333;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f0f8ff;padding:32px 0;">
+    <tr>
+        <td align="center">
+            <table role="presentation" width="600" cellpadding="0" cellspacing="0"
+                   style="max-width:600px;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,102,204,0.12);border:1px solid rgba(0,102,204,0.1);">
+                <tr>
+                    <td style="background:linear-gradient(135deg,#0066cc 0%,#0052a3 100%);padding:32px 40px;color:#ffffff;text-align:center;">
+                        <div style="font-size:14px;letter-spacing:2px;opacity:0.85;text-transform:uppercase;">Атлас Банк</div>
+                        <h1 style="margin:8px 0 0;font-size:24px;font-weight:700;">Подтверждение оформления кредита</h1>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:32px 40px 8px;">
+                        <p style="margin:0 0 12px;font-size:16px;line-height:1.5;color:#333;"
+                           th:text="${greetingName != null and !#strings.isEmpty(greetingName)} ? 'Здравствуйте, ' + ${greetingName} + '!' : 'Здравствуйте!'">
+                            Здравствуйте, Иван Иванович!
+                        </p>
+                        <p style="margin:0 0 8px;font-size:15px;line-height:1.6;color:#555;">
+                            Чтобы окончательно оформить кредит, введите одноразовый код на странице подтверждения.
+                        </p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="center" style="padding:16px 40px 8px;">
+                        <table role="presentation" cellpadding="0" cellspacing="0"
+                               style="background:linear-gradient(135deg,#0066cc 0%,#0052a3 100%);border-radius:12px;">
+                            <tr>
+                                <td style="padding:18px 32px;text-align:center;">
+                                    <div style="font-size:11px;color:#ffffffcc;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-bottom:6px;">Код подтверждения</div>
+                                    <div style="font-size:36px;font-weight:700;color:#ffffff;letter-spacing:10px;font-family:'Courier New',monospace;"
+                                         th:text="${code}">123456</div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div style="margin-top:10px;font-size:12px;color:#0066cc99;">
+                            Код действителен <span th:text="${ttlMinutes}">5</span> минут.
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:24px 40px 8px;">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+                               style="background:#f0f8ff;border:1px solid rgba(0,102,204,0.15);border-radius:12px;overflow:hidden;">
+                            <tr>
+                                <td style="padding:20px 24px 8px;">
+                                    <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:#0066cc99;font-weight:600;">Параметры кредита</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:0 24px 16px;">
+                                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td style="padding:10px 0;border-bottom:1px solid #e8f4ff;color:#555;font-size:14px;">Сумма кредита</td>
+                                            <td align="right" style="padding:10px 0;border-bottom:1px solid #e8f4ff;color:#0066cc;font-size:15px;font-weight:700;"
+                                                th:text="${amount}">500 000 ₽</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:10px 0;border-bottom:1px solid #e8f4ff;color:#555;font-size:14px;">Срок кредита</td>
+                                            <td align="right" style="padding:10px 0;border-bottom:1px solid #e8f4ff;color:#0066cc;font-size:15px;font-weight:700;"
+                                                th:text="${term} + ' мес.'">24 мес.</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding:10px 0;color:#555;font-size:14px;">Ежемесячный платёж</td>
+                                            <td align="right" style="padding:10px 0;color:#0066cc;font-size:18px;font-weight:700;"
+                                                th:text="${monthlyPayment}">23 537 ₽</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:16px 40px 32px;">
+                        <p style="margin:0;font-size:13px;line-height:1.5;color:#0066cc99;">
+                            Если вы не оформляли кредит, никому не сообщайте этот код и проигнорируйте письмо.
+                        </p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="background:#f0f8ff;padding:16px 40px;text-align:center;font-size:12px;color:#0066cc99;border-top:1px solid #e8f4ff;">
+                        © Атлас Банк · Это автоматическое письмо, отвечать на него не нужно.
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

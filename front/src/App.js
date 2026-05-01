@@ -5,6 +5,7 @@ import './App.css';
 import Layout from './shared/ui/Layout/Layout';
 import StatementPage from './pages/statement/Statement';
 import RegistrationPage from './pages/statement/Registration';
+import ConfirmationPage from './pages/statement/Confirmation';
 import StatementResumePage from './pages/statement/StatementResume';
 import AccountPage from './pages/account/Account';
 import LoginPage from './pages/auth/Login.jsx';
@@ -22,6 +23,7 @@ function App() {
             <Route path="/account" element={<RequireAuth><AccountPage /></RequireAuth>} />
             <Route path="/statement" element={<RequireAuth><StatementPage /></RequireAuth>} />
             <Route path="/statement/registration/:statementId" element={<RequireAuth><RegistrationPage /></RequireAuth>} />
+            <Route path="/statement/confirmation/:statementId" element={<RequireAuth><ConfirmationPage /></RequireAuth>} />
             <Route path="/statement/resume/:statementId" element={<RequireAuth><StatementResumePage /></RequireAuth>} />
             <Route path="/auth/login" element={<LoginPage />} />
             <Route path="/auth/register" element={<RegisterPage />} />

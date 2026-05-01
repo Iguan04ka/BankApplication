@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.iguana.gateway.api.dto.FinishRegistrationRequestDto;
+import ru.iguana.gateway.api.dto.SesCodeRequestDto;
 import ru.iguana.gateway.api.service.RequestToDealService;
 
 @RestController
@@ -50,5 +51,14 @@ public class RequestToDealController {
         log.info("A request has arrived for codeDocuments: {}", statementId);
         requestToDealService.codeDocuments(statementId);
         log.info("The request was sent successfully");
+    }
+
+    @PostMapping("statement/registration/{statementId}/verify")
+    @Operation(summary = "Verify SES code", description = "Verifies the one-time SES code submitted by the user to complete registration.")
+    public void verifySesCode(@PathVariable String statementId,
+                              @RequestBody SesCodeRequestDto request){
+        log.info("A request has arrived for verifySesCode: {}", statementId);
+        requestToDealService.verifySesCode(statementId, request);
+        log.info("The verifySesCode request was processed successfully");
     }
 }

@@ -35,6 +35,8 @@ public class StatementDto {
 
     String sesCode;
 
+    Timestamp sesCodeExpiresAt;
+
     List<StatusHistory> statusHistory = new ArrayList<>();
 }
 

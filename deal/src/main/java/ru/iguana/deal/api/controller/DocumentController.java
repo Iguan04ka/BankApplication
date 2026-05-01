@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.iguana.deal.api.dto.SesCodeRequestDto;
 import ru.iguana.deal.api.service.DocumentService;
+import ru.iguana.deal.api.service.SesCodeService;
 
 
 import java.util.UUID;
@@ -16,6 +18,7 @@ import java.util.UUID;
 public class DocumentController {
 
     private final DocumentService documentService;
+    private final SesCodeService sesCodeService;
 
     @PostMapping("/send")
     @Operation(summary = "Send documents", description = "Sends documents to the user for signing based on the provided statementId.")
@@ -36,5 +39,12 @@ public class DocumentController {
     public void code(@PathVariable UUID statementId) {
         log.info("Received request to send SES code for statementId: {}", statementId);
         documentService.codeDocuments(statementId);
+    }
+
+    @PostMapping("/verify")
+    @Operation(summary = "Verify SES code", description = "Verifies the one-time SES confirmation code submitted by the user.")
+    public void verify(@PathVariable UUID statementId, @RequestBody SesCodeRequestDto request) {
+        log.info("Received request to verify SES code for statementId: {}", statementId);
+        sesCodeService.verifyCode(statementId, request.getCode());
     }
 }

@@ -31,6 +31,7 @@ public class StatementConvertor {
                 .setAppliedOffer(statement.getAppliedOffer())
                 .setSignDate(statement.getSignDate())
                 .setSesCode(statement.getSesCode())
+                .setSesCodeExpiresAt(statement.getSesCodeExpiresAt())
                 .setStatusHistory(statement.getStatusHistory());
     }
 }

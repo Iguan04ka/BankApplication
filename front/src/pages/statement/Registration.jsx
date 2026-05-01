@@ -115,7 +115,6 @@ export default function Registration() {
   const [form, setForm] = useState(emptyForm);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
 
   // Pre-fill from profile
   useEffect(() => {
@@ -187,7 +186,8 @@ export default function Registration() {
         },
       };
       await client.post(`${base}/statement/registration/${statementId}`, payload);
-      setSuccess(true);
+      navigate(`/statement/confirmation/${statementId}`);
+      return;
     } catch (err) {
       setError(
         err.response?.data?.message ||
@@ -198,31 +198,6 @@ export default function Registration() {
       setLoading(false);
     }
   };
-
-  if (success) {
-    return (
-      <div className="reg-page">
-        <div className="reg-content">
-          <div className="reg-success">
-            <div className="reg-success-icon">✅</div>
-            <h2 className="reg-success-title">Заявка успешно подана!</h2>
-            <p className="reg-success-text">
-              Ваши данные переданы на рассмотрение. Вы можете следить за
-              статусом заявки в личном кабинете.
-            </p>
-            <div className="reg-success-actions">
-              <button
-                className="btn btn-primary"
-                onClick={() => navigate('/account')}
-              >
-                Перейти в личный кабинет
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="reg-page">

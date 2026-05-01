@@ -14,6 +14,7 @@ import ru.iguana.deal.api.convertor.CreditConvertor;
 import ru.iguana.deal.kafka.KafkaProducer;
 import ru.iguana.deal.model.entity.Client;
 import ru.iguana.deal.model.entity.Credit;
+import ru.iguana.deal.model.entity.Jsonb.Passport;
 import ru.iguana.deal.model.entity.Jsonb.StatusHistory;
 import ru.iguana.deal.model.entity.Statement;
 import ru.iguana.deal.model.entity.enums.ApplicationStatus;
@@ -24,8 +25,11 @@ import ru.iguana.deal.model.repository.ClientRepository;
 import ru.iguana.deal.model.repository.CreditRepository;
 import ru.iguana.deal.model.repository.StatementRepository;
 
+import java.security.SecureRandom;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,15 +37,17 @@ import java.util.UUID;
 @Slf4j
 public class CalculateCreditService {
 
+    public static final int SES_CODE_TTL_MINUTES = 5;
+
+    private static final SecureRandom RANDOM = new SecureRandom();
+
     private final StatementRepository statementRepository;
     private final ClientRepository clientRepository;
     private final CreditRepository creditRepository;
     private final WebClient webClient;
     private final KafkaProducer kafkaProducer;
     private final CreditConvertor creditConvertor;
-
     private final ClientConvertor clientConvertor;
-
     private final ScoringDataDtoConvertor scoringDataDtoConvertor;
 
     public CalculateCreditService(StatementRepository statementRepository,
@@ -67,45 +73,46 @@ public class CalculateCreditService {
                           String statementId) {
         log.info("Starting credit calculation for statementId: {}", statementId);
 
-        //Получает стейтмент и соответствующего ему клиента
         Statement statement = getStatementByStatementId(statementId);
         Client client = getClientByClientIdInStatement(statement);
         log.info("Statement and Client successfully retrieved for statementId: {}", statementId);
 
         mergeClientFromRegistration(client, finishRegistrationRequestDto);
 
-        // Насыщаем scoringDataDto
         JsonNode scoringDataDto = scoringDataDtoConvertor.createScoringDataDto(finishRegistrationRequestDto, client, statement.getStatementId());
         log.debug("ScoringDataDto created: {}", scoringDataDto);
 
-        // Отправляем scoringDataDto в калькулятор и получаем creditDto
         JsonNode creditJson = getCreditDtoFromCalculator(scoringDataDto);
         log.info("Received response from calculator service: {}", creditJson);
 
-        // Создаем creditDto на основе ответа калькулятора
         CreditDto creditDto = creditConvertor.jsonToCreditDto(creditJson);
         creditDto.setCreditStatus(String.valueOf(CreditStatus.CALCULATED));
 
-        // Создаем и сохраняем creditEntity на основе creditDto
         Credit creditEntity = creditConvertor.CreditDtoToCreditEntity(creditDto);
         creditRepository.save(creditEntity);
         log.info("Credit entity saved: {}", creditEntity);
 
-        // Сетаем статусы стейтменту
         statement.setStatus(String.valueOf(ApplicationStatus.CC_APPROVED));
         statement.getStatusHistory().add(new StatusHistory(ApplicationStatus.CC_APPROVED,
                 Timestamp.from(Instant.now()), ChangeType.AUTOMATIC));
         statement.setCredit(creditEntity.getCreditId());
 
-        sendEmailMessageDtoToKafka(statement);
+        // Generate one-time SES code with TTL and persist it on the statement
+        String code = generateSesCode();
+        Timestamp expiresAt = Timestamp.from(Instant.now().plus(SES_CODE_TTL_MINUTES, ChronoUnit.MINUTES));
+        statement.setSesCode(code);
+        statement.setSesCodeExpiresAt(expiresAt);
+        log.info("Generated SES code for statementId: {} (expires at {})", statementId, expiresAt);
+
         statementRepository.save(statement);
         clientRepository.save(client);
+
+        sendSesCodeEmail(statement, client, creditEntity, code);
         log.info("Statement updated with status: {}", ApplicationStatus.CC_APPROVED);
     }
 
-    private Statement getStatementByStatementId(String statementId){
+    private Statement getStatementByStatementId(String statementId) {
         UUID statementUuid = UUID.fromString(statementId);
-
         Optional<Statement> optionalStatement = statementRepository.findById(statementUuid);
         if (optionalStatement.isEmpty()) {
             log.error("Statement not found for ID: {}", statementId);
@@ -114,19 +121,17 @@ public class CalculateCreditService {
         return optionalStatement.get();
     }
 
-    private Client getClientByClientIdInStatement(Statement statement){
+    private Client getClientByClientIdInStatement(Statement statement) {
         Optional<Client> optionalClient = clientRepository.findById(statement.getClientId());
         if (optionalClient.isEmpty()) {
             log.error("Client not found for statementId: {}", statement.getStatementId());
             throw new IllegalArgumentException("No such id");
         }
-
-        return  optionalClient.get();
+        return optionalClient.get();
     }
 
-    private JsonNode getCreditDtoFromCalculator(JsonNode scoringDataDto){
-        JsonNode creditJson;
-        return creditJson = webClient.post()
+    private JsonNode getCreditDtoFromCalculator(JsonNode scoringDataDto) {
+        return webClient.post()
                 .uri("/calculator/calc")
                 .bodyValue(scoringDataDto)
                 .retrieve()
@@ -134,20 +139,27 @@ public class CalculateCreditService {
                 .block();
     }
 
-    private void sendEmailMessageDtoToKafka(Statement statement){
-        Client client = clientRepository.findById(statement.getClientId()).orElseThrow();
-
-        EmailMessageDto message = new EmailMessageDto()
-                .setAddress(client.getEmail())
-                .setTheme(EmailTheme.CREATE_DOCUMENTS)
-                .setStatementId(statement.getStatementId())
-                .setText("Документы созданы");
-
-        kafkaProducer.sendMessageToCreateDocumentsTopic(message);
+    private String generateSesCode() {
+        return String.format("%06d", RANDOM.nextInt(1_000_000));
     }
 
-    // Fills in only the fields that are currently null in the client entity.
-    // Existing (non-null) profile data is never overwritten by the registration request.
+    private void sendSesCodeEmail(Statement statement, Client client, Credit credit, String code) {
+        EmailMessageDto message = new EmailMessageDto()
+                .setAddress(client.getEmail())
+                .setTheme(EmailTheme.SEND_SES)
+                .setStatementId(statement.getStatementId())
+                .setText("Код подтверждения оформления кредита")
+                .setFirstName(client.getFirstName())
+                .setMiddleName(client.getMiddleName())
+                .setAmount(credit.getAmount())
+                .setTerm(credit.getTerm())
+                .setMonthlyPayment(credit.getMonthlyPayment())
+                .setCode(code)
+                .setTtlMinutes(SES_CODE_TTL_MINUTES);
+
+        kafkaProducer.sendMessageToSendSesTopic(message);
+    }
+
     private void mergeClientFromRegistration(Client client, FinishRegistrationRequestDto dto) {
         if (client.getGender() == null)        client.setGender(dto.getGender());
         if (client.getMaritalStatus() == null) client.setMaritalStatus(dto.getMaritalStatus());
@@ -155,5 +167,21 @@ public class CalculateCreditService {
         if (client.getAccountNumber() == null) client.setAccountNumber(dto.getAccountNumber());
         if (client.getEmployment() == null)
             client.setEmployment(clientConvertor.employmentJsonToDto(dto.getEmployment()));
+
+        Passport existing = client.getPassport();
+        Passport merged = new Passport();
+        if (existing != null) {
+            merged.setSeries(existing.getSeries())
+                  .setNumber(existing.getNumber())
+                  .setIssueBranch(existing.getIssueBranch())
+                  .setIssueDate(existing.getIssueDate());
+        }
+        if (merged.getIssueDate() == null && dto.getPassportIssueDate() != null) {
+            merged.setIssueDate(Date.valueOf(dto.getPassportIssueDate()));
+        }
+        if (merged.getIssueBranch() == null && dto.getPassportIssueBranch() != null) {
+            merged.setIssueBranch(dto.getPassportIssueBranch());
+        }
+        client.setPassport(merged);
     }
 }

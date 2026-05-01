@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.iguana.gateway.api.dto.FinishRegistrationRequestDto;
+import ru.iguana.gateway.api.dto.SesCodeRequestDto;
 
 import java.util.UUID;
 
@@ -40,6 +41,16 @@ public class RequestToDealService {
 
     public void codeDocuments(String statementId) {
         sendRequest("/deal/document/{statementId}/code", statementId);
+    }
+
+    public void verifySesCode(String statementId, SesCodeRequestDto request) {
+        log.info("Sending SES code verification for statement: {}", statementId);
+        restClient.post()
+                .uri("/deal/document/{statementId}/verify", statementId)
+                .body(request)
+                .retrieve()
+                .toBodilessEntity();
+        log.info("Successfully verified SES code for statement: {}", statementId);
     }
 
     private void sendRequest(String uri, String statementId) {

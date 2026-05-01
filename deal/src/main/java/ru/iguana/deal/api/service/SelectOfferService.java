@@ -15,6 +15,7 @@ import ru.iguana.deal.model.entity.enums.EmailTheme;
 import ru.iguana.deal.model.repository.ClientRepository;
 import ru.iguana.deal.model.repository.StatementRepository;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Optional;
@@ -35,29 +36,24 @@ public class SelectOfferService {
         log.debug("Received request to select loan offer: {}", json);
 
         try {
-            //получаем id стейтмента из json'а
             UUID statementUuid = getStatementIdFromJson(json);
             log.info("Extracted statementId: {}", statementUuid);
 
-            // получаем стейтмент по id и меняем ему статус
             Statement statement = getStatementByStatementId(statementUuid);
             statement.getStatusHistory().add(new StatusHistory(
                     ApplicationStatus.APPROVED,
                     Timestamp.from(Instant.now()),
                     ChangeType.AUTOMATIC
             ));
-            // Устанавливаем стейтменту последний статус из истории статусов
             String newStatus = getStatusFromLastStatusHistory(statement);
             statement.setStatus(newStatus);
             log.info("Updated statement status to: {}", newStatus);
 
-            // Устанавливаем стейтменту принятый оффер и сохраняем
             statement.setAppliedOffer(json);
-            //отправляем EmailMessage в кафку
-            sendEmailMessageDtoToKafka(json);
-            log.info("Set applied offer for statementId: {}", statementUuid);
             statementRepository.save(statement);
             log.info("Statement successfully saved for statementId: {}", statementUuid);
+
+            sendEmailMessageDtoToKafka(statement, json);
         } catch (Exception e) {
             log.error("Error while selecting loan offer: {}", e.getMessage(), e);
             throw e;
@@ -69,42 +65,52 @@ public class SelectOfferService {
             String statementId = json.get("statementId").asText();
             log.info("Extracted statementId from JSON: {}", statementId);
             return UUID.fromString(statementId);
-        } else {
-            log.error("JSON does not contain key 'statementId'");
-            throw new IllegalArgumentException("JSON does not contain key 'statementId'");
         }
+        log.error("JSON does not contain key 'statementId'");
+        throw new IllegalArgumentException("JSON does not contain key 'statementId'");
     }
 
     private String getStatusFromLastStatusHistory(Statement statement) {
-        String status = String.valueOf(statement
+        return String.valueOf(statement
                 .getStatusHistory()
                 .get(statement.getStatusHistory().size() - 1)
-                .getStatus().toString());
-        log.info("Extracted status from last status history: {}", status);
-        return status;
+                .getStatus());
     }
 
-    private Statement getStatementByStatementId(UUID statementUuid){
+    private Statement getStatementByStatementId(UUID statementUuid) {
         Optional<Statement> optionalStatement = statementRepository.findById(statementUuid);
         if (optionalStatement.isEmpty()) {
             log.error("No statement found for statementId: {}", statementUuid);
             throw new IllegalArgumentException("No such statement");
         }
-
         return optionalStatement.get();
     }
 
-    private void sendEmailMessageDtoToKafka(JsonNode json){
-        Statement statement = statementRepository.findById(getStatementIdFromJson(json)).orElseThrow();
-
+    private void sendEmailMessageDtoToKafka(Statement statement, JsonNode offer) {
         Client client = clientRepository.findById(statement.getClientId()).orElseThrow();
 
         EmailMessageDto message = new EmailMessageDto()
                 .setAddress(client.getEmail())
                 .setTheme(EmailTheme.FINISH_REGISTRATION)
                 .setStatementId(statement.getStatementId())
-                .setText("Завершите оформление");
+                .setText("Завершите оформление")
+                .setFirstName(client.getFirstName())
+                .setMiddleName(client.getMiddleName())
+                .setAmount(asBigDecimal(offer, "requestedAmount"))
+                .setTerm(asInt(offer, "term"))
+                .setRate(asBigDecimal(offer, "rate"))
+                .setMonthlyPayment(asBigDecimal(offer, "monthlyPayment"));
 
         kafkaProducer.sendMessageToFinishRegistrationTopic(message);
+    }
+
+    private BigDecimal asBigDecimal(JsonNode node, String field) {
+        if (node == null || !node.hasNonNull(field)) return null;
+        return node.get(field).decimalValue();
+    }
+
+    private Integer asInt(JsonNode node, String field) {
+        if (node == null || !node.hasNonNull(field)) return null;
+        return node.get(field).asInt();
     }
 }
