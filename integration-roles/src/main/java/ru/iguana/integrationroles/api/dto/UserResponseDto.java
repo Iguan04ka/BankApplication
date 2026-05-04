@@ -12,5 +12,6 @@ import java.util.Set;
 public class UserResponseDto {
     private UserKeyDto userKey;
     private boolean blocked;
+    private boolean twoFactorEnabled;
     private Set<RoleDto> roles;
 }

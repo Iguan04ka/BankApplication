@@ -1,73 +1,97 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../auth/AuthProvider';
 import './Header.css';
 
 export default function Header() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/');
+    setMenuOpen(false);
   };
 
+  const isActive = (path) =>
+    location.pathname === path || location.pathname.startsWith(path + '/');
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light header-nav">
-      <div className="container-fluid px-4">
-        <Link className="navbar-brand fw-bold text-primary" to="/">
-          <span className="brand-icon">🏦</span> АтласКредит
+    <nav className="header-nav">
+      <div className="header-inner">
+        <Link className="header-brand" to="/" onClick={() => setMenuOpen(false)}>
+          <span className="brand-icon">🏦</span>
+          <span className="brand-text">АтласКредит</span>
         </Link>
+
         <button
-          className="navbar-toggler"
+          className={`header-burger${menuOpen ? ' header-burger--open' : ''}`}
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
+          aria-label="Меню"
+          onClick={() => setMenuOpen((v) => !v)}
         >
-          <span className="navbar-toggler-icon"></span>
+          <span /><span /><span />
         </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
-            {user ? (
-              <>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/account">
-                    Личный кабинет
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/statement">
-                    Заявка
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <button
-                    className="btn btn-outline-danger ms-2"
-                    onClick={handleLogout}
-                  >
-                    Выйти
-                  </button>
-                </li>
-              </>
-            ) : (
-              <>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/auth/login">
-                    Войти
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="btn btn-primary ms-2" to="/auth/register">
-                    Регистрация
-                  </Link>
-                </li>
-              </>
-            )}
-          </ul>
-        </div>
+
+        <ul className={`header-nav-list${menuOpen ? ' header-nav-list--open' : ''}`}>
+          {user ? (
+            <>
+              <li>
+                <Link
+                  className={`header-nav-pill header-nav-pill--outline${isActive('/account') ? ' is-active' : ''}`}
+                  to="/account"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span className="pill-icon">👤</span>
+                  Личный кабинет
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className={`header-nav-pill header-nav-pill--outline${isActive('/statement') ? ' is-active' : ''}`}
+                  to="/statement"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span className="pill-icon">📋</span>
+                  Заявка
+                </Link>
+              </li>
+              <li>
+                <button
+                  className="header-nav-pill header-nav-pill--danger"
+                  onClick={handleLogout}
+                >
+                  <span className="pill-icon">🚪</span>
+                  Выйти
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link
+                  className={`header-nav-pill header-nav-pill--outline${isActive('/auth/login') ? ' is-active' : ''}`}
+                  to="/auth/login"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Войти
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="header-nav-pill header-nav-pill--filled"
+                  to="/auth/register"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Регистрация
+                </Link>
+              </li>
+            </>
+          )}
+        </ul>
       </div>
     </nav>
   );
 }
-
-

@@ -17,6 +17,7 @@ public interface UserResponseMapper {
 
     @Mapping(source = "userKey", target = "userKey")
     @Mapping(source = "blocked", target = "blocked")
+    @Mapping(source = "twoFactorEnabled", target = "twoFactorEnabled")
     @Mapping(target = "roles", expression = "java(mapRoles(entity.getRoles()))")
     UserResponseDto toDto(UserEntity entity);
 

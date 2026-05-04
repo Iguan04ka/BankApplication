@@ -7,6 +7,8 @@ export default function Register() {
   const [login, setLogin] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [personalDataAccepted, setPersonalDataAccepted] = useState(false);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -32,6 +34,8 @@ export default function Register() {
         setLogin('');
         setEmail('');
         setPassword('');
+        setPrivacyAccepted(false);
+        setPersonalDataAccepted(false);
       } else {
         setError('Unexpected response status: ' + res.status);
       }
@@ -94,9 +98,40 @@ export default function Register() {
               />
             </div>
 
+            <div className="auth-checkboxes">
+              <label className="auth-checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={privacyAccepted}
+                  onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                  className="auth-checkbox-input"
+                />
+                <span>
+                  Согласен с{' '}
+                  <Link to="/legal/privacy-policy" className="auth-link" target="_blank">
+                    Политикой конфиденциальности
+                  </Link>
+                </span>
+              </label>
+              <label className="auth-checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={personalDataAccepted}
+                  onChange={(e) => setPersonalDataAccepted(e.target.checked)}
+                  className="auth-checkbox-input"
+                />
+                <span>
+                  Согласен с{' '}
+                  <Link to="/legal/personal-data-policy" className="auth-link" target="_blank">
+                    Политикой обработки персональных данных
+                  </Link>
+                </span>
+              </label>
+            </div>
+
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || !privacyAccepted || !personalDataAccepted}
               className="btn btn-primary btn-lg w-100 mt-3"
             >
               {loading ? (

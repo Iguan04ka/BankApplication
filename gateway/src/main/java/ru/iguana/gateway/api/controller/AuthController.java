@@ -12,6 +12,7 @@ import ru.iguana.gateway.api.dto.LoginRequestDto;
 import ru.iguana.gateway.api.dto.RefreshRequestDto;
 import ru.iguana.gateway.api.dto.RegisterRequestDto;
 import ru.iguana.gateway.api.dto.ResetPasswordRequestDto;
+import ru.iguana.gateway.api.dto.TwoFactorVerifyRequestDto;
 import ru.iguana.gateway.api.dto.UserResponseDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -87,6 +88,27 @@ public class AuthController {
 
         String sub = userDto.getUserKey().getSub();
 
+        // 2FA enabled — issue email code, do not return JWTs yet
+        if (userDto.isTwoFactorEnabled()) {
+            try {
+                rolesService.issueTwoFactorLoginCode(sub);
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Failed to send 2FA code: " + e.getMessage());
+            }
+            String email = "";
+            try {
+                Map<String, Object> status = rolesService.getTwoFactorStatus(sub);
+                Object e = status != null ? status.get("email") : null;
+                if (e != null) email = e.toString();
+            } catch (Exception ignored) {}
+            return ResponseEntity.ok(Map.of(
+                    "requires2FA", true,
+                    "sub", sub,
+                    "email", email
+            ));
+        }
+
         String accessToken = jwtService.generateAccessToken(sub);
         String refreshToken = jwtService.generateRefreshToken(sub);
 
@@ -96,6 +118,51 @@ public class AuthController {
                 "accessToken", accessToken,
                 "refreshToken", refreshToken
         ));
+    }
+
+    @PostMapping("/2fa/verify")
+    public ResponseEntity<?> verifyTwoFactorLogin(@RequestBody TwoFactorVerifyRequestDto request) {
+        if (request.getSub() == null || request.getSub().isBlank()
+                || request.getCode() == null || request.getCode().isBlank()) {
+            return ResponseEntity.badRequest().body("Sub and code are required");
+        }
+
+        UserResponseDto userDto;
+        try {
+            userDto = rolesService.verifyTwoFactorLoginCode(request);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Invalid or expired code"));
+        }
+
+        if (userDto == null || userDto.isBlocked()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Invalid or expired code"));
+        }
+
+        String sub = userDto.getUserKey().getSub();
+        String accessToken = jwtService.generateAccessToken(sub);
+        String refreshToken = jwtService.generateRefreshToken(sub);
+        refreshTokenStore.save(sub, refreshToken);
+
+        return ResponseEntity.ok(Map.of(
+                "accessToken", accessToken,
+                "refreshToken", refreshToken
+        ));
+    }
+
+    @PostMapping("/2fa/resend")
+    public ResponseEntity<?> resendTwoFactorLoginCode(@RequestBody Map<String, String> body) {
+        String sub = body == null ? null : body.get("sub");
+        if (sub == null || sub.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Sub is required"));
+        }
+        try {
+            rolesService.issueTwoFactorLoginCode(sub);
+        } catch (Exception ignored) {
+            // Always 200 — never leak whether the user exists
+        }
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/refresh")

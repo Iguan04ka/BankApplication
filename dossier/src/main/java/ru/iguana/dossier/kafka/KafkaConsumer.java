@@ -53,6 +53,13 @@ public class KafkaConsumer {
         sendPasswordReset(message);
     }
 
+    @KafkaListener(topics = "two-factor-code", groupId = "dossier")
+    public void listenTwoFactorCodeTopic(String message) {
+        log.info("Received message from topic 'two-factor-code'");
+        log.debug("Message: {}", message);
+        sendTwoFactorCode(message);
+    }
+
     private void sendFinishRegistration(String message) {
         try {
             String address = messageConvertor.getAddress(message);
@@ -88,6 +95,47 @@ public class KafkaConsumer {
             mailSenderService.sendHtmlEmail(address, "Код подтверждения — Атлас Банк", html);
         } catch (Exception e) {
             log.error("Failed to send SES email: {}. Error: {}", message, e.getMessage(), e);
+        }
+    }
+
+    private void sendTwoFactorCode(String message) {
+        try {
+            String address = messageConvertor.getAddress(message);
+            String purpose = messageConvertor.getPurpose(message);
+
+            String heading;
+            String introHtml;
+            String subject;
+            switch (purpose) {
+                case "ENABLE_2FA":
+                    heading = "Включение двухфакторной аутентификации";
+                    introHtml = "Чтобы подтвердить включение двухфакторной аутентификации в АтласКредит, введите этот код на странице настроек.";
+                    subject = "Подтверждение включения 2FA — Атлас Банк";
+                    break;
+                case "DISABLE_2FA":
+                    heading = "Отключение двухфакторной аутентификации";
+                    introHtml = "Чтобы подтвердить отключение двухфакторной аутентификации, введите этот код на странице настроек.";
+                    subject = "Подтверждение отключения 2FA — Атлас Банк";
+                    break;
+                case "LOGIN":
+                default:
+                    heading = "Код для входа в систему";
+                    introHtml = "Чтобы завершить вход в личный кабинет АтласКредит, введите этот одноразовый код.";
+                    subject = "Код входа — Атлас Банк";
+                    break;
+            }
+
+            Map<String, Object> vars = new HashMap<>();
+            vars.put("heading", heading);
+            vars.put("intro", introHtml);
+            vars.put("code", messageConvertor.getCode(message));
+            Integer ttl = messageConvertor.getTtlMinutes(message);
+            vars.put("ttlMinutes", ttl != null ? ttl : 5);
+
+            String html = templateService.render("two-factor-code", vars);
+            mailSenderService.sendHtmlEmail(address, subject, html);
+        } catch (Exception e) {
+            log.error("Failed to send 2FA email: {}. Error: {}", message, e.getMessage(), e);
         }
     }
 

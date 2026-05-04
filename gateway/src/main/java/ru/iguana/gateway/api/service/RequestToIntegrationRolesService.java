@@ -13,6 +13,7 @@ import ru.iguana.gateway.api.dto.ForgotPasswordRequestDto;
 import ru.iguana.gateway.api.dto.LoginRequestDto;
 import ru.iguana.gateway.api.dto.RegisterRequestDto;
 import ru.iguana.gateway.api.dto.ResetPasswordRequestDto;
+import ru.iguana.gateway.api.dto.TwoFactorVerifyRequestDto;
 import ru.iguana.gateway.api.dto.UserResponseDto;
 
 import java.util.List;
@@ -110,6 +111,68 @@ public class RequestToIntegrationRolesService {
         rolesRestClient
                 .post()
                 .uri("/roles/account/changePassword")
+                .body(request)
+                .retrieve()
+                .toBodilessEntity();
+    }
+
+    public Map<String, Object> getTwoFactorStatus(String sub) {
+        return rolesRestClient
+                .get()
+                .uri(uriBuilder -> uriBuilder.path("/roles/2fa/status").queryParam("sub", sub).build())
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+    }
+
+    public void issueTwoFactorLoginCode(String sub) {
+        rolesRestClient
+                .post()
+                .uri("/roles/2fa/issueLoginCode")
+                .body(Map.of("sub", sub))
+                .retrieve()
+                .toBodilessEntity();
+    }
+
+    public UserResponseDto verifyTwoFactorLoginCode(TwoFactorVerifyRequestDto request) {
+        return rolesRestClient
+                .post()
+                .uri("/roles/2fa/verifyLoginCode")
+                .body(request)
+                .retrieve()
+                .body(UserResponseDto.class);
+    }
+
+    public void issueTwoFactorEnableCode(String sub) {
+        rolesRestClient
+                .post()
+                .uri("/roles/2fa/issueEnableCode")
+                .body(Map.of("sub", sub))
+                .retrieve()
+                .toBodilessEntity();
+    }
+
+    public void confirmTwoFactorEnable(TwoFactorVerifyRequestDto request) {
+        rolesRestClient
+                .post()
+                .uri("/roles/2fa/confirmEnable")
+                .body(request)
+                .retrieve()
+                .toBodilessEntity();
+    }
+
+    public void issueTwoFactorDisableCode(String sub) {
+        rolesRestClient
+                .post()
+                .uri("/roles/2fa/issueDisableCode")
+                .body(Map.of("sub", sub))
+                .retrieve()
+                .toBodilessEntity();
+    }
+
+    public void confirmTwoFactorDisable(TwoFactorVerifyRequestDto request) {
+        rolesRestClient
+                .post()
+                .uri("/roles/2fa/confirmDisable")
                 .body(request)
                 .retrieve()
                 .toBodilessEntity();

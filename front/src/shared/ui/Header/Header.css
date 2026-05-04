@@ -1,66 +1,229 @@
+/* ── Header shell ───────────────────────────────────────────────────────── */
+
 .header-nav {
   background: linear-gradient(135deg, #e8f4f8 0%, #f0f8ff 100%);
-  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.12);
   border-bottom: 2px solid #87ceeb;
-  padding: 1rem 0;
+  padding: 0.75rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.navbar-brand {
-  font-size: 1.8rem;
-  color: #0066cc !important;
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* ── Brand ──────────────────────────────────────────────────────────────── */
+
+.header-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  flex-shrink: 0;
 }
 
 .brand-icon {
-  margin-right: 0.5rem;
-  font-size: 2rem;
+  font-size: 1.9rem;
+  line-height: 1;
 }
 
-.nav-link {
-  color: #0066cc !important;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  margin: 0 0.5rem;
+.brand-text {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0066cc;
+  letter-spacing: -0.3px;
 }
 
-.nav-link:hover {
-  color: #0052a3 !important;
-  text-decoration: underline;
+.header-brand:hover .brand-text {
+  color: #0052a3;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
-  border: none;
+/* ── Nav list ───────────────────────────────────────────────────────────── */
+
+.header-nav-list {
+  list-style: none;
+  margin: 0 0 0 auto;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ── Pill base ──────────────────────────────────────────────────────────── */
+
+.header-nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+    box-shadow 0.2s ease, transform 0.15s ease;
+  white-space: nowrap;
+  line-height: 1.4;
+  background: none;
+  font-family: inherit;
+}
+
+.pill-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+/* Outlined pill – "Личный кабинет" / "Заявка" / "Войти" */
+.header-nav-pill--outline {
+  color: #0066cc;
+  border-color: #87ceeb;
+  background: rgba(240, 248, 255, 0.6);
+}
+
+.header-nav-pill--outline:hover,
+.header-nav-pill--outline:focus-visible {
+  color: #0052a3;
+  border-color: #0066cc;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.18);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.header-nav-pill--outline.is-active {
   color: white;
-  font-weight: 500;
-  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  border-color: transparent;
+  box-shadow: 0 3px 10px rgba(0, 102, 204, 0.3);
 }
 
-.btn-primary:hover {
+.header-nav-pill--outline.is-active:hover {
+  color: white;
   background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+  transform: translateY(-1px);
 }
 
-.btn-outline-danger {
-  border-color: #dc3545;
-  color: #dc3545;
-  font-weight: 500;
-  transition: all 0.3s ease;
+/* Filled pill – "Регистрация" */
+.header-nav-pill--filled {
+  color: white;
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.22);
 }
 
-.btn-outline-danger:hover {
-  background-color: #dc3545;
-  border-color: #dc3545;
-  transform: translateY(-2px);
+.header-nav-pill--filled:hover,
+.header-nav-pill--filled:focus-visible {
+  color: white;
+  background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%);
+  box-shadow: 0 4px 14px rgba(0, 102, 204, 0.35);
+  transform: translateY(-1px);
+  text-decoration: none;
 }
+
+/* Danger pill – "Выйти" */
+.header-nav-pill--danger {
+  color: #c0392b;
+  border-color: #e8a0a0;
+  background: rgba(255, 245, 245, 0.7);
+}
+
+.header-nav-pill--danger:hover,
+.header-nav-pill--danger:focus-visible {
+  color: white;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  border-color: transparent;
+  box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);
+  transform: translateY(-1px);
+}
+
+/* ── Burger (mobile) ────────────────────────────────────────────────────── */
+
+.header-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  padding: 4px;
+  background: none;
+  border: 2px solid #87ceeb;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: auto;
+  transition: border-color 0.2s;
+}
+
+.header-burger:hover {
+  border-color: #0066cc;
+}
+
+.header-burger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #0066cc;
+  border-radius: 2px;
+  transition: all 0.25s ease;
+  transform-origin: center;
+}
+
+.header-burger--open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.header-burger--open span:nth-child(2) {
+  opacity: 0;
+}
+.header-burger--open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
-  .navbar-brand {
-    font-size: 1.5rem;
+  .header-burger {
+    display: flex;
+  }
+
+  .header-nav-list {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 0.4rem;
+    margin: 0.75rem 0 0;
+    padding: 0.75rem 0 0.25rem;
+    border-top: 1px solid #d0eaf8;
+  }
+
+  .header-nav-list--open {
+    display: flex;
+  }
+
+  .header-inner {
+    flex-wrap: wrap;
+  }
+
+  .header-nav-pill {
+    justify-content: center;
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .brand-text {
+    font-size: 1.3rem;
   }
 
   .brand-icon {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
 }
-

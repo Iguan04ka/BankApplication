@@ -8,9 +8,9 @@ const getApiBase = () => (process.env.NODE_ENV === 'development' ? '' : '/api');
 const PLACEHOLDERS = {
   amount: '500000',
   term: '24',
-  firstName: 'Иван',
-  lastName: 'Иванов',
-  middleName: 'Иванович',
+  firstName: 'Ivan',
+  lastName: 'Ivanov',
+  middleName: 'Ivanovich',
   email: 'example@mail.ru',
   birthdate: '1990-05-15',
   passportSeries: '1234',
@@ -38,8 +38,87 @@ const formatAmount = (v) => {
   }).format(v);
 };
 
+const NAME_RE = /^[a-zA-Z-]{2,30}$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const SERIES_RE = /^\d{4}$/;
+const NUMBER_RE = /^\d{6}$/;
+
+function validateForm(form) {
+  const errors = {};
+
+  const amount = parseFloat(form.amount);
+  if (!form.amount || isNaN(amount) || amount < 20000) {
+    errors.amount = 'Сумма кредита должна быть не менее 20 000 руб.';
+  }
+
+  const term = parseInt(form.term, 10);
+  if (!form.term || isNaN(term) || term < 6) {
+    errors.term = 'Срок кредита должен быть не менее 6 месяцев';
+  }
+
+  if (!form.lastName || !NAME_RE.test(form.lastName)) {
+    errors.lastName = 'Фамилия: от 2 до 30 латинских букв';
+  }
+  if (!form.firstName || !NAME_RE.test(form.firstName)) {
+    errors.firstName = 'Имя: от 2 до 30 латинских букв';
+  }
+  if (form.middleName && !NAME_RE.test(form.middleName)) {
+    errors.middleName = 'Отчество: от 2 до 30 латинских букв';
+  }
+
+  if (!form.email || !EMAIL_RE.test(form.email)) {
+    errors.email = 'Введите корректный адрес электронной почты';
+  }
+
+  if (!form.birthdate) {
+    errors.birthdate = 'Укажите дату рождения';
+  } else if (new Date(form.birthdate) >= new Date()) {
+    errors.birthdate = 'Дата рождения должна быть в прошлом';
+  }
+
+  if (!form.passportSeries || !SERIES_RE.test(form.passportSeries)) {
+    errors.passportSeries = 'Серия паспорта: ровно 4 цифры';
+  }
+  if (!form.passportNumber || !NUMBER_RE.test(form.passportNumber)) {
+    errors.passportNumber = 'Номер паспорта: ровно 6 цифр';
+  }
+
+  return errors;
+}
+
+function extractBackendError(err) {
+  const data = err.response?.data;
+  if (!data) return err.message || 'Произошла ошибка';
+
+  if (typeof data === 'string') {
+    try {
+      const parsed = JSON.parse(data);
+      if (parsed.fieldErrors) {
+        const parts = Object.entries(parsed.fieldErrors).map(([f, m]) => `${f}: ${m}`);
+        return `${parsed.message}: ${parts.join('; ')}`;
+      }
+      return parsed.message || data;
+    } catch {
+      return data;
+    }
+  }
+
+  if (data.fieldErrors && Object.keys(data.fieldErrors).length > 0) {
+    const parts = Object.entries(data.fieldErrors).map(([f, m]) => `${f}: ${m}`);
+    return `${data.message}: ${parts.join('; ')}`;
+  }
+
+  return data.message || err.message || 'Произошла ошибка';
+}
+
+function FieldError({ message }) {
+  if (!message) return null;
+  return <div className="field-error">{message}</div>;
+}
+
 export default function Statement() {
   const [form, setForm] = useState(emptyForm);
+  const [fieldErrors, setFieldErrors] = useState({});
   const [offers, setOffers] = useState(null);
   const [loading, setLoading] = useState(false);
   const [selectLoading, setSelectLoading] = useState(null);
@@ -74,12 +153,23 @@ export default function Statement() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => ({ ...prev, [name]: null }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
+
+    const errors = validateForm(form);
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return;
+    }
+    setFieldErrors({});
+
+    setLoading(true);
     setOffers(null);
     try {
       const payload = {
@@ -90,9 +180,7 @@ export default function Statement() {
       const res = await client.post(`${base}/statement`, payload);
       setOffers(res.data);
     } catch (err) {
-      setError(
-        err.response?.data?.message || err.message || 'Ошибка при отправке заявки',
-      );
+      setError(extractBackendError(err));
     } finally {
       setLoading(false);
     }
@@ -105,11 +193,7 @@ export default function Statement() {
       await client.post(`${base}/statement/select`, offer);
       navigate(`/statement/registration/${offer.statementId}`);
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-          err.message ||
-          'Ошибка при выборе предложения',
-      );
+      setError(extractBackendError(err));
       setSelectLoading(null);
     }
   };
@@ -126,7 +210,7 @@ export default function Statement() {
 
         {/* ── Application Form ── */}
         {!offers && (
-          <form onSubmit={handleSubmit} className="statement-form">
+          <form onSubmit={handleSubmit} className="statement-form" noValidate>
             <div className="form-row">
               <div className="form-col">
                 <div className="form-group">
@@ -138,13 +222,13 @@ export default function Statement() {
                     name="amount"
                     type="number"
                     step="1000"
-                    min="10000"
-                    className="form-control form-control-lg"
+                    min="20000"
+                    className={`form-control form-control-lg${fieldErrors.amount ? ' is-invalid' : ''}`}
                     value={form.amount}
                     onChange={handleChange}
                     placeholder={PLACEHOLDERS.amount}
-                    required
                   />
+                  <FieldError message={fieldErrors.amount} />
                 </div>
               </div>
               <div className="form-col">
@@ -157,12 +241,12 @@ export default function Statement() {
                     name="term"
                     type="number"
                     min="6"
-                    className="form-control form-control-lg"
+                    className={`form-control form-control-lg${fieldErrors.term ? ' is-invalid' : ''}`}
                     value={form.term}
                     onChange={handleChange}
                     placeholder={PLACEHOLDERS.term}
-                    required
                   />
+                  <FieldError message={fieldErrors.term} />
                 </div>
               </div>
             </div>
@@ -171,35 +255,35 @@ export default function Statement() {
               <div className="form-col">
                 <div className="form-group">
                   <label htmlFor="lastName" className="form-label">
-                    Фамилия *
+                    Фамилия * <span className="form-hint">(латиницей)</span>
                   </label>
                   <input
                     id="lastName"
                     name="lastName"
                     type="text"
-                    className="form-control form-control-lg"
+                    className={`form-control form-control-lg${fieldErrors.lastName ? ' is-invalid' : ''}`}
                     value={form.lastName}
                     onChange={handleChange}
                     placeholder={PLACEHOLDERS.lastName}
-                    required
                   />
+                  <FieldError message={fieldErrors.lastName} />
                 </div>
               </div>
               <div className="form-col">
                 <div className="form-group">
                   <label htmlFor="firstName" className="form-label">
-                    Имя *
+                    Имя * <span className="form-hint">(латиницей)</span>
                   </label>
                   <input
                     id="firstName"
                     name="firstName"
                     type="text"
-                    className="form-control form-control-lg"
+                    className={`form-control form-control-lg${fieldErrors.firstName ? ' is-invalid' : ''}`}
                     value={form.firstName}
                     onChange={handleChange}
                     placeholder={PLACEHOLDERS.firstName}
-                    required
                   />
+                  <FieldError message={fieldErrors.firstName} />
                 </div>
               </div>
             </div>
@@ -208,18 +292,18 @@ export default function Statement() {
               <div className="form-col">
                 <div className="form-group">
                   <label htmlFor="middleName" className="form-label">
-                    Отчество *
+                    Отчество <span className="form-hint">(латиницей, необязательно)</span>
                   </label>
                   <input
                     id="middleName"
                     name="middleName"
                     type="text"
-                    className="form-control form-control-lg"
+                    className={`form-control form-control-lg${fieldErrors.middleName ? ' is-invalid' : ''}`}
                     value={form.middleName}
                     onChange={handleChange}
                     placeholder={PLACEHOLDERS.middleName}
-                    required
                   />
+                  <FieldError message={fieldErrors.middleName} />
                 </div>
               </div>
               <div className="form-col">
@@ -231,12 +315,12 @@ export default function Statement() {
                     id="email"
                     name="email"
                     type="email"
-                    className="form-control form-control-lg"
+                    className={`form-control form-control-lg${fieldErrors.email ? ' is-invalid' : ''}`}
                     value={form.email}
                     onChange={handleChange}
                     placeholder={PLACEHOLDERS.email}
-                    required
                   />
+                  <FieldError message={fieldErrors.email} />
                 </div>
               </div>
             </div>
@@ -251,12 +335,11 @@ export default function Statement() {
                     id="birthdate"
                     name="birthdate"
                     type="date"
-                    className="form-control form-control-lg"
+                    className={`form-control form-control-lg${fieldErrors.birthdate ? ' is-invalid' : ''}`}
                     value={form.birthdate}
                     onChange={handleChange}
-                    placeholder={PLACEHOLDERS.birthdate}
-                    required
                   />
+                  <FieldError message={fieldErrors.birthdate} />
                 </div>
               </div>
               <div className="form-col">
@@ -269,12 +352,12 @@ export default function Statement() {
                     name="passportSeries"
                     type="text"
                     maxLength={4}
-                    className="form-control form-control-lg"
+                    className={`form-control form-control-lg${fieldErrors.passportSeries ? ' is-invalid' : ''}`}
                     value={form.passportSeries}
                     onChange={handleChange}
                     placeholder={PLACEHOLDERS.passportSeries}
-                    required
                   />
+                  <FieldError message={fieldErrors.passportSeries} />
                 </div>
               </div>
             </div>
@@ -290,12 +373,12 @@ export default function Statement() {
                     name="passportNumber"
                     type="text"
                     maxLength={6}
-                    className="form-control form-control-lg"
+                    className={`form-control form-control-lg${fieldErrors.passportNumber ? ' is-invalid' : ''}`}
                     value={form.passportNumber}
                     onChange={handleChange}
                     placeholder={PLACEHOLDERS.passportNumber}
-                    required
                   />
+                  <FieldError message={fieldErrors.passportNumber} />
                 </div>
               </div>
             </div>

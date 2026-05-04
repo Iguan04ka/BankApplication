@@ -3,7 +3,13 @@ import axios from 'axios';
 import client from '../../api/client';
 import { useAuth } from '../../auth/AuthProvider';
 import { useNavigate, Link } from 'react-router-dom';
+import OtpInput from '../../shared/ui/OtpInput/OtpInput';
 import './AuthForm.css';
+
+const getEndpoint = (path) => {
+  const isDev = process.env.NODE_ENV === 'development';
+  return isDev ? path : `/api${path}`;
+};
 
 export default function Login() {
   const [login, setLogin] = useState('');
@@ -11,6 +17,14 @@ export default function Login() {
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // 2FA stage
+  const [stage, setStage] = useState('credentials'); // 'credentials' | 'twofa'
+  const [twoFa, setTwoFa] = useState({ sub: '', email: '', code: '' });
+  const [twoFaLoading, setTwoFaLoading] = useState(false);
+  const [twoFaError, setTwoFaError] = useState(null);
+  const [resendInfo, setResendInfo] = useState(null);
+
   const auth = useAuth();
   const navigate = useNavigate();
 
@@ -20,9 +34,14 @@ export default function Login() {
     }
   }, [auth, navigate]);
 
-  const getEndpoint = () => {
-    const isDev = process.env.NODE_ENV === 'development';
-    return isDev ? '/auth/login' : '/api/auth/login';
+  const finishLogin = (data) => {
+    auth.login({ accessToken: data.accessToken, refreshToken: data.refreshToken });
+    const token = data.accessToken;
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    client.defaults.headers = client.defaults.headers || {};
+    client.defaults.headers.common = client.defaults.headers.common || {};
+    client.defaults.headers.common.Authorization = `Bearer ${token}`;
+    navigate('/account');
   };
 
   const handleSubmit = async (e) => {
@@ -31,22 +50,24 @@ export default function Login() {
     setMessage(null);
     setError(null);
     try {
-      const payload = { sub: login, password };
-      const endpoint = getEndpoint();
-      const res = await axios.post(endpoint, payload, {
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (res.status === 200 && res.data && res.data.accessToken) {
-        // save tokens via auth context
-        auth.login({ accessToken: res.data.accessToken, refreshToken: res.data.refreshToken });
-        // ensure axios and client have Authorization header set immediately
-        const token = res.data.accessToken;
-        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-        client.defaults.headers = client.defaults.headers || {};
-        client.defaults.headers.common = client.defaults.headers.common || {};
-        client.defaults.headers.common.Authorization = `Bearer ${token}`;
-        // redirect to account
-        navigate('/account');
+      const res = await axios.post(
+        getEndpoint('/auth/login'),
+        { sub: login, password },
+        { headers: { 'Content-Type': 'application/json' } },
+      );
+      if (res.status === 200 && res.data) {
+        if (res.data.requires2FA) {
+          setTwoFa({
+            sub: res.data.sub || login,
+            email: res.data.email || '',
+            code: '',
+          });
+          setStage('twofa');
+        } else if (res.data.accessToken) {
+          finishLogin(res.data);
+        } else {
+          setError('Unexpected response: ' + JSON.stringify(res.data));
+        }
       } else {
         setError('Unexpected response: ' + JSON.stringify(res.data));
       }
@@ -56,6 +77,127 @@ export default function Login() {
       setLoading(false);
     }
   };
+
+  const handleVerify2FA = async (e) => {
+    e.preventDefault();
+    setTwoFaError(null);
+    if (twoFa.code.length !== 6) {
+      setTwoFaError('Введите 6-значный код');
+      return;
+    }
+    setTwoFaLoading(true);
+    try {
+      const res = await axios.post(
+        getEndpoint('/auth/2fa/verify'),
+        { sub: twoFa.sub, code: twoFa.code },
+        { headers: { 'Content-Type': 'application/json' } },
+      );
+      if (res.status === 200 && res.data?.accessToken) {
+        finishLogin(res.data);
+      } else {
+        setTwoFaError('Не удалось подтвердить код');
+      }
+    } catch (err) {
+      const status = err.response?.status;
+      const data = err.response?.data;
+      const serverMsg =
+        (data && typeof data === 'object' && (data.error || data.message)) ||
+        (typeof data === 'string' ? data : null);
+      if (status === 401) {
+        setTwoFaError(serverMsg || 'Неверный или просроченный код');
+      } else {
+        setTwoFaError(serverMsg || err.message || 'Не удалось подтвердить код');
+      }
+    } finally {
+      setTwoFaLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    setResendInfo(null);
+    setTwoFaError(null);
+    try {
+      await axios.post(
+        getEndpoint('/auth/2fa/resend'),
+        { sub: twoFa.sub },
+        { headers: { 'Content-Type': 'application/json' } },
+      );
+      setResendInfo('Новый код отправлен на почту.');
+    } catch {
+      setResendInfo('Не удалось отправить код повторно. Попробуйте позже.');
+    }
+  };
+
+  const cancel2FA = () => {
+    setStage('credentials');
+    setTwoFa({ sub: '', email: '', code: '' });
+    setTwoFaError(null);
+    setResendInfo(null);
+    setPassword('');
+  };
+
+  if (stage === 'twofa') {
+    return (
+      <div className="auth-container">
+        <div className="auth-form-wrapper">
+          <div className="auth-form">
+            <div className="auth-header">
+              <h2 className="auth-title">🔐 Подтверждение входа</h2>
+              <p className="auth-subtitle">
+                Мы отправили 6-значный код на адрес{' '}
+                <strong>{twoFa.email || 'вашу почту'}</strong>. Введите его, чтобы продолжить.
+              </p>
+            </div>
+
+            <form onSubmit={handleVerify2FA}>
+              {twoFaError && (
+                <div className="alert alert-danger" role="alert">{twoFaError}</div>
+              )}
+              {resendInfo && (
+                <div className="alert alert-success" role="alert">{resendInfo}</div>
+              )}
+
+              <OtpInput
+                value={twoFa.code}
+                onChange={(c) => setTwoFa((s) => ({ ...s, code: c }))}
+                disabled={twoFaLoading}
+              />
+
+              <div style={{ textAlign: 'center', fontSize: '0.82rem', color: '#0066cc99', marginBottom: '1rem' }}>
+                Код действителен 5 минут с момента отправки.
+              </div>
+
+              <button
+                type="submit"
+                disabled={twoFaLoading || twoFa.code.length !== 6}
+                className="btn btn-primary btn-lg w-100"
+              >
+                {twoFaLoading ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Проверка...
+                  </>
+                ) : (
+                  'Войти'
+                )}
+              </button>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.85rem' }}>
+                <button type="button" className="auth-link" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                        onClick={handleResend} disabled={twoFaLoading}>
+                  Отправить код повторно
+                </button>
+                <button type="button" className="auth-link" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                        onClick={cancel2FA} disabled={twoFaLoading}>
+                  ← Назад
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="auth-container">

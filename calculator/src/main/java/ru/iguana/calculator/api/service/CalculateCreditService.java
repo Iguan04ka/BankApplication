@@ -83,13 +83,13 @@ public class CalculateCreditService {
         // Проверка: Сумма займа больше 24 зарплат
         if (isAmountToLarge(scoringDataDto)) {
             log.error("Loan amount is too large: {} > 24 * Salary {}", scoringDataDto.getAmount(), scoringDataDto.getEmployment().getSalary());
-            throw new IllegalArgumentException("the loan amount is too large");
+            throw new IllegalArgumentException("Запрашиваемая сумма превышает допустимый лимит (более 24 зарплат)");
         }
 
         // Проверка: Возраст
         if (!isAgeCorrect(scoringDataDto)) {
             log.error("Incorrect age: Allowed range: 20-65.");
-            throw new IllegalArgumentException("incorrect age");
+            throw new IllegalArgumentException("Возраст заёмщика должен быть от 20 до 65 лет");
         }
 
         // Проверка: Стаж работы
@@ -97,7 +97,7 @@ public class CalculateCreditService {
             log.error("Insufficient work experience. Total: {}, Current: {}",
                     scoringDataDto.getEmployment().getWorkExperienceTotal(),
                     scoringDataDto.getEmployment().getWorkExperienceCurrent());
-            throw new IllegalArgumentException("insufficient work experience");
+            throw new IllegalArgumentException("Недостаточный трудовой стаж: общий — от 18 мес., текущий — от 3 мес.");
         }
 
         // Проверка: зарплатный клиент
@@ -352,11 +352,11 @@ public class CalculateCreditService {
             }
             case UNEMPLOYED -> {
                 log.error("Employment status: UNEMPLOYED. Loan denied.");
-                throw new IllegalArgumentException("We do not provide loans to the unemployed");
+                throw new IllegalArgumentException("Кредиты безработным не предоставляются");
             }
             default -> {
                 log.error("Invalid employment status: {}", scoringDataDto.getEmployment().getEmploymentStatus());
-                throw new IllegalArgumentException("Invalid operating status specified");
+                throw new IllegalArgumentException("Указан некорректный статус занятости");
             }
         }
         return rateDifference;
@@ -380,7 +380,7 @@ public class CalculateCreditService {
             }
             default -> {
                 log.error("Invalid job position: {}", scoringDataDto.getEmployment().getPosition());
-                throw new IllegalArgumentException("Incorrect job position indicated");
+                throw new IllegalArgumentException("Указана некорректная должность");
             }
         }
 
@@ -401,7 +401,7 @@ public class CalculateCreditService {
             }
             default -> {
                 log.error("Invalid marital status: {}", scoringDataDto.getMaritalStatus());
-                throw new IllegalArgumentException("marital status is indicated incorrectly");
+                throw new IllegalArgumentException("Семейное положение указано некорректно");
             }
         }
         return rateDifference;

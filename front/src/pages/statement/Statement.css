@@ -3,6 +3,18 @@
   padding: 2rem 0;
 }
 
+.field-error {
+  color: #dc3545;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.form-hint {
+  font-size: 0.75rem;
+  color: #6c757d;
+  font-weight: 400;
+}
+
 .statement-content {
   max-width: 1000px;
   margin: 0 auto;

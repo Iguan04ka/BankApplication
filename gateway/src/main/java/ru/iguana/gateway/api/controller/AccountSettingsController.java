@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,8 @@ import ru.iguana.gateway.api.dto.AccountSettingsChangeSubRequestDto;
 import ru.iguana.gateway.api.dto.ChangeEmailRequestDto;
 import ru.iguana.gateway.api.dto.ChangePasswordRequestDto;
 import ru.iguana.gateway.api.dto.ChangeSubRequestDto;
+import ru.iguana.gateway.api.dto.TwoFactorCodeRequestDto;
+import ru.iguana.gateway.api.dto.TwoFactorVerifyRequestDto;
 import ru.iguana.gateway.api.service.JwtService;
 import ru.iguana.gateway.api.service.RefreshTokenStore;
 import ru.iguana.gateway.api.service.RequestToIntegrationRolesService;
@@ -94,6 +97,66 @@ public class AccountSettingsController {
             return ResponseEntity.status(e.getStatusCode()).body(parseError(e));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PreAuthorize("hasAuthority('base_user')")
+    @GetMapping("/2fa/status")
+    public ResponseEntity<?> twoFactorStatus() {
+        String sub = currentSub();
+        try {
+            Map<String, Object> status = rolesService.getTwoFactorStatus(sub);
+            return ResponseEntity.ok(status);
+        } catch (RestClientResponseException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(parseError(e));
+        }
+    }
+
+    @PreAuthorize("hasAuthority('base_user')")
+    @PostMapping("/2fa/request-enable")
+    public ResponseEntity<?> requestEnable2FA() {
+        String sub = currentSub();
+        try {
+            rolesService.issueTwoFactorEnableCode(sub);
+            return ResponseEntity.ok().build();
+        } catch (RestClientResponseException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(parseError(e));
+        }
+    }
+
+    @PreAuthorize("hasAuthority('base_user')")
+    @PostMapping("/2fa/confirm-enable")
+    public ResponseEntity<?> confirmEnable2FA(@RequestBody TwoFactorCodeRequestDto request) {
+        String sub = currentSub();
+        try {
+            rolesService.confirmTwoFactorEnable(new TwoFactorVerifyRequestDto(sub, request.getCode()));
+            return ResponseEntity.ok().build();
+        } catch (RestClientResponseException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(parseError(e));
+        }
+    }
+
+    @PreAuthorize("hasAuthority('base_user')")
+    @PostMapping("/2fa/request-disable")
+    public ResponseEntity<?> requestDisable2FA() {
+        String sub = currentSub();
+        try {
+            rolesService.issueTwoFactorDisableCode(sub);
+            return ResponseEntity.ok().build();
+        } catch (RestClientResponseException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(parseError(e));
+        }
+    }
+
+    @PreAuthorize("hasAuthority('base_user')")
+    @PostMapping("/2fa/confirm-disable")
+    public ResponseEntity<?> confirmDisable2FA(@RequestBody TwoFactorCodeRequestDto request) {
+        String sub = currentSub();
+        try {
+            rolesService.confirmTwoFactorDisable(new TwoFactorVerifyRequestDto(sub, request.getCode()));
+            return ResponseEntity.ok().build();
+        } catch (RestClientResponseException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(parseError(e));
         }
     }
 

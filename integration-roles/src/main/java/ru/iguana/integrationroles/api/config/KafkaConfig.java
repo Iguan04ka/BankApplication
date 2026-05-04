@@ -17,4 +17,9 @@ public class KafkaConfig {
     public NewTopic passwordResetTopic() {
         return new NewTopic("password-reset", 1, (short) 1);
     }
+
+    @Bean
+    public NewTopic twoFactorCodeTopic() {
+        return new NewTopic("two-factor-code", 1, (short) 1);
+    }
 }

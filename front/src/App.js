@@ -14,6 +14,8 @@ import RegisterPage from './pages/auth/Register.jsx';
 import ForgotPasswordPage from './pages/auth/ForgotPassword.jsx';
 import ResetPasswordPage from './pages/auth/ResetPassword.jsx';
 import HomePage from './pages/Home.jsx';
+import PrivacyPolicyPage from './pages/legal/PrivacyPolicy.jsx';
+import PersonalDataPolicyPage from './pages/legal/PersonalDataPolicy.jsx';
 import { AuthProvider, RequireAuth } from './auth/AuthProvider';
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
             <Route path="/statement/registration/:statementId" element={<RequireAuth><RegistrationPage /></RequireAuth>} />
             <Route path="/statement/confirmation/:statementId" element={<RequireAuth><ConfirmationPage /></RequireAuth>} />
             <Route path="/statement/resume/:statementId" element={<RequireAuth><StatementResumePage /></RequireAuth>} />
+            <Route path="/legal/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/legal/personal-data-policy" element={<PersonalDataPolicyPage />} />
             <Route path="/auth/login" element={<LoginPage />} />
             <Route path="/auth/register" element={<RegisterPage />} />
             <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />

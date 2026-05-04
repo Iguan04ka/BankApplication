@@ -30,6 +30,10 @@ public class UserEntity implements Serializable {
     @Column(name = "is_blocked", nullable = false)
     private boolean blocked;
 
+    @Column(name = "two_factor_enabled", nullable = false,
+            columnDefinition = "boolean NOT NULL DEFAULT false")
+    private boolean twoFactorEnabled;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserRole> roles = new HashSet<>();
 }

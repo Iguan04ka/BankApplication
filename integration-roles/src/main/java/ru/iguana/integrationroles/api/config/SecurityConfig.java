@@ -20,7 +20,8 @@ public class SecurityConfig {
                                 "/roles/authenticate",
                                 "/roles/forgotPassword",
                                 "/roles/resetPassword",
-                                "/roles/verifyResetToken"
+                                "/roles/verifyResetToken",
+                                "/roles/2fa/**"
                         ).permitAll()
                         .anyRequest().permitAll()
                 );

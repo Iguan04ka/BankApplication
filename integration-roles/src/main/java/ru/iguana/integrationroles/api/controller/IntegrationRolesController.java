@@ -12,10 +12,13 @@ import ru.iguana.integrationroles.api.dto.LoginRequestDto;
 import ru.iguana.integrationroles.api.dto.RegisterRequestDto;
 import ru.iguana.integrationroles.api.dto.ResetPasswordRequestDto;
 import ru.iguana.integrationroles.api.dto.SubRequestDto;
+import ru.iguana.integrationroles.api.dto.TwoFactorVerifyRequestDto;
 import ru.iguana.integrationroles.api.dto.UserResponseDto;
 import ru.iguana.integrationroles.api.service.AccountService;
 import ru.iguana.integrationroles.api.service.IntegrationRolesService;
 import ru.iguana.integrationroles.api.service.PasswordResetService;
+import ru.iguana.integrationroles.api.service.TwoFactorService;
+import ru.iguana.integrationroles.data.entity.TwoFactorPurpose;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +31,7 @@ public class IntegrationRolesController {
     private final IntegrationRolesService integrationRolesService;
     private final PasswordResetService passwordResetService;
     private final AccountService accountService;
+    private final TwoFactorService twoFactorService;
 
     @PostMapping("/roles/usersRoles")
     public ResponseEntity<Map<String, UserResponseDto>> usersRoles(@RequestBody List<Long> ids) {
@@ -124,5 +128,64 @@ public class IntegrationRolesController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
+    }
+
+    // ── 2FA ──────────────────────────────────────────────────────────────
+
+    @GetMapping("/roles/2fa/status")
+    public ResponseEntity<Map<String, Object>> twoFactorStatus(@RequestParam String sub) {
+        boolean enabled = twoFactorService.isEnabled(sub);
+        String email = twoFactorService.getEmail(sub);
+        return ResponseEntity.ok(Map.of(
+                "enabled", enabled,
+                "email", email == null ? "" : email
+        ));
+    }
+
+    @PostMapping("/roles/2fa/issueLoginCode")
+    public ResponseEntity<Void> issueLoginCode(@RequestBody SubRequestDto request) {
+        twoFactorService.issueCode(request.getSub(), TwoFactorPurpose.LOGIN);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/roles/2fa/verifyLoginCode")
+    public ResponseEntity<?> verifyLoginCode(@RequestBody TwoFactorVerifyRequestDto request) {
+        boolean ok = twoFactorService.verifyCode(
+                request.getSub(), request.getCode(), TwoFactorPurpose.LOGIN);
+        if (!ok) {
+            return ResponseEntity.status(401).body(Map.of("error", "Invalid or expired code"));
+        }
+        UserResponseDto user = integrationRolesService.getUserResponseDtoBySub(request.getSub());
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/roles/2fa/issueEnableCode")
+    public ResponseEntity<Void> issueEnableCode(@RequestBody SubRequestDto request) {
+        twoFactorService.issueCode(request.getSub(), TwoFactorPurpose.ENABLE_2FA);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/roles/2fa/confirmEnable")
+    public ResponseEntity<?> confirmEnable(@RequestBody TwoFactorVerifyRequestDto request) {
+        boolean ok = twoFactorService.confirmEnable(request.getSub(), request.getCode());
+        if (!ok) {
+            return ResponseEntity.status(401).body(Map.of("error", "Invalid or expired code"));
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/roles/2fa/issueDisableCode")
+    public ResponseEntity<Void> issueDisableCode(@RequestBody SubRequestDto request) {
+        twoFactorService.issueCode(request.getSub(), TwoFactorPurpose.DISABLE_2FA);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/roles/2fa/confirmDisable")
+    public ResponseEntity<?> confirmDisable(@RequestBody TwoFactorVerifyRequestDto request) {
+        boolean ok = twoFactorService.confirmDisable(request.getSub(), request.getCode());
+        if (!ok) {
+            return ResponseEntity.status(401).body(Map.of("error", "Invalid or expired code"));
+        }
+        return ResponseEntity.ok().build();
     }
 }

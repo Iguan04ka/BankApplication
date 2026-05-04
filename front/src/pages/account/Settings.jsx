@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import client from '../../api/client';
 import { useAuth } from '../../auth/AuthProvider';
+import OtpInput from '../../shared/ui/OtpInput/OtpInput';
 import './Settings.css';
 
 const getApiBase = () => (process.env.NODE_ENV === 'development' ? '' : '/api');
 
 const SECTIONS = [
   { key: 'account', label: 'Аккаунт', icon: '👤' },
+  { key: 'security', label: 'Безопасность', icon: '🛡️' },
 ];
 
 // ── Helper: parse error response from gateway ────────────────────────────────
@@ -310,6 +312,323 @@ function AccountSection({ onLogoutAfterPasswordChange }) {
   );
 }
 
+// ── Security section ─────────────────────────────────────────────────────────
+
+function SecuritySection() {
+  const base = getApiBase();
+
+  // Server state
+  const [enabled, setEnabled] = useState(false);
+  const [email, setEmail] = useState('');
+  const [statusLoading, setStatusLoading] = useState(true);
+  const [statusError, setStatusError] = useState(null);
+
+  // Local state (checkbox)
+  const [checked, setChecked] = useState(false);
+
+  // Apply / verification flow
+  const [phase, setPhase] = useState('idle'); // idle | requesting | verifying | success
+  const [pendingAction, setPendingAction] = useState(null); // 'enable' | 'disable'
+  const [code, setCode] = useState('');
+  const [actionError, setActionError] = useState(null);
+  const [actionLoading, setActionLoading] = useState(false);
+  const [resendInfo, setResendInfo] = useState(null);
+
+  const loadStatus = useCallback(async () => {
+    setStatusLoading(true);
+    setStatusError(null);
+    try {
+      const res = await client.get(`${base}/account/settings/2fa/status`);
+      const e = !!res.data?.enabled;
+      const em = res.data?.email || '';
+      setEnabled(e);
+      setChecked(e);
+      setEmail(em);
+    } catch (err) {
+      setStatusError(extractError(err, 'Не удалось загрузить настройки безопасности'));
+    } finally {
+      setStatusLoading(false);
+    }
+  }, [base]);
+
+  useEffect(() => {
+    loadStatus();
+  }, [loadStatus]);
+
+  const apply = async () => {
+    setActionError(null);
+    setResendInfo(null);
+    if (checked === enabled) return;
+
+    const action = checked ? 'enable' : 'disable';
+    setPendingAction(action);
+    setActionLoading(true);
+    try {
+      const path = action === 'enable'
+        ? `${base}/account/settings/2fa/request-enable`
+        : `${base}/account/settings/2fa/request-disable`;
+      await client.post(path);
+      setPhase('verifying');
+      setCode('');
+    } catch (err) {
+      setActionError(extractError(err, 'Не удалось отправить код'));
+      setPendingAction(null);
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const submitCode = async (e) => {
+    e.preventDefault();
+    setActionError(null);
+    if (code.length !== 6) {
+      setActionError('Введите 6-значный код');
+      return;
+    }
+    setActionLoading(true);
+    try {
+      const path = pendingAction === 'enable'
+        ? `${base}/account/settings/2fa/confirm-enable`
+        : `${base}/account/settings/2fa/confirm-disable`;
+      await client.post(path, { code });
+      setPhase('success');
+    } catch (err) {
+      setActionError(extractError(err, 'Неверный или просроченный код'));
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const resendCode = async () => {
+    setResendInfo(null);
+    setActionError(null);
+    try {
+      const path = pendingAction === 'enable'
+        ? `${base}/account/settings/2fa/request-enable`
+        : `${base}/account/settings/2fa/request-disable`;
+      await client.post(path);
+      setResendInfo('Новый код отправлен на почту.');
+    } catch (err) {
+      setActionError(extractError(err, 'Не удалось отправить код повторно'));
+    }
+  };
+
+  const cancelVerification = () => {
+    setPhase('idle');
+    setCode('');
+    setPendingAction(null);
+    setActionError(null);
+    setResendInfo(null);
+    setChecked(enabled);
+  };
+
+  const finishSuccess = async () => {
+    setPhase('idle');
+    setCode('');
+    setPendingAction(null);
+    setActionError(null);
+    setResendInfo(null);
+    await loadStatus();
+  };
+
+  // ── Render
+
+  if (statusLoading) {
+    return (
+      <div className="settings-section">
+        <div className="settings-section-header">
+          <h2 className="settings-section-title">
+            <span className="settings-section-icon">🛡️</span>
+            Безопасность
+          </h2>
+        </div>
+        <div className="settings-form">
+          <div className="settings-form-description">Загрузка...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (statusError) {
+    return (
+      <div className="settings-section">
+        <div className="settings-section-header">
+          <h2 className="settings-section-title">
+            <span className="settings-section-icon">🛡️</span>
+            Безопасность
+          </h2>
+        </div>
+        <div className="settings-form">
+          <div className="alert alert-danger">{statusError}</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (phase === 'verifying') {
+    return (
+      <div className="settings-section">
+        <div className="settings-section-header">
+          <h2 className="settings-section-title">
+            <span className="settings-section-icon">🛡️</span>
+            Безопасность
+          </h2>
+          <p className="settings-section-subtitle">
+            Мы отправили 6-значный код на адрес <strong>{email}</strong>.
+            Введите его, чтобы {pendingAction === 'enable' ? 'включить' : 'отключить'} двухфакторную аутентификацию.
+          </p>
+        </div>
+
+        <form className="settings-form" onSubmit={submitCode}>
+          {actionError && <div className="alert alert-danger">{actionError}</div>}
+          {resendInfo && <div className="alert alert-success">{resendInfo}</div>}
+
+          <OtpInput value={code} onChange={setCode} disabled={actionLoading} />
+
+          <div className="settings-hint" style={{ textAlign: 'center', marginBottom: '1rem' }}>
+            Код действителен 5 минут с момента отправки.
+          </div>
+
+          <div className="settings-form-actions" style={{ gap: '0.75rem' }}>
+            <button
+              type="button"
+              className="btn btn-back-mini"
+              onClick={cancelVerification}
+              disabled={actionLoading}
+            >
+              ← Отмена
+            </button>
+            <button
+              type="button"
+              className="btn btn-back-mini"
+              onClick={resendCode}
+              disabled={actionLoading}
+            >
+              Отправить код повторно
+            </button>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={actionLoading || code.length !== 6}
+            >
+              {actionLoading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />
+                  Подтверждение...
+                </>
+              ) : (
+                'Подтвердить'
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    );
+  }
+
+  if (phase === 'success') {
+    const wasEnable = pendingAction === 'enable';
+    return (
+      <div className="settings-section">
+        <div className="settings-section-header">
+          <h2 className="settings-section-title">
+            <span className="settings-section-icon">🛡️</span>
+            Безопасность
+          </h2>
+        </div>
+
+        <div className="settings-form">
+          <div className="settings-success">
+            <div className="settings-success-icon">{wasEnable ? '✅' : '🔓'}</div>
+            <h3 className="settings-success-title">
+              {wasEnable
+                ? 'Двухфакторная аутентификация включена'
+                : 'Двухфакторная аутентификация отключена'}
+            </h3>
+            <p className="settings-success-text">
+              {wasEnable
+                ? 'Теперь при каждом входе мы будем отправлять одноразовый код на вашу почту.'
+                : 'Вход в аккаунт снова будет выполняться только по логину и паролю.'}
+            </p>
+            <div className="settings-success-actions">
+              <button type="button" className="btn btn-primary" onClick={finishSuccess}>
+                ← Вернуться к настройкам
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // idle — main view
+  const dirty = checked !== enabled;
+
+  return (
+    <div className="settings-section">
+      <div className="settings-section-header">
+        <h2 className="settings-section-title">
+          <span className="settings-section-icon">🛡️</span>
+          Безопасность
+        </h2>
+        <p className="settings-section-subtitle">
+          Управляйте дополнительными механизмами защиты вашего аккаунта.
+        </p>
+      </div>
+
+      <div className="settings-form">
+        <div className="settings-form-header">
+          <h3 className="settings-form-title">Двухфакторная аутентификация</h3>
+          <p className="settings-form-description">
+            При включённой двухфакторной аутентификации после ввода логина и пароля мы отправим 6-значный код
+            на вашу электронную почту. Без правильного кода вход невозможен — это защищает аккаунт даже в случае
+            утечки пароля. Вторым фактором служит ваша почта{' '}
+            <strong>{email || '—'}</strong>.
+          </p>
+        </div>
+
+        {actionError && <div className="alert alert-danger">{actionError}</div>}
+
+        <label className="settings-toggle-row">
+          <input
+            type="checkbox"
+            className="settings-toggle-checkbox"
+            checked={checked}
+            onChange={(e) => setChecked(e.target.checked)}
+            disabled={actionLoading}
+          />
+          <span className="settings-toggle-text">
+            <span className="settings-toggle-label">
+              Двухфакторная аутентификация
+            </span>
+            <span className={`settings-toggle-state ${enabled ? 'is-on' : 'is-off'}`}>
+              {enabled ? 'Включена' : 'Выключена'}
+            </span>
+          </span>
+        </label>
+
+        <div className="settings-form-actions">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={apply}
+            disabled={!dirty || actionLoading}
+          >
+            {actionLoading ? (
+              <>
+                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />
+                Отправка кода...
+              </>
+            ) : (
+              'Применить'
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Page ─────────────────────────────────────────────────────────────────────
 
 export default function Settings() {
@@ -359,6 +678,7 @@ export default function Settings() {
               onLogoutAfterPasswordChange={handleLogoutAfterPasswordChange}
             />
           )}
+          {activeSection === 'security' && <SecuritySection />}
         </main>
       </div>
     </div>

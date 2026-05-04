@@ -1,0 +1,153 @@
+/* ── Footer shell ────────────────────────────────────────────────────────── */
+/* Main palette: #f0f8ff / #e8f4ff / #87ceeb / #0066cc
+   Footer is deliberately a step darker: #c8dff0 → #bdd8ec gradient,
+   with a strong border on top.                                              */
+
+.site-footer {
+  background: linear-gradient(135deg, #bdd8ec 0%, #c8e3f2 100%);
+  border-top: 2px solid #87ceeb;
+  box-shadow: 0 -2px 12px rgba(0, 102, 204, 0.08);
+  color: #1a3d5c;
+  margin-top: auto;
+}
+
+/* ── Main grid ───────────────────────────────────────────────────────────── */
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 2rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* ── Brand column ────────────────────────────────────────────────────────── */
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.footer-brand-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.footer-brand-text {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #003f7a;
+  letter-spacing: -0.3px;
+}
+
+.footer-brand-tagline {
+  font-size: 0.875rem;
+  color: #3a6080;
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* ── Link columns ────────────────────────────────────────────────────────── */
+
+.footer-links-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #004e96;
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+}
+
+.footer-links-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.footer-link {
+  color: #1a4f78;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease, padding-left 0.2s ease;
+  display: inline-block;
+}
+
+.footer-link:hover {
+  color: #003f7a;
+  padding-left: 4px;
+  text-decoration: none;
+}
+
+/* ── Contacts column ─────────────────────────────────────────────────────── */
+
+.footer-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1a4f78;
+}
+
+.footer-contact-icon {
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* ── Bottom bar ──────────────────────────────────────────────────────────── */
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.875rem 1.5rem;
+  border-top: 1px solid rgba(0, 102, 204, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: #3a6080;
+  flex-wrap: wrap;
+}
+
+.footer-bottom-sep {
+  color: #87ceeb;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 2rem 1rem 1.5rem;
+  }
+
+  .footer-brand {
+    grid-column: unset;
+  }
+
+  .footer-bottom {
+    justify-content: center;
+    text-align: center;
+  }
+}

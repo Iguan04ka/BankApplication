@@ -243,6 +243,120 @@
 .settings-form-actions {
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+/* ── Toggle (2FA) ──────────────────────────────────────────────────────── */
+
+.settings-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: white;
+  border: 2px solid #87ceeb;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.settings-toggle-row:hover {
+  border-color: #0066cc;
+  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.1);
+}
+
+.settings-toggle-checkbox {
+  width: 20px;
+  height: 20px;
+  accent-color: #0066cc;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.settings-toggle-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.settings-toggle-label {
+  color: #0066cc;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.settings-toggle-state {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.settings-toggle-state.is-on {
+  color: #128a48;
+}
+
+.settings-toggle-state.is-off {
+  color: #888;
+}
+
+/* Mini back button used in 2FA verification */
+.btn-back-mini {
+  background: transparent;
+  color: #0066cc;
+  border: 2px solid #87ceeb;
+  border-radius: 8px;
+  padding: 0.55rem 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-back-mini:hover:not(:disabled) {
+  background: white;
+  border-color: #0066cc;
+  transform: translateY(-1px);
+}
+
+.btn-back-mini:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Success block ─────────────────────────────────────────────────────── */
+
+.settings-success {
+  text-align: center;
+  padding: 1rem 0.5rem 0.25rem;
+}
+
+.settings-success-icon {
+  font-size: 2.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.settings-success-title {
+  color: #0066cc;
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin: 0 0 0.6rem;
+}
+
+.settings-success-text {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  max-width: 460px;
+  margin: 0 auto 1.25rem;
+}
+
+.settings-success-actions {
+  display: flex;
+  justify-content: center;
 }
 
 /* ── Buttons (scoped to settings) ───────────────────────────────────────── */

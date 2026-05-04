@@ -42,6 +42,10 @@ public class MessageConvertor {
         return new JSONObject(jsonString).optString("resetUrl", "");
     }
 
+    public String getPurpose(String jsonString) {
+        return new JSONObject(jsonString).optString("purpose", "");
+    }
+
     public String getGreetingName(String jsonString) {
         JSONObject obj = new JSONObject(jsonString);
         String first = obj.optString("firstName", "").trim();
