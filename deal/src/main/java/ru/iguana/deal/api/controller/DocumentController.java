@@ -47,4 +47,11 @@ public class DocumentController {
         log.info("Received request to verify SES code for statementId: {}", statementId);
         sesCodeService.verifyCode(statementId, request.getCode());
     }
+
+    @PostMapping("/resend-ses")
+    @Operation(summary = "Resend SES code", description = "Generates a new SES confirmation code and resends it by email. Only valid when statement is in CC_APPROVED status.")
+    public void resendSes(@PathVariable UUID statementId) {
+        log.info("Received request to resend SES code for statementId: {}", statementId);
+        sesCodeService.resendCode(statementId);
+    }
 }

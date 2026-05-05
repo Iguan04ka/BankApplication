@@ -14,7 +14,9 @@ import ru.iguana.integrationroles.api.dto.ResetPasswordRequestDto;
 import ru.iguana.integrationroles.api.dto.SubRequestDto;
 import ru.iguana.integrationroles.api.dto.TwoFactorVerifyRequestDto;
 import ru.iguana.integrationroles.api.dto.UserResponseDto;
+import ru.iguana.integrationroles.api.dto.RoleDto;
 import ru.iguana.integrationroles.api.service.AccountService;
+import ru.iguana.integrationroles.api.service.AdminRolesService;
 import ru.iguana.integrationroles.api.service.IntegrationRolesService;
 import ru.iguana.integrationroles.api.service.PasswordResetService;
 import ru.iguana.integrationroles.api.service.TwoFactorService;
@@ -22,6 +24,7 @@ import ru.iguana.integrationroles.data.entity.TwoFactorPurpose;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,6 +35,7 @@ public class IntegrationRolesController {
     private final PasswordResetService passwordResetService;
     private final AccountService accountService;
     private final TwoFactorService twoFactorService;
+    private final AdminRolesService adminRolesService;
 
     @PostMapping("/roles/usersRoles")
     public ResponseEntity<Map<String, UserResponseDto>> usersRoles(@RequestBody List<Long> ids) {
@@ -187,5 +191,43 @@ public class IntegrationRolesController {
             return ResponseEntity.status(401).body(Map.of("error", "Invalid or expired code"));
         }
         return ResponseEntity.ok().build();
+    }
+
+    // ── Admin ────────────────────────────────────────────────────────────
+
+    @GetMapping("/roles/admin/users")
+    public ResponseEntity<List<UserResponseDto>> adminListUsers() {
+        log.info("GET /roles/admin/users");
+        return ResponseEntity.ok(adminRolesService.listAllUsers());
+    }
+
+    @PutMapping("/roles/admin/users/{sub}/blocked")
+    public ResponseEntity<?> adminSetBlocked(@PathVariable String sub,
+                                             @RequestBody Map<String, Boolean> body) {
+        Boolean blocked = body == null ? null : body.get("blocked");
+        if (blocked == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "blocked is required"));
+        }
+        try {
+            return ResponseEntity.ok(adminRolesService.setBlocked(sub, blocked));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PutMapping("/roles/admin/users/{sub}/roles")
+    public ResponseEntity<?> adminSetRoles(@PathVariable String sub,
+                                           @RequestBody Map<String, Set<String>> body) {
+        Set<String> roleNames = body == null ? null : body.get("roleNames");
+        try {
+            return ResponseEntity.ok(adminRolesService.setRoles(sub, roleNames));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/roles/admin/roles")
+    public ResponseEntity<List<RoleDto>> adminListRoles() {
+        return ResponseEntity.ok(adminRolesService.listAllRoles());
     }
 }

@@ -2,6 +2,7 @@ package ru.iguana.gateway.api.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,13 @@ import ru.iguana.gateway.api.dto.ForgotPasswordRequestDto;
 import ru.iguana.gateway.api.dto.LoginRequestDto;
 import ru.iguana.gateway.api.dto.RegisterRequestDto;
 import ru.iguana.gateway.api.dto.ResetPasswordRequestDto;
+import ru.iguana.gateway.api.dto.RoleDto;
 import ru.iguana.gateway.api.dto.TwoFactorVerifyRequestDto;
 import ru.iguana.gateway.api.dto.UserResponseDto;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class RequestToIntegrationRolesService {
@@ -178,4 +181,41 @@ public class RequestToIntegrationRolesService {
                 .toBodilessEntity();
     }
 
+    // ── Admin proxies ────────────────────────────────────────────────────
+
+    public List<UserResponseDto> adminListUsers() {
+        return rolesRestClient
+                .get()
+                .uri("/roles/admin/users")
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+    }
+
+    @CacheEvict(value = "users", key = "#sub")
+    public UserResponseDto adminSetBlocked(String sub, boolean blocked) {
+        return rolesRestClient
+                .put()
+                .uri("/roles/admin/users/{sub}/blocked", sub)
+                .body(Map.of("blocked", blocked))
+                .retrieve()
+                .body(UserResponseDto.class);
+    }
+
+    @CacheEvict(value = "users", key = "#sub")
+    public UserResponseDto adminSetRoles(String sub, Set<String> roleNames) {
+        return rolesRestClient
+                .put()
+                .uri("/roles/admin/users/{sub}/roles", sub)
+                .body(Map.of("roleNames", roleNames))
+                .retrieve()
+                .body(UserResponseDto.class);
+    }
+
+    public List<RoleDto> adminListRoles() {
+        return rolesRestClient
+                .get()
+                .uri("/roles/admin/roles")
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+    }
 }

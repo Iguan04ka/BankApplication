@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import client from '../../api/client';
 import './Confirmation.css';
@@ -6,6 +6,7 @@ import './Confirmation.css';
 const getApiBase = () => (process.env.NODE_ENV === 'development' ? '' : '/api');
 
 const CODE_LENGTH = 6;
+const RESEND_COOLDOWN = 60; // seconds
 
 export default function Confirmation() {
   const { statementId } = useParams();
@@ -17,10 +18,37 @@ export default function Confirmation() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
+  // Resend state
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendError, setResendError] = useState(null);
+  const [resendSuccess, setResendSuccess] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+  const cooldownRef = useRef(null);
+
   const inputsRef = useRef([]);
 
   useEffect(() => {
     inputsRef.current[0]?.focus();
+  }, []);
+
+  // Cooldown timer
+  const startCooldown = useCallback(() => {
+    setCooldown(RESEND_COOLDOWN);
+    cooldownRef.current = setInterval(() => {
+      setCooldown((prev) => {
+        if (prev <= 1) {
+          clearInterval(cooldownRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (cooldownRef.current) clearInterval(cooldownRef.current);
+    };
   }, []);
 
   const updateDigit = (index, value) => {
@@ -90,7 +118,7 @@ export default function Confirmation() {
       if (status === 401) {
         msg = 'Неверный код подтверждения. Проверьте правильность ввода.';
       } else if (status === 410) {
-        msg = 'Срок действия кода истёк. Попробуйте оформить заявку заново.';
+        msg = 'Срок действия кода истёк. Запросите новый код ниже.';
       } else if (status === 400) {
         msg = err.response?.data?.message || 'Код не был выпущен для этой заявки.';
       } else {
@@ -99,6 +127,32 @@ export default function Confirmation() {
       setError(msg);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    if (cooldown > 0 || resendLoading) return;
+    setResendLoading(true);
+    setResendError(null);
+    setResendSuccess(false);
+    try {
+      await client.post(`${base}/statement/registration/${statementId}/resend-code`);
+      setResendSuccess(true);
+      setError(null);
+      setDigits(Array(CODE_LENGTH).fill(''));
+      inputsRef.current[0]?.focus();
+      startCooldown();
+    } catch (err) {
+      const status = err.response?.status;
+      let msg;
+      if (status === 409) {
+        msg = 'Невозможно запросить код: заявка уже подтверждена или отменена.';
+      } else {
+        msg = err.response?.data?.message || err.message || 'Не удалось отправить новый код.';
+      }
+      setResendError(msg);
+    } finally {
+      setResendLoading(false);
     }
   };
 
@@ -200,6 +254,44 @@ export default function Confirmation() {
               </button>
             </div>
           </form>
+
+          {/* Resend section */}
+          <div className="conf-resend">
+            <p className="conf-resend-hint">
+              Не получили письмо или код истёк?
+            </p>
+            {resendSuccess && (
+              <div className="alert alert-success conf-resend-msg" role="alert">
+                Новый код отправлен на вашу почту.
+              </div>
+            )}
+            {resendError && (
+              <div className="alert alert-danger conf-resend-msg" role="alert">
+                {String(resendError)}
+              </div>
+            )}
+            <button
+              type="button"
+              className="btn conf-resend-btn"
+              onClick={handleResend}
+              disabled={cooldown > 0 || resendLoading}
+            >
+              {resendLoading ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  Отправка...
+                </>
+              ) : cooldown > 0 ? (
+                `Запросить новый код (${cooldown} с)`
+              ) : (
+                'Запросить новый код'
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </div>

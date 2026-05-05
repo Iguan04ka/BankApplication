@@ -61,4 +61,12 @@ public class RequestToDealController {
         requestToDealService.verifySesCode(statementId, request);
         log.info("The verifySesCode request was processed successfully");
     }
+
+    @PostMapping("statement/registration/{statementId}/resend-code")
+    @Operation(summary = "Resend SES code", description = "Generates and resends a new OTP confirmation code to the user's email for the given statement.")
+    public void resendSesCode(@PathVariable String statementId){
+        log.info("A request has arrived for resendSesCode: {}", statementId);
+        requestToDealService.resendSesCode(statementId);
+        log.info("The resendSesCode request was processed successfully");
+    }
 }

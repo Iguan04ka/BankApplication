@@ -30,18 +30,25 @@ export default function Login() {
 
   useEffect(() => {
     if (auth && auth.user) {
-      navigate('/account');
+      navigate(auth.isAdmin ? '/admin' : '/account');
     }
   }, [auth, navigate]);
 
-  const finishLogin = (data) => {
-    auth.login({ accessToken: data.accessToken, refreshToken: data.refreshToken });
+  const finishLogin = (data, fallbackSub) => {
+    const roles = Array.isArray(data.roles) ? data.roles : [];
+    auth.login({
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+      roles,
+      sub: data.sub || fallbackSub || null,
+    });
     const token = data.accessToken;
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
     client.defaults.headers = client.defaults.headers || {};
     client.defaults.headers.common = client.defaults.headers.common || {};
     client.defaults.headers.common.Authorization = `Bearer ${token}`;
-    navigate('/account');
+    const isAdmin = roles.some((r) => String(r).toLowerCase() === 'admin');
+    navigate(isAdmin ? '/admin' : '/account');
   };
 
   const handleSubmit = async (e) => {
@@ -64,7 +71,7 @@ export default function Login() {
           });
           setStage('twofa');
         } else if (res.data.accessToken) {
-          finishLogin(res.data);
+          finishLogin(res.data, login);
         } else {
           setError('Unexpected response: ' + JSON.stringify(res.data));
         }
@@ -72,7 +79,20 @@ export default function Login() {
         setError('Unexpected response: ' + JSON.stringify(res.data));
       }
     } catch (err) {
-      setError(err.response?.data ? JSON.stringify(err.response.data) : err.message);
+      const status = err.response?.status;
+      const data = err.response?.data;
+      const serverMsg =
+        (data && typeof data === 'object' && (data.error || data.message)) ||
+        (typeof data === 'string' ? data : null);
+      if (status === 401) {
+        if (serverMsg && /blocked/i.test(serverMsg)) {
+          setError('Ваша учётная запись заблокирована. Обратитесь в поддержку.');
+        } else {
+          setError(serverMsg || 'Неверный логин или пароль');
+        }
+      } else {
+        setError(serverMsg || err.message || 'Не удалось войти');
+      }
     } finally {
       setLoading(false);
     }
@@ -93,7 +113,7 @@ export default function Login() {
         { headers: { 'Content-Type': 'application/json' } },
       );
       if (res.status === 200 && res.data?.accessToken) {
-        finishLogin(res.data);
+        finishLogin(res.data, twoFa.sub);
       } else {
         setTwoFaError('Не удалось подтвердить код');
       }

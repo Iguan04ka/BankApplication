@@ -3,12 +3,15 @@ package ru.iguana.gateway.api.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.iguana.gateway.api.dto.FinishRegistrationRequestDto;
 import ru.iguana.gateway.api.dto.SesCodeRequestDto;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -53,6 +56,10 @@ public class RequestToDealService {
         log.info("Successfully verified SES code for statement: {}", statementId);
     }
 
+    public void resendSesCode(String statementId) {
+        sendRequest("/deal/document/{statementId}/resend-ses", statementId);
+    }
+
     private void sendRequest(String uri, String statementId) {
         log.info("Sending request to: {}", uri);
         restClient.post()
@@ -60,6 +67,64 @@ public class RequestToDealService {
                 .retrieve()
                 .toBodilessEntity();
         log.info("Successfully sent request: {}", uri);
+    }
+
+    // ── Admin proxies ────────────────────────────────────────────────────
+
+    public List<Map<String, Object>> adminListStatements(String status, Long fromMillis, Long toMillis) {
+        return restClient.get()
+                .uri(uriBuilder -> {
+                    var ub = uriBuilder.path("/deal/admin/statement");
+                    if (status != null && !status.isBlank()) ub.queryParam("status", status);
+                    if (fromMillis != null) ub.queryParam("fromMillis", fromMillis);
+                    if (toMillis != null) ub.queryParam("toMillis", toMillis);
+                    return ub.build();
+                })
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+    }
+
+    public Map<String, Object> adminGetStatementDetails(String statementId) {
+        return restClient.get()
+                .uri("/deal/admin/statement/{id}/details", statementId)
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+    }
+
+    public Map<String, Object> adminUpdateStatementStatus(String statementId, Map<String, Object> body) {
+        return restClient.put()
+                .uri("/deal/admin/statement/{id}/status", statementId)
+                .body(body)
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+    }
+
+    public List<Map<String, Object>> adminListCredits() {
+        return restClient.get()
+                .uri("/deal/admin/credit")
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+    }
+
+    public Map<String, Object> adminGetCredit(String creditId) {
+        return restClient.get()
+                .uri("/deal/admin/credit/{id}", creditId)
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+    }
+
+    public Map<String, Object> adminDashboardStats() {
+        return restClient.get()
+                .uri("/deal/admin/dashboard/stats")
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+    }
+
+    public Map<String, Object> adminGetStatementByCreditId(String creditId) {
+        return restClient.get()
+                .uri("/deal/admin/credit/{id}/statement", creditId)
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
     }
 }
 

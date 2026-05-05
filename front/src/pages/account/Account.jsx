@@ -5,8 +5,9 @@ import './Account.css';
 
 // Statuses that allow the user to continue the application
 const CONTINUE_ACTIONS = {
-  PREAPPROVAL: { label: 'Выбрать предложение', path: (id) => `/statement/resume/${id}` },
-  APPROVED:    { label: 'Завершить регистрацию', path: (id) => `/statement/registration/${id}` },
+  PREAPPROVAL:  { label: 'Выбрать предложение',   path: (id) => `/statement/resume/${id}` },
+  APPROVED:     { label: 'Завершить регистрацию', path: (id) => `/statement/registration/${id}` },
+  CC_APPROVED:  { label: 'Подтвердить кредит',    path: (id) => `/statement/confirmation/${id}` },
 };
 
 const getApiBase = () => (process.env.NODE_ENV === 'development' ? '' : '/api');

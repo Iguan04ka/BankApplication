@@ -43,6 +43,7 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/deal/**").authenticated()
                         .requestMatchers("/account/**").authenticated()
+                        .requestMatchers("/admin/**").hasAuthority("admin")
                         .anyRequest().denyAll()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtService, service), BasicAuthenticationFilter.class)

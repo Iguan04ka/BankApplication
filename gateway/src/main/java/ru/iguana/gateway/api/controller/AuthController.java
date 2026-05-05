@@ -12,6 +12,7 @@ import ru.iguana.gateway.api.dto.LoginRequestDto;
 import ru.iguana.gateway.api.dto.RefreshRequestDto;
 import ru.iguana.gateway.api.dto.RegisterRequestDto;
 import ru.iguana.gateway.api.dto.ResetPasswordRequestDto;
+import ru.iguana.gateway.api.dto.RoleDto;
 import ru.iguana.gateway.api.dto.TwoFactorVerifyRequestDto;
 import ru.iguana.gateway.api.dto.UserResponseDto;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,11 @@ import ru.iguana.gateway.api.service.JwtService;
 import ru.iguana.gateway.api.service.RefreshTokenStore;
 import ru.iguana.gateway.api.service.RequestToIntegrationRolesService;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
@@ -82,14 +87,18 @@ public class AuthController {
         }
 
         if (userDto.isBlocked()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body("User is blocked");
+            // Block authentication entirely. The user is blocked → 401 with reason.
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "user blocked"));
         }
 
         String sub = userDto.getUserKey().getSub();
+        boolean isAdmin = hasAdminRole(userDto);
 
-        // 2FA enabled — issue email code, do not return JWTs yet
-        if (userDto.isTwoFactorEnabled()) {
+        // Admins ALWAYS go through 2FA, even if the per-user flag is off.
+        boolean require2FA = userDto.isTwoFactorEnabled() || isAdmin;
+
+        if (require2FA) {
             try {
                 rolesService.issueTwoFactorLoginCode(sub);
             } catch (Exception e) {
@@ -116,8 +125,21 @@ public class AuthController {
 
         return ResponseEntity.ok(Map.of(
                 "accessToken", accessToken,
-                "refreshToken", refreshToken
+                "refreshToken", refreshToken,
+                "roles", roleNames(userDto)
         ));
+    }
+
+    private static boolean hasAdminRole(UserResponseDto user) {
+        Set<RoleDto> roles = user == null ? null : user.getRoles();
+        if (roles == null) return false;
+        return roles.stream().anyMatch(r -> "admin".equalsIgnoreCase(r.getName()));
+    }
+
+    private static List<String> roleNames(UserResponseDto user) {
+        Set<RoleDto> roles = user == null ? null : user.getRoles();
+        if (roles == null) return Collections.emptyList();
+        return roles.stream().map(RoleDto::getName).collect(Collectors.toList());
     }
 
     @PostMapping("/2fa/verify")
@@ -135,9 +157,13 @@ public class AuthController {
                     .body(Map.of("error", "Invalid or expired code"));
         }
 
-        if (userDto == null || userDto.isBlocked()) {
+        if (userDto == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Invalid or expired code"));
+        }
+        if (userDto.isBlocked()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "user blocked"));
         }
 
         String sub = userDto.getUserKey().getSub();
@@ -147,7 +173,8 @@ public class AuthController {
 
         return ResponseEntity.ok(Map.of(
                 "accessToken", accessToken,
-                "refreshToken", refreshToken
+                "refreshToken", refreshToken,
+                "roles", roleNames(userDto)
         ));
     }
 
@@ -199,6 +226,44 @@ public class AuthController {
         refreshTokenStore.delete(sub);
 
         return ResponseEntity.ok("Logged out");
+    }
+
+    /**
+     * Returns the current user's profile (sub + roles + flags) given a valid access token.
+     * Used by the frontend to restore role info on page reload / after refresh.
+     * The JWT filter is bypassed for /auth/**, so we resolve the user manually here.
+     */
+    @GetMapping("/me")
+    public ResponseEntity<?> me(@org.springframework.web.bind.annotation.RequestHeader(
+            value = "Authorization", required = false) String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "no token"));
+        }
+        String token = authHeader.substring(7);
+        String sub;
+        try {
+            sub = jwtService.extractSub(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "invalid token"));
+        }
+        UserResponseDto userDto;
+        try {
+            userDto = rolesService.getUserBySub(sub);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "user not found"));
+        }
+        if (userDto == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "user not found"));
+        }
+        if (userDto.isBlocked()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "user blocked"));
+        }
+        return ResponseEntity.ok(Map.of(
+                "sub", userDto.getUserKey().getSub(),
+                "roles", roleNames(userDto),
+                "blocked", userDto.isBlocked(),
+                "twoFactorEnabled", userDto.isTwoFactorEnabled()
+        ));
     }
 
     @PostMapping("/forgot-password")

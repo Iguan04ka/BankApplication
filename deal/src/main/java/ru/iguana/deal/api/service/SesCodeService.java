@@ -6,14 +6,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import ru.iguana.deal.api.dto.EmailMessageDto;
+import ru.iguana.deal.kafka.KafkaProducer;
+import ru.iguana.deal.model.entity.Client;
+import ru.iguana.deal.model.entity.Credit;
 import ru.iguana.deal.model.entity.Jsonb.StatusHistory;
 import ru.iguana.deal.model.entity.Statement;
 import ru.iguana.deal.model.entity.enums.ApplicationStatus;
 import ru.iguana.deal.model.entity.enums.ChangeType;
+import ru.iguana.deal.model.entity.enums.EmailTheme;
+import ru.iguana.deal.model.repository.ClientRepository;
+import ru.iguana.deal.model.repository.CreditRepository;
 import ru.iguana.deal.model.repository.StatementRepository;
 
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 @Service
@@ -21,7 +30,13 @@ import java.util.UUID;
 @Slf4j
 public class SesCodeService {
 
+    private static final int TTL_MINUTES = 5;
+    private static final SecureRandom RANDOM = new SecureRandom();
+
     private final StatementRepository statementRepository;
+    private final ClientRepository clientRepository;
+    private final CreditRepository creditRepository;
+    private final KafkaProducer kafkaProducer;
 
     @Transactional
     public void verifyCode(UUID statementId, String code) {
@@ -64,5 +79,50 @@ public class SesCodeService {
 
         statementRepository.save(statement);
         log.info("SES code verified, statement marked DOCUMENT_SIGNED for id: {}", statementId);
+    }
+
+    @Transactional
+    public void resendCode(UUID statementId) {
+        log.info("Resending SES code for statementId: {}", statementId);
+
+        Statement statement = statementRepository.findById(statementId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Statement not found"));
+
+        if (!ApplicationStatus.CC_APPROVED.name().equals(statement.getStatus())) {
+            log.warn("Resend rejected: statement {} is in status {}, expected CC_APPROVED",
+                    statementId, statement.getStatus());
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Cannot resend code: statement is not awaiting confirmation");
+        }
+
+        String code = String.format("%06d", RANDOM.nextInt(1_000_000));
+        Timestamp expiresAt = Timestamp.from(Instant.now().plus(TTL_MINUTES, ChronoUnit.MINUTES));
+        statement.setSesCode(code);
+        statement.setSesCodeExpiresAt(expiresAt);
+        statementRepository.save(statement);
+        log.info("New SES code generated for statementId: {} (expires at {})", statementId, expiresAt);
+
+        Client client = clientRepository.findById(statement.getClientId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
+
+        EmailMessageDto message = new EmailMessageDto()
+                .setAddress(client.getEmail())
+                .setTheme(EmailTheme.SEND_SES)
+                .setStatementId(statement.getStatementId())
+                .setText("Код подтверждения оформления кредита")
+                .setFirstName(client.getFirstName())
+                .setMiddleName(client.getMiddleName())
+                .setCode(code)
+                .setTtlMinutes(TTL_MINUTES);
+
+        if (statement.getCredit() != null) {
+            creditRepository.findById(statement.getCredit()).ifPresent(credit ->
+                    message.setAmount(credit.getAmount())
+                           .setTerm(credit.getTerm())
+                           .setMonthlyPayment(credit.getMonthlyPayment()));
+        }
+
+        kafkaProducer.sendMessageToSendSesTopic(message);
+        log.info("SES code resent successfully for statementId: {}", statementId);
     }
 }

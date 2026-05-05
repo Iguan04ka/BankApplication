@@ -230,6 +230,50 @@
   justify-content: center;
 }
 
+/* Resend section */
+
+.conf-resend {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e8f4ff;
+  text-align: center;
+}
+
+.conf-resend-hint {
+  font-size: 0.85rem;
+  color: #777;
+  margin-bottom: 0.6rem;
+}
+
+.conf-resend-msg {
+  margin-bottom: 0.75rem;
+}
+
+.conf-resend-btn {
+  background: transparent;
+  color: #0066cc;
+  border: 1.5px solid rgba(0, 102, 204, 0.35);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  padding: 0.5rem 1.1rem;
+  transition: all 0.2s;
+}
+
+.conf-resend-btn:hover:not(:disabled) {
+  background: #f0f8ff;
+  border-color: #0066cc;
+}
+
+.conf-resend-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+}
+
 @media (max-width: 480px) {
   .conf-card {
     padding: 1.75rem 1.25rem;

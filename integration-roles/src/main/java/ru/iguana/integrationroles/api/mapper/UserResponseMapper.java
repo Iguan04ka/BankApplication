@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public interface UserResponseMapper {
 
     @Mapping(source = "userKey", target = "userKey")
+    @Mapping(source = "email", target = "email")
     @Mapping(source = "blocked", target = "blocked")
     @Mapping(source = "twoFactorEnabled", target = "twoFactorEnabled")
     @Mapping(target = "roles", expression = "java(mapRoles(entity.getRoles()))")

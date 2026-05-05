@@ -11,6 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserResponseDto {
     private UserKeyDto userKey;
+    private String email;
     private boolean blocked;
     private boolean twoFactorEnabled;
     private Set<RoleDto> roles;
