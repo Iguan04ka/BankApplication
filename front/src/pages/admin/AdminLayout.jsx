@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/AuthProvider';
+import ThemeToggle from '../../shared/ui/ThemeToggle/ThemeToggle';
 import './AdminLayout.css';
 
 export default function AdminLayout() {
@@ -57,6 +58,7 @@ export default function AdminLayout() {
             <h1 className="admin-topbar-title">Панель администратора</h1>
           </div>
           <div className="admin-topbar-right">
+            <ThemeToggle variant="icon" />
             <div className="admin-user-chip">
               <div className="admin-avatar">{initials}</div>
               <div className="admin-user-meta">

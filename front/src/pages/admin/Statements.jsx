@@ -82,12 +82,12 @@ export default function AdminStatements() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // server-side filters
-  const [status, setStatus] = useState('');
+  // server-side filters; pre-fill status from ?status= (e.g. from Dashboard click)
+  const [status, setStatus] = useState(() => searchParams.get('status') || '');
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
 
-  // client-side filter — user login; pre-fill from ?user= query param
+  // client-side filter — user login; pre-fill from ?user= (e.g. from Users page)
   const [userFilter, setUserFilter] = useState(() => searchParams.get('user') || '');
 
   // sorting
@@ -340,6 +340,40 @@ export function StatementDetailModal({ statementId, onClose, onChanged, hideActi
 
               {!hideActions && <>
                 <SectionTitle>Действия</SectionTitle>
+
+                {/* Prominent "Issue credit" button — only for DOCUMENT_SIGNED */}
+                {data.status === 'DOCUMENT_SIGNED' && (
+                  <div style={{
+                    marginBottom: '0.85rem',
+                    padding: '0.85rem 1rem',
+                    background: '#f0fdf4',
+                    border: '1px solid #86efac',
+                    borderRadius: 10,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                    flexWrap: 'wrap',
+                  }}>
+                    <span style={{ fontSize: '1.1rem' }}>✅</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontWeight: 600, fontSize: '0.92rem', color: '#166534' }}>
+                        Документы подписаны
+                      </div>
+                      <div style={{ fontSize: '0.8rem', color: '#4ade80', color: '#16a34a' }}>
+                        Заявка готова к выдаче кредита
+                      </div>
+                    </div>
+                    <button
+                      className="admin-btn primary"
+                      disabled={savingStatus}
+                      style={{ background: 'linear-gradient(135deg,#16a34a,#15803d)', fontSize: '0.95rem', padding: '0.6rem 1.4rem', whiteSpace: 'nowrap' }}
+                      onClick={() => updateStatus('CREDIT_ISSUED')}
+                    >
+                      {savingStatus ? 'Выдача...' : '💳 Выдать кредит'}
+                    </button>
+                  </div>
+                )}
+
                 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
                   <select
                     value={newStatus}

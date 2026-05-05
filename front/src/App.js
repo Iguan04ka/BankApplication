@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import './styles/dark.css';
 import Layout from './shared/ui/Layout/Layout';
 import StatementPage from './pages/statement/Statement';
 import RegistrationPage from './pages/statement/Registration';
@@ -17,6 +18,7 @@ import HomePage from './pages/Home.jsx';
 import PrivacyPolicyPage from './pages/legal/PrivacyPolicy.jsx';
 import PersonalDataPolicyPage from './pages/legal/PersonalDataPolicy.jsx';
 import { AuthProvider, RequireAuth, RequireAdmin } from './auth/AuthProvider';
+import { ThemeProvider } from './context/ThemeContext';
 import AdminLayout from './pages/admin/AdminLayout';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminStatements from './pages/admin/Statements';
@@ -25,6 +27,7 @@ import AdminCredits from './pages/admin/Credits';
 
 function App() {
   return (
+    <ThemeProvider>
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -70,6 +73,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+    </ThemeProvider>
   );
 }
 

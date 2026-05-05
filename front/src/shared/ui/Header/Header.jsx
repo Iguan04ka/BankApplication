@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../auth/AuthProvider';
+import ThemeToggle from '../ThemeToggle/ThemeToggle';
 import './Header.css';
 
 export default function Header() {
@@ -36,6 +37,9 @@ export default function Header() {
         </button>
 
         <ul className={`header-nav-list${menuOpen ? ' header-nav-list--open' : ''}`}>
+          <li>
+            <ThemeToggle variant="pill" />
+          </li>
           {user ? (
             <>
               <li>

@@ -1,0 +1,81 @@
+/* ── Pill variant (public Header) ────────────────────────────────────────── */
+
+.theme-toggle-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid #87ceeb;
+  background: rgba(240, 248, 255, 0.6);
+  color: #0066cc;
+  font-family: inherit;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.theme-toggle-pill:hover {
+  background: white;
+  border-color: #0066cc;
+  transform: translateY(-1px);
+}
+
+.theme-toggle-icon-inner {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.theme-toggle-label {
+  font-size: 0.9rem;
+}
+
+/* ── Icon variant (admin topbar) ─────────────────────────────────────────── */
+
+.theme-toggle-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  font-size: 1.05rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+
+.theme-toggle-icon:hover {
+  background: #f0f8ff;
+  border-color: #0066cc;
+}
+
+/* ── Dark mode styles ─────────────────────────────────────────────────────── */
+
+[data-theme="dark"] .theme-toggle-pill {
+  border-color: #334155;
+  background: rgba(30, 41, 59, 0.8);
+  color: #93c5fd;
+}
+
+[data-theme="dark"] .theme-toggle-pill:hover {
+  background: #1e293b;
+  border-color: #60a5fa;
+  color: #bfdbfe;
+}
+
+[data-theme="dark"] .theme-toggle-icon {
+  border-color: #334155;
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .theme-toggle-icon:hover {
+  background: #263549;
+  border-color: #60a5fa;
+}

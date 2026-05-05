@@ -164,7 +164,7 @@ export default function Confirmation() {
             <div className="conf-success-icon">🎉</div>
             <h2 className="conf-success-title">Кредит успешно оформлен!</h2>
             <p className="conf-success-text">
-              Код подтверждения принят. Вы можете отслеживать статус заявки в
+              Код подтверждения принят. Ожидайте подтверждения кредитования кредитным менеджером. Вы можете отслеживать статус заявки в
               личном кабинете.
             </p>
             <div className="conf-success-actions">

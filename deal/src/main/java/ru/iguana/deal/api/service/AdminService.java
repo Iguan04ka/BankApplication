@@ -17,6 +17,7 @@ import ru.iguana.deal.model.entity.Jsonb.StatusHistory;
 import ru.iguana.deal.model.entity.Statement;
 import ru.iguana.deal.model.entity.enums.ApplicationStatus;
 import ru.iguana.deal.model.entity.enums.ChangeType;
+import ru.iguana.deal.model.entity.enums.CreditStatus;
 import ru.iguana.deal.model.repository.ClientRepository;
 import ru.iguana.deal.model.repository.CreditRepository;
 import ru.iguana.deal.model.repository.StatementRepository;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -121,6 +123,17 @@ public class AdminService {
                 ChangeType.MANUAL
         ));
         statementRepository.save(s);
+
+        // When a statement is marked CREDIT_ISSUED, the associated credit must
+        // transition to ISSUED as well (it stays CALCULATED by default otherwise).
+        if (newStatus == ApplicationStatus.CREDIT_ISSUED && s.getCredit() != null) {
+            creditRepository.findById(s.getCredit()).ifPresent(credit -> {
+                credit.setCreditStatus(CreditStatus.ISSUED.name());
+                creditRepository.save(credit);
+                log.info("Credit {} status set to ISSUED for statement {}", credit.getCreditId(), statementId);
+            });
+        }
+
         return getStatementDetail(statementId);
     }
 
@@ -156,10 +169,20 @@ public class AdminService {
             byStatus.put(key, count);
         }
 
+        // Sum credit amounts for statements that have reached CREDIT_ISSUED status.
+        // We use the statement status as the source of truth because Credit.creditStatus
+        // typically stays CALCULATED throughout the lifecycle; CREDIT_ISSUED is the
+        // ApplicationStatus value that signals a loan has been disbursed.
         BigDecimal issuedAmount = BigDecimal.ZERO;
-        for (Credit c : creditRepository.findAll()) {
-            if ("ISSUED".equalsIgnoreCase(c.getCreditStatus()) && c.getAmount() != null) {
-                issuedAmount = issuedAmount.add(c.getAmount());
+        for (Statement s : statementRepository.findAll()) {
+            if (ApplicationStatus.CREDIT_ISSUED.name().equals(s.getStatus()) && s.getCredit() != null) {
+                Optional<Credit> credit = creditRepository.findById(s.getCredit());
+                if (credit.isPresent() && credit.get().getAmount() != null) {
+                    issuedAmount = issuedAmount.add(credit.get().getAmount());
+                } else if (s.getRequestedAmount() != null) {
+                    // fallback: if credit row missing, use the requested amount
+                    issuedAmount = issuedAmount.add(s.getRequestedAmount());
+                }
             }
         }
 
