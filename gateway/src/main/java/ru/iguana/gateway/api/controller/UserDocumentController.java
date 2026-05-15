@@ -87,4 +87,31 @@ public class UserDocumentController {
         log.info("GET /admin/documents/{}/content (download={})", documentId, download);
         return documentProxyService.adminDownloadDocument(documentId, download);
     }
+
+    // ── Автоматическая валидация документов (admin) ─────────────────────────
+    // Маршруты ниже не конфликтуют с `/admin/documents/{documentId}/content`,
+    // потому что суффикс пути отличается (/validate, /validation-result,
+    // /validation-history). PathVariable {statementId} семантически — это
+    // statementId, тип всё тот же UUID-строка.
+
+    @PreAuthorize("hasAuthority('admin')")
+    @PostMapping("/admin/documents/{statementId}/validate")
+    public ResponseEntity<JsonNode> adminRevalidateDocuments(@PathVariable String statementId) {
+        log.info("POST /admin/documents/{}/validate", statementId);
+        return ResponseEntity.ok(documentProxyService.adminRevalidateDocuments(statementId));
+    }
+
+    @PreAuthorize("hasAuthority('admin')")
+    @GetMapping("/admin/documents/{statementId}/validation-result")
+    public ResponseEntity<JsonNode> adminGetValidationResult(@PathVariable String statementId) {
+        log.info("GET /admin/documents/{}/validation-result", statementId);
+        return ResponseEntity.ok(documentProxyService.adminGetValidationResult(statementId));
+    }
+
+    @PreAuthorize("hasAuthority('admin')")
+    @GetMapping("/admin/documents/{statementId}/validation-history")
+    public ResponseEntity<JsonNode> adminGetValidationHistory(@PathVariable String statementId) {
+        log.info("GET /admin/documents/{}/validation-history", statementId);
+        return ResponseEntity.ok(documentProxyService.adminGetValidationHistory(statementId));
+    }
 }

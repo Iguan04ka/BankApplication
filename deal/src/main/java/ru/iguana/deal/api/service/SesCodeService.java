@@ -7,9 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.iguana.deal.api.dto.EmailMessageDto;
+import ru.iguana.deal.api.dto.ValidationResultDto;
+import ru.iguana.deal.api.service.validation.DocumentValidationService;
 import ru.iguana.deal.kafka.KafkaProducer;
 import ru.iguana.deal.model.entity.Client;
-import ru.iguana.deal.model.entity.Credit;
 import ru.iguana.deal.model.entity.Jsonb.StatusHistory;
 import ru.iguana.deal.model.entity.Statement;
 import ru.iguana.deal.model.entity.enums.ApplicationStatus;
@@ -23,6 +24,7 @@ import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -37,9 +39,25 @@ public class SesCodeService {
     private final ClientRepository clientRepository;
     private final CreditRepository creditRepository;
     private final KafkaProducer kafkaProducer;
+    private final DocumentValidationService documentValidationService;
 
+    /**
+     * Проверяет SES-код пользователя. При успешной проверке выполняет два шага:
+     * <ol>
+     *     <li>переводит заявку в статус {@code DOCUMENT_SIGNED} и фиксирует
+     *     момент подписания;</li>
+     *     <li>запускает автоматическую валидацию загруженных PDF-документов
+     *     через {@link DocumentValidationService#validateAndApply(UUID)}.</li>
+     * </ol>
+     *
+     * <p>Результат валидации определяет, переключится ли заявка дальше
+     * в {@code CREDIT_ISSUED} автоматически, либо останется в
+     * {@code DOCUMENT_SIGNED} и уйдёт на ручную проверку менеджером.
+     * Возвращаемый {@link ValidationResultDto} используется фронтендом
+     * для выбора одного из двух финальных окон.
+     */
     @Transactional
-    public void verifyCode(UUID statementId, String code) {
+    public ValidationResultDto verifyCode(UUID statementId, String code) {
         log.info("Verifying SES code for statementId: {}", statementId);
 
         if (code == null || code.isBlank()) {
@@ -79,6 +97,29 @@ public class SesCodeService {
 
         statementRepository.save(statement);
         log.info("SES code verified, statement marked DOCUMENT_SIGNED for id: {}", statementId);
+
+        // Запуск автоматической валидации документов. Любая внутренняя ошибка
+        // здесь не должна откатывать смену статуса DOCUMENT_SIGNED — поэтому
+        // оборачиваем в try/catch и при поломке возвращаем «безопасный» отрицательный
+        // результат, а заявка уйдёт на ручную проверку.
+        try {
+            ValidationResultDto result = documentValidationService.validateAndApply(statementId);
+            log.info("Document validation completed for statementId={}: success={}, finalStatus={}, errors={}",
+                    statementId, result.getSuccess(), result.getFinalStatus(),
+                    result.getErrors() == null ? 0 : result.getErrors().size());
+            return result;
+        } catch (Exception ex) {
+            log.error("Document validation failed unexpectedly for statementId={}: {}",
+                    statementId, ex.getMessage(), ex);
+            // Не пробрасываем исключение наружу: пользователь подписал документы,
+            // заявка осталась в DOCUMENT_SIGNED, менеджер разберётся вручную.
+            return new ValidationResultDto()
+                    .setStatementId(statementId)
+                    .setSuccess(false)
+                    .setFinalStatus(ApplicationStatus.DOCUMENT_SIGNED.name())
+                    .setValidatedAt(Timestamp.from(Instant.now()))
+                    .setErrors(List.of());
+        }
     }
 
     @Transactional

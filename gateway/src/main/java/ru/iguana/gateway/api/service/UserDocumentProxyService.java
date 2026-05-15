@@ -101,6 +101,34 @@ public class UserDocumentProxyService {
                 false);
     }
 
+    // ── Автоматическая валидация документов (admin) ────────────────────────
+    // Маршруты ниже проксируют запросы к новым admin-эндпоинтам deal,
+    // которые управляют автоматической проверкой PDF (2-НДФЛ и СТД-Р).
+
+    /** Повторно запускает автоматическую валидацию по заявке. */
+    public JsonNode adminRevalidateDocuments(String statementId) {
+        return execute(() -> restClient.post()
+                .uri("/deal/admin/documents/{statementId}/validate", statementId)
+                .retrieve()
+                .body(JsonNode.class));
+    }
+
+    /** Возвращает последний сохранённый результат валидации (404 если истории нет). */
+    public JsonNode adminGetValidationResult(String statementId) {
+        return execute(() -> restClient.get()
+                .uri("/deal/admin/documents/{statementId}/validation-result", statementId)
+                .retrieve()
+                .body(JsonNode.class));
+    }
+
+    /** Полная история попыток автоматической валидации, новые сверху. */
+    public JsonNode adminGetValidationHistory(String statementId) {
+        return execute(() -> restClient.get()
+                .uri("/deal/admin/documents/{statementId}/validation-history", statementId)
+                .retrieve()
+                .body(JsonNode.class));
+    }
+
     // ── Внутреннее ──────────────────────────────────────────────────────────
 
     private ResponseEntity<byte[]> downloadGeneric(String uri,

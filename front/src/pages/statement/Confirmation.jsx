@@ -17,6 +17,10 @@ export default function Confirmation() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  // Результат автоматической валидации документов, полученный с сервера
+  // в ответ на /verify. Имеет форму ValidationResultDto:
+  // { statementId, success, finalStatus, validatedAt, errors: [...] }
+  const [validation, setValidation] = useState(null);
 
   // Resend state
   const [resendLoading, setResendLoading] = useState(false);
@@ -107,10 +111,14 @@ export default function Confirmation() {
     setLoading(true);
     setError(null);
     try {
-      await client.post(
+      const resp = await client.post(
         `${base}/statement/registration/${statementId}/verify`,
         { code },
       );
+      // Бэкенд после verify сразу запускает автоматическую валидацию
+      // документов и возвращает её результат. На основании success
+      // выбираем экран: «Кредит одобрен» либо «Заявка передана менеджеру».
+      setValidation(resp?.data ?? null);
       setSuccess(true);
     } catch (err) {
       const status = err.response?.status;
@@ -157,15 +165,51 @@ export default function Confirmation() {
   };
 
   if (success) {
+    // Решение принимает бэкенд: validation.success === true означает, что
+    // автоматическая проверка PDF-документов прошла и заявка переведена в
+    // CREDIT_ISSUED. Иначе документы ушли на ручное рассмотрение менеджером.
+    const autoApproved = validation?.success === true
+        || validation?.finalStatus === 'CREDIT_ISSUED';
+
+    if (autoApproved) {
+      return (
+        <div className="conf-page">
+          <div className="conf-content">
+            <div className="conf-success">
+              <div className="conf-success-icon">🎉</div>
+              <h2 className="conf-success-title">Кредит одобрен</h2>
+              <p className="conf-success-text">
+                Документы успешно проверены автоматически. Кредит выдан, договор
+                зарегистрирован в системе. Вы можете отслеживать статус кредита
+                в личном кабинете.
+              </p>
+              <div className="conf-success-actions">
+                <button
+                  className="btn btn-primary"
+                  onClick={() => navigate('/account')}
+                >
+                  Перейти в личный кабинет
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Заявка ушла на ручное рассмотрение. Не вываливаем на пользователя
+    // подробный список расхождений — достаточно нейтрального сообщения,
+    // менеджер увидит детали в админ-панели.
     return (
       <div className="conf-page">
         <div className="conf-content">
           <div className="conf-success">
-            <div className="conf-success-icon">🎉</div>
-            <h2 className="conf-success-title">Кредит успешно оформлен!</h2>
+            <div className="conf-success-icon">📝</div>
+            <h2 className="conf-success-title">Заявка отправлена на рассмотрение</h2>
             <p className="conf-success-text">
-              Код подтверждения принят. Ожидайте подтверждения кредитования кредитным менеджером. Вы можете отслеживать статус заявки в
-              личном кабинете.
+              Заявка отправлена на рассмотрение кредитному менеджеру.
+              Ожидайте изменения статуса в личном кабинете — мы пришлём
+              уведомление, как только решение будет принято.
             </p>
             <div className="conf-success-actions">
               <button

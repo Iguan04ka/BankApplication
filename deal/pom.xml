@@ -95,6 +95,17 @@
 			<artifactId>spring-kafka</artifactId>
 		</dependency>
 
+		<!--
+			Apache PDFBox 3.x — извлечение текста из PDF-документов.
+			Используется в DocumentValidationService для автоматической
+			верификации справок 2-НДФЛ и выписок СТД-Р.
+		-->
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>3.0.3</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

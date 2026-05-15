@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.iguana.deal.api.dto.SesCodeRequestDto;
+import ru.iguana.deal.api.dto.ValidationResultDto;
 import ru.iguana.deal.api.service.DocumentService;
 import ru.iguana.deal.api.service.SesCodeService;
 
@@ -42,10 +43,14 @@ public class DocumentController {
     }
 
     @PostMapping("/verify")
-    @Operation(summary = "Verify SES code", description = "Verifies the one-time SES confirmation code submitted by the user.")
-    public void verify(@PathVariable UUID statementId, @RequestBody SesCodeRequestDto request) {
+    @Operation(summary = "Verify SES code",
+            description = "Проверяет одноразовый код, переводит заявку в DOCUMENT_SIGNED и сразу " +
+                    "запускает автоматическую валидацию документов 2-НДФЛ и СТД-Р. " +
+                    "Возвращает результат валидации: при success=true заявка автоматически " +
+                    "переходит в CREDIT_ISSUED, иначе остаётся на ручной проверке менеджером.")
+    public ValidationResultDto verify(@PathVariable UUID statementId, @RequestBody SesCodeRequestDto request) {
         log.info("Received request to verify SES code for statementId: {}", statementId);
-        sesCodeService.verifyCode(statementId, request.getCode());
+        return sesCodeService.verifyCode(statementId, request.getCode());
     }
 
     @PostMapping("/resend-ses")

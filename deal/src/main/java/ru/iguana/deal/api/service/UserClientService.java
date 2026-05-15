@@ -154,6 +154,7 @@ public class UserClientService {
         if (update.getLastName() != null) client.setLastName(update.getLastName());
         if (update.getFirstName() != null) client.setFirstName(update.getFirstName());
         if (update.getMiddleName() != null) client.setMiddleName(update.getMiddleName());
+        if (update.getBirthDate() != null) client.setBirthDate(update.getBirthDate());
         if (update.getEmail() != null) client.setEmail(update.getEmail());
         if (update.getGender() != null) client.setGender(update.getGender());
         if (update.getMaritalStatus() != null) client.setMaritalStatus(update.getMaritalStatus());

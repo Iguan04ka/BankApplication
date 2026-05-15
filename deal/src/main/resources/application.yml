@@ -38,3 +38,14 @@ server:
 
 microservice:
   base-url: http://calculator:8081
+
+# Параметры автоматической валидации PDF-документов (2-НДФЛ и СТД-Р).
+# Если расхождение с данными заявки укладывается в допуск — поле считается
+# валидным. См. ru.iguana.deal.api.service.validation.DocumentValidationService.
+validation:
+  salary:
+    # Допустимое отклонение средней месячной зарплаты от заявленной, %.
+    tolerance-percent: 15
+  work-experience:
+    # Допустимое отклонение текущего стажа от заявленного, месяцев.
+    tolerance-months: 2

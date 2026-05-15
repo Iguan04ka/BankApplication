@@ -328,6 +328,10 @@ export function StatementDetailModal({ statementId, onClose, onChanged, hideActi
                 <AdminClientDocuments clientId={data.clientId} />
               </>}
 
+              <SectionTitle>Автоматическая проверка документов</SectionTitle>
+              <ValidationResultSection statementId={statementId} />
+
+
               {data.credit && <>
                 <SectionTitle>Кредит</SectionTitle>
                 <div className="admin-detail-grid">
@@ -402,6 +406,174 @@ export function StatementDetailModal({ statementId, onClose, onChanged, hideActi
           <button className="admin-btn" onClick={onChanged || onClose}>Закрыть{!hideActions && ' и обновить'}</button>
         </div>
       </div>
+    </div>
+  );
+}
+
+// ── Validation result section ─────────────────────────────────────────────────
+
+// Человекочитаемые подписи для типов ошибок, возвращаемых бэкендом.
+const VALIDATION_ERROR_LABELS = {
+  FIO_MISMATCH:             'Несовпадение ФИО',
+  BIRTH_DATE_MISMATCH:      'Несовпадение даты рождения',
+  PASSPORT_MISMATCH:        'Несовпадение паспортных данных',
+  EMPLOYER_INN_MISMATCH:    'Несовпадение ИНН работодателя',
+  SALARY_MISMATCH:          'Несовпадение зарплаты',
+  WORK_EXPERIENCE_MISMATCH: 'Несовпадение стажа',
+  FIELD_NOT_FOUND:          'Поле не найдено в документе',
+  DOCUMENT_MISSING:         'Документ не загружен',
+  PDF_PARSE_ERROR:          'Ошибка чтения PDF',
+  UNEMPLOYED:               'Клиент не трудоустроен',
+  INTERNAL_ERROR:           'Внутренняя ошибка',
+};
+
+/**
+ * Карточка с результатом автоматической валидации PDF-документов по заявке.
+ * При первом рендере подтягивает последний результат через GET
+ * /admin/documents/{statementId}/validation-result.
+ *
+ * Если результата ещё нет (404) — предлагает запустить проверку вручную.
+ * Кнопка «Перезапустить» отправляет POST /admin/documents/{statementId}/validate
+ * и обновляет показанный результат свежими данными.
+ */
+function ValidationResultSection({ statementId }) {
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [notFound, setNotFound] = useState(false);
+  const [revalidating, setRevalidating] = useState(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    setNotFound(false);
+    try {
+      const resp = await client.get(adminApi(`/admin/documents/${statementId}/validation-result`));
+      setResult(resp.data);
+    } catch (e) {
+      if (e?.response?.status === 404) {
+        setNotFound(true);
+      } else {
+        setError(extractError(e));
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [statementId]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const revalidate = async () => {
+    setRevalidating(true);
+    setError(null);
+    try {
+      const resp = await client.post(adminApi(`/admin/documents/${statementId}/validate`));
+      setResult(resp.data);
+      setNotFound(false);
+    } catch (e) {
+      setError(extractError(e));
+    } finally {
+      setRevalidating(false);
+    }
+  };
+
+  if (loading) return <div className="admin-loading">Загрузка результата проверки...</div>;
+
+  if (error) {
+    return (
+      <div className="admin-error" style={{ marginBottom: '0.5rem' }}>
+        {error}
+        <div style={{ marginTop: '0.5rem' }}>
+          <button className="admin-btn sm" onClick={load}>↻ Повторить</button>
+        </div>
+      </div>
+    );
+  }
+
+  if (notFound || !result) {
+    return (
+      <div style={{
+        padding: '0.85rem 1rem',
+        background: '#f9fafb',
+        border: '1px dashed #d1d5db',
+        borderRadius: 8,
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.75rem',
+        flexWrap: 'wrap',
+      }}>
+        <span style={{ fontSize: '0.88rem', color: '#6b7280' }}>
+          Автоматическая проверка ещё не запускалась для этой заявки.
+        </span>
+        <button className="admin-btn sm" disabled={revalidating} onClick={revalidate}>
+          {revalidating ? 'Запуск...' : '▶ Запустить проверку'}
+        </button>
+      </div>
+    );
+  }
+
+  const isSuccess = result.success === true;
+  const errors = Array.isArray(result.errors) ? result.errors : [];
+
+  return (
+    <div>
+      <div style={{
+        padding: '0.85rem 1rem',
+        background: isSuccess ? '#f0fdf4' : '#fef3c7',
+        border: `1px solid ${isSuccess ? '#86efac' : '#fcd34d'}`,
+        borderRadius: 10,
+        marginBottom: '0.75rem',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.75rem',
+        flexWrap: 'wrap',
+      }}>
+        <span style={{ fontSize: '1.2rem' }}>{isSuccess ? '✅' : '⚠️'}</span>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontWeight: 600, color: isSuccess ? '#166534' : '#92400e' }}>
+            {isSuccess
+              ? 'Автоматическая проверка пройдена'
+              : `Найдено несовпадений: ${errors.length}`}
+          </div>
+          <div style={{ fontSize: '0.78rem', color: '#6b7280', marginTop: 2 }}>
+            Проверено: {formatDate(result.validatedAt)} · Итоговый статус: {result.finalStatus || '—'}
+          </div>
+        </div>
+        <button className="admin-btn sm" disabled={revalidating} onClick={revalidate}>
+          {revalidating ? 'Запуск...' : '↻ Перезапустить'}
+        </button>
+      </div>
+
+      {!isSuccess && errors.length > 0 && (
+        <div style={{ overflowX: 'auto', border: '1px solid #e5e7eb', borderRadius: 8 }}>
+          <table className="admin-table" style={{ margin: 0 }}>
+            <thead>
+              <tr>
+                <th style={{ width: '24%' }}>Тип</th>
+                <th style={{ width: '20%' }}>Поле</th>
+                <th style={{ width: '18%' }}>Ожидалось</th>
+                <th style={{ width: '18%' }}>Фактически</th>
+                <th>Сообщение</th>
+              </tr>
+            </thead>
+            <tbody>
+              {errors.map((err, idx) => (
+                <tr key={idx}>
+                  <td style={{ fontSize: '0.82rem', color: '#b45309', whiteSpace: 'nowrap' }}>
+                    {VALIDATION_ERROR_LABELS[err.errorType] || err.errorType || '—'}
+                  </td>
+                  <td style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: '#374151' }}>
+                    {err.field || '—'}
+                  </td>
+                  <td style={{ fontSize: '0.82rem' }}>{err.expected ?? '—'}</td>
+                  <td style={{ fontSize: '0.82rem' }}>{err.actual ?? '—'}</td>
+                  <td style={{ fontSize: '0.82rem', color: '#4b5563' }}>{err.message || '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

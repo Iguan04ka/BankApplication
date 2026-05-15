@@ -90,6 +90,12 @@ function toEditForm(p) {
     lastName: p.lastName || '',
     firstName: p.firstName || '',
     middleName: p.middleName || '',
+    // HTML <input type="date"> ожидает формат YYYY-MM-DD. Бэк присылает
+    // birthDate как ISO-строку («1977-09-23»), но на всякий случай
+    // прогоняем через Date — это нормализует timezone-варианты.
+    birthDate: p.birthDate
+      ? new Date(p.birthDate).toISOString().slice(0, 10)
+      : '',
     email: p.email || '',
     gender: p.gender || '',
     maritalStatus: p.maritalStatus || '',
@@ -262,6 +268,15 @@ function ProfileEditForm({ form, loading, error, onField, onNested, onSubmit, on
               className="form-control"
               value={form.middleName}
               onChange={(e) => onField('middleName', e.target.value)}
+            />
+          </div>
+          <div className="edit-field">
+            <label className="form-label">Дата рождения</label>
+            <input
+              className="form-control"
+              type="date"
+              value={form.birthDate || ''}
+              onChange={(e) => onField('birthDate', e.target.value)}
             />
           </div>
           <div className="edit-field">

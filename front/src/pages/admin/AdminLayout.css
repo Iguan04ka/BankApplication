@@ -450,11 +450,27 @@
 .admin-modal {
   background: #fff;
   border-radius: 12px;
-  max-width: 720px;
-  width: 100%;
-  max-height: 90vh;
+  /* Раньше: max-width 720px — модалка получалась узкой, всё прокручивалось.
+     Сейчас даём ~75% ширины экрана с верхним пределом 1400px,
+     чтобы на 4K-мониторах окно не «расплывалось» на весь экран.
+     min-width гарантирует читаемость на маленьких экранах. */
+  width: 75vw;
+  max-width: 1400px;
+  min-width: 720px;
+  max-height: 85vh;
   overflow-y: auto;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+/* На узких экранах (планшеты, малые ноутбуки) убираем min-width
+   и снова растягиваем на всю доступную ширину, чтобы модалка
+   не упиралась в правый край. */
+@media (max-width: 900px) {
+  .admin-modal {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
 }
 
 .admin-modal-header {
