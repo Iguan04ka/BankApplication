@@ -8,9 +8,9 @@ const getApiBase = () => (process.env.NODE_ENV === 'development' ? '' : '/api');
 const PLACEHOLDERS = {
   amount: '500000',
   term: '24',
-  firstName: 'Ivan',
-  lastName: 'Ivanov',
-  middleName: 'Ivanovich',
+  firstName: 'Иван',
+  lastName: 'Иванов',
+  middleName: 'Иванович',
   email: 'example@mail.ru',
   birthdate: '1990-05-15',
   passportSeries: '1234',
@@ -38,7 +38,8 @@ const formatAmount = (v) => {
   }).format(v);
 };
 
-const NAME_RE = /^[a-zA-Z-]{2,30}$/;
+// Латиница, кириллица, дефис; от 2 до 30 символов
+const NAME_RE = /^[a-zA-ZА-ЯЁа-яё-]{2,30}$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SERIES_RE = /^\d{4}$/;
 const NUMBER_RE = /^\d{6}$/;
@@ -57,13 +58,13 @@ function validateForm(form) {
   }
 
   if (!form.lastName || !NAME_RE.test(form.lastName)) {
-    errors.lastName = 'Фамилия: от 2 до 30 латинских букв';
+    errors.lastName = 'Фамилия: от 2 до 30 букв (латиница или кириллица)';
   }
   if (!form.firstName || !NAME_RE.test(form.firstName)) {
-    errors.firstName = 'Имя: от 2 до 30 латинских букв';
+    errors.firstName = 'Имя: от 2 до 30 букв (латиница или кириллица)';
   }
   if (form.middleName && !NAME_RE.test(form.middleName)) {
-    errors.middleName = 'Отчество: от 2 до 30 латинских букв';
+    errors.middleName = 'Отчество: от 2 до 30 букв (латиница или кириллица)';
   }
 
   if (!form.email || !EMAIL_RE.test(form.email)) {
@@ -255,7 +256,7 @@ export default function Statement() {
               <div className="form-col">
                 <div className="form-group">
                   <label htmlFor="lastName" className="form-label">
-                    Фамилия * <span className="form-hint">(латиницей)</span>
+                    Фамилия *
                   </label>
                   <input
                     id="lastName"
@@ -272,7 +273,7 @@ export default function Statement() {
               <div className="form-col">
                 <div className="form-group">
                   <label htmlFor="firstName" className="form-label">
-                    Имя * <span className="form-hint">(латиницей)</span>
+                    Имя *
                   </label>
                   <input
                     id="firstName"
@@ -292,7 +293,7 @@ export default function Statement() {
               <div className="form-col">
                 <div className="form-group">
                   <label htmlFor="middleName" className="form-label">
-                    Отчество <span className="form-hint">(латиницей, необязательно)</span>
+                    Отчество <span className="form-hint">(необязательно)</span>
                   </label>
                   <input
                     id="middleName"

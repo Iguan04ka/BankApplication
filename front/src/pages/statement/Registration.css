@@ -4,6 +4,26 @@
   padding: 2rem 0;
 }
 
+.reg-docs-hint {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0 0 0.75rem;
+  line-height: 1.45;
+}
+
+/* Полноширинная секция с документами — между гридом и кнопками */
+.reg-docs-section {
+  margin-bottom: 1.25rem;
+}
+
+.reg-docs-section .reg-section-card {
+  /* Наследует стили .reg-section-card, дополнительная настройка не нужна */
+}
+
+[data-theme="dark"] .reg-docs-hint {
+  color: #94a3b8;
+}
+
 .field-error {
   color: #dc3545;
   font-size: 0.8rem;

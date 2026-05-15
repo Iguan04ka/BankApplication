@@ -29,42 +29,47 @@ public class Client {
     @Column(name = "client_id", columnDefinition = "UUID")
     UUID clientId;
 
-    @Column(name = "last_name")
+    // Все поля, кроме client_id, — явно nullable = true, чтобы исключить
+    // создание NOT NULL DDL-ограничений при ddl-auto: update на свежей БД.
+    // Клиент создаётся при регистрации с минимальным набором полей
+    // (client_id, user_sub, email); остальные заполняются при оформлении заявки.
+
+    @Column(name = "last_name", nullable = true)
     String lastName;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = true)
     String firstName;
 
-    @Column(name = "middle_name")
+    @Column(name = "middle_name", nullable = true)
     String middleName;
 
-    @Column(name = "user_sub")
+    @Column(name = "user_sub", nullable = true)
     String userSub;
 
-    @Column(name = "birth_date")
+    @Column(name = "birth_date", nullable = true)
     LocalDate birthDate;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = true)
     String email;
 
-    @Column(name = "gender")
+    @Column(name = "gender", nullable = true)
     String gender;
 
-    @Column(name = "marital_status")
+    @Column(name = "marital_status", nullable = true)
     String maritalStatus;
 
-    @Column(name = "dependent_amount")
+    @Column(name = "dependent_amount", nullable = true)
     Integer dependentAmount;
 
     @Type(JsonType.class)
-    @Column(name = "passport", columnDefinition = "jsonb")
+    @Column(name = "passport", columnDefinition = "jsonb", nullable = true)
     Passport passport;
 
     @Type(JsonType.class)
-    @Column(name = "employment", columnDefinition = "jsonb")
+    @Column(name = "employment", columnDefinition = "jsonb", nullable = true)
     Employment employment;
 
-    @Column(name = "account_number")
+    @Column(name = "account_number", nullable = true)
     String accountNumber;
 
 }

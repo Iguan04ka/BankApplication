@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import client from '../../api/client';
+import AdminClientDocuments from './AdminClientDocuments';
 import {
   adminApi,
   formatMoney,
@@ -321,6 +322,11 @@ export function StatementDetailModal({ statementId, onClose, onChanged, hideActi
                 <Detail label="Создана" value={formatDate(data.creationDate)} />
                 <Detail label="Подписана" value={formatDate(data.signDate)} />
               </div>
+
+              {data.clientId && <>
+                <SectionTitle>Документы клиента</SectionTitle>
+                <AdminClientDocuments clientId={data.clientId} />
+              </>}
 
               {data.credit && <>
                 <SectionTitle>Кредит</SectionTitle>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import client from '../../api/client';
+import DocumentUploader from '../../shared/ui/DocumentUploader/DocumentUploader';
 import './Account.css';
 
 // Statuses that allow the user to continue the application
@@ -973,6 +974,7 @@ export default function AccountPage() {
             { key: 'profile', label: 'Профиль', icon: '🪪' },
             { key: 'statements', label: 'Заявки', icon: '📋' },
             { key: 'credits', label: 'Кредиты', icon: '💳' },
+            { key: 'documents', label: 'Документы', icon: '📄' },
           ].map((t) => (
             <button
               key={t.key}
@@ -1054,6 +1056,13 @@ export default function AccountPage() {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {/* Documents tab */}
+        {tab === 'documents' && (
+          <div className="tab-panel">
+            <DocumentUploader />
           </div>
         )}
 

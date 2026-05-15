@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import client from '../../api/client';
+import DocumentUploader from '../../shared/ui/DocumentUploader/DocumentUploader';
 import './Registration.css';
 
 const getApiBase = () => (process.env.NODE_ENV === 'development' ? '' : '/api');
@@ -47,23 +48,37 @@ function mapMarital(m) {
   return '';
 }
 
-// Map profile employment status (deal) to calculator EmploymentStatus enum
+// Map profile employment status to calculator EmploymentStatus enum.
+// Поддерживаются оба формата: Account/deal-формат (EMPLOYED, SELF_EMPLOYED…)
+// и калькуляторный (HIREDEMPLOYED, SELFEMPLOYED…) — на случай, если данные
+// уже были сохранены после предыдущего прохождения регистрации.
 function mapEmploymentStatus(s) {
   const map = {
-    UNEMPLOYED:    'UNEMPLOYED',
-    SELF_EMPLOYED: 'SELFEMPLOYED',
-    EMPLOYED:      'HIREDEMPLOYED',
+    // Deal / Account формат → calculator формат
+    UNEMPLOYED:     'UNEMPLOYED',
+    SELF_EMPLOYED:  'SELFEMPLOYED',
+    EMPLOYED:       'HIREDEMPLOYED',
+    BUSINESS_OWNER: 'SELFEMPLOYED',
+    // Уже в calculator-формате (identity, сохранено после регистрации)
+    SELFEMPLOYED:   'SELFEMPLOYED',
+    HIREDEMPLOYED:  'HIREDEMPLOYED',
   };
   return map[s] || '';
 }
 
-// Map profile position (deal) to calculator Positions enum
+// Map profile position to calculator Positions enum.
 function mapPosition(p) {
   const map = {
+    // Deal / Account формат → calculator формат
     WORKER:      'JUNIOR',
     MID_MANAGER: 'MIDDLE',
     TOP_MANAGER: 'SENIOR',
     OWNER:       'BOSS',
+    // Уже в calculator-формате (identity)
+    JUNIOR:      'JUNIOR',
+    MIDDLE:      'MIDDLE',
+    SENIOR:      'SENIOR',
+    BOSS:        'BOSS',
   };
   return map[p] || '';
 }
@@ -217,6 +232,17 @@ export default function Registration() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Состояние загруженных пользовательских документов (2-НДФЛ и ЭТК).
+  // Обновляется компонентом DocumentUploader через onChange и используется для
+  // блокировки отправки заявки, если хотя бы один обязательный документ
+  // отсутствует.
+  const [uploadedDocs, setUploadedDocs] = useState([]);
+  const [showDocsError, setShowDocsError] = useState(false);
+
+  const hasDoc = (type) => uploadedDocs.some((d) => d.documentType === type);
+  const missingNdfl = !hasDoc('NDFL_2');
+  const missingEmployment = !hasDoc('EMPLOYMENT_RECORD');
+
   // Pre-fill from profile
   useEffect(() => {
     (async () => {
@@ -283,6 +309,16 @@ export default function Registration() {
       return;
     }
     setFieldErrors({});
+
+    // Документы 2-НДФЛ и выписки из ЭТК обязательны для отправки заявки.
+    if (missingNdfl || missingEmployment) {
+      setShowDocsError(true);
+      setError('Загрузите обязательные документы: справку 2-НДФЛ и выписку из электронной трудовой книжки.');
+      const el = document.querySelector('.doc-slot--error');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    setShowDocsError(false);
 
     setLoading(true);
     try {
@@ -508,6 +544,38 @@ export default function Registration() {
                 <FieldError message={fieldErrors.workExperienceCurrent} />
               </Field>
             </SectionCard>
+
+          </div>
+
+          {/* Documents — full-width card below the grid */}
+          <div className="reg-docs-section">
+            <div className="reg-section-card">
+              <h3 className="reg-section-title">
+                <span className="reg-section-icon">📄</span>
+                Подтверждающие документы
+              </h3>
+              <p className="reg-docs-hint">
+                Для отправки заявки приложите справку 2-НДФЛ и выписку из
+                электронной трудовой книжки в формате PDF. Если документы уже
+                были загружены ранее, они подтянутся автоматически — повторно
+                прикладывать их не нужно.
+              </p>
+              <DocumentUploader
+                compact
+                horizontal
+                requiredKeys={['NDFL_2', 'EMPLOYMENT_RECORD']}
+                showRequiredErrors={showDocsError}
+                onChange={(docs) => {
+                  setUploadedDocs(docs);
+                  if (
+                    docs.some((d) => d.documentType === 'NDFL_2') &&
+                    docs.some((d) => d.documentType === 'EMPLOYMENT_RECORD')
+                  ) {
+                    setShowDocsError(false);
+                  }
+                }}
+              />
+            </div>
           </div>
 
           <div className="reg-actions">
