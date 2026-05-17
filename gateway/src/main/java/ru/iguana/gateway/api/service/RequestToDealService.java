@@ -46,14 +46,23 @@ public class RequestToDealService {
         sendRequest("/deal/document/{statementId}/code", statementId);
     }
 
-    public void verifySesCode(String statementId, SesCodeRequestDto request) {
+    /**
+     * Подтверждает SES-код и возвращает {@code ValidationResultDto} из deal-сервиса.
+     * Deal автоматически запускает валидацию PDF-документов после проверки кода
+     * и кладёт результат в тело ответа (поля: success, finalStatus, errors и т.д.).
+     * Возвращаем тело как JsonNode, чтобы не вводить зависимость gateway от deal-DTO.
+     */
+    public com.fasterxml.jackson.databind.JsonNode verifySesCode(String statementId, SesCodeRequestDto request) {
         log.info("Sending SES code verification for statement: {}", statementId);
-        restClient.post()
+        com.fasterxml.jackson.databind.JsonNode result = restClient.post()
                 .uri("/deal/document/{statementId}/verify", statementId)
                 .body(request)
                 .retrieve()
-                .toBodilessEntity();
-        log.info("Successfully verified SES code for statement: {}", statementId);
+                .body(com.fasterxml.jackson.databind.JsonNode.class);
+        log.info("Successfully verified SES code for statement: {}, validationSuccess={}",
+                statementId,
+                result != null && result.path("success").asBoolean(false));
+        return result;
     }
 
     public void resendSesCode(String statementId) {

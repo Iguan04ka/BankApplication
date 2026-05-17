@@ -1,8 +1,10 @@
 package ru.iguana.gateway.api.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,12 +56,16 @@ public class RequestToDealController {
     }
 
     @PostMapping("statement/registration/{statementId}/verify")
-    @Operation(summary = "Verify SES code", description = "Verifies the one-time SES code submitted by the user to complete registration.")
-    public void verifySesCode(@PathVariable String statementId,
-                              @RequestBody SesCodeRequestDto request){
+    @Operation(summary = "Verify SES code",
+            description = "Verifies the one-time SES code and returns the automatic document " +
+                    "validation result (ValidationResultDto): success, finalStatus, errors. " +
+                    "Frontend uses finalStatus=CREDIT_ISSUED to show 'Credit approved' screen.")
+    public ResponseEntity<JsonNode> verifySesCode(@PathVariable String statementId,
+                                                  @RequestBody SesCodeRequestDto request) {
         log.info("A request has arrived for verifySesCode: {}", statementId);
-        requestToDealService.verifySesCode(statementId, request);
-        log.info("The verifySesCode request was processed successfully");
+        JsonNode result = requestToDealService.verifySesCode(statementId, request);
+        log.info("The verifySesCode request was processed successfully for statementId={}", statementId);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("statement/registration/{statementId}/resend-code")

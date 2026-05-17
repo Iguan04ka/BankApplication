@@ -19,9 +19,11 @@ import ru.iguana.deal.model.entity.Statement;
 import ru.iguana.deal.model.entity.UserDocument;
 import ru.iguana.deal.model.entity.enums.ApplicationStatus;
 import ru.iguana.deal.model.entity.enums.ChangeType;
+import ru.iguana.deal.model.entity.enums.CreditStatus;
 import ru.iguana.deal.model.entity.enums.UserDocumentType;
 import ru.iguana.deal.model.entity.enums.ValidationErrorType;
 import ru.iguana.deal.model.repository.ClientRepository;
+import ru.iguana.deal.model.repository.CreditRepository;
 import ru.iguana.deal.model.repository.DocumentValidationResultRepository;
 import ru.iguana.deal.model.repository.StatementRepository;
 import ru.iguana.deal.model.repository.UserDocumentRepository;
@@ -70,6 +72,7 @@ public class DocumentValidationService {
 
     private final StatementRepository statementRepository;
     private final ClientRepository clientRepository;
+    private final CreditRepository creditRepository;
     private final UserDocumentRepository userDocumentRepository;
     private final DocumentValidationResultRepository validationResultRepository;
     private final PdfTextExtractor pdfTextExtractor;
@@ -421,6 +424,17 @@ public class DocumentValidationService {
         statementRepository.save(statement);
         log.info("DocumentValidation: статус заявки {} обновлён → {}",
                 statement.getStatementId(), newStatus);
+
+        // При автоматической выдаче кредита синхронизируем статус Credit-записи —
+        // так же, как делает AdminService при ручном переключении статуса.
+        if (newStatus == ApplicationStatus.CREDIT_ISSUED && statement.getCredit() != null) {
+            creditRepository.findById(statement.getCredit()).ifPresent(credit -> {
+                credit.setCreditStatus(CreditStatus.ISSUED.name());
+                creditRepository.save(credit);
+                log.info("DocumentValidation: кредит {} переведён в статус ISSUED",
+                        statement.getCredit());
+            });
+        }
     }
 
     private ValidationResultDto toDto(DocumentValidationResult entity) {
